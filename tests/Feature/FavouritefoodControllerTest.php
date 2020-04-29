@@ -157,13 +157,11 @@ class FavouritefoodControllerTest extends TestCase
     /** @test */
     public function anAuthorizedUserCanCreateAFavouritefood()
     {
-        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
         $favouritefood = [
             "user_id" => $user->id,
-            "code" => '2',
             "alias" => 'my alias',
             "description" => "my favourite food",
             "kcal" => 119,
@@ -175,7 +173,65 @@ class FavouritefoodControllerTest extends TestCase
         $this->assertDatabaseHas('favouritefoods',$favouritefood);
 
         $response->assertRedirect(route('favouritefoods.index'));
-
     }
 
+    /** @test */
+    public function aFavouritefoodMustHaveADescription()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $favouritefood = [
+            "user_id" => $user->id,
+            "code" => '2',
+            "alias" => 'my alias',
+            "description" => "",
+            "kcal" => 119,
+            "potassium" => 204,
+        ];
+
+        $response = $this->post(route('favouritefoods.index',$favouritefood));
+
+        $response->assertSessionHasErrors(['description']);
+    }
+
+    /** @test */
+    public function aFavouritefoodKcalMustBeANonnegativeInteger()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $favouritefood = [
+            "user_id" => $user->id,
+            "code" => '2',
+            "alias" => 'my alias',
+            "description" => "my favourite food",
+            "kcal" => -1,
+            "potassium" => 204,
+        ];
+
+        $response = $this->post(route('favouritefoods.index',$favouritefood));
+
+        $response->assertSessionHasErrors(['kcal']);
+    }
+
+    /** @test */
+    public function aFavouritefoodPotassiumMustBeANonnegativeInteger()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $favouritefood = [
+            "user_id" => $user->id,
+            "code" => '2',
+            "alias" => 'my alias',
+            "description" => "my favourite food",
+            "kcal" => 119,
+            "potassium" => -1,
+        ];
+
+        $response = $this->post(route('favouritefoods.index',$favouritefood));
+
+        $response->assertSessionHasErrors(['potassium']);
+    }
 }

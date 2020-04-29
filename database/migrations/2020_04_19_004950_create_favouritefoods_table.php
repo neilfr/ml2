@@ -16,8 +16,8 @@ class CreateFavouritefoodsTable extends Migration
         Schema::create('favouritefoods', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('code');
-            $table->string('alias');
+            $table->string('code')->nullable();
+            $table->string('alias')->nullable();
             $table->string('description');
             $table->integer('kcal');
             $table->integer('potassium');

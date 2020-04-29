@@ -24,12 +24,12 @@ class CreateFavouritefoodRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => 'string|nullable',
-            'user_id' => 'integer|nullable',
+//            'code' => 'string|nullable',
+            'user_id' => 'integer',
             'alias' => 'string|nullable',
             'description' => 'required',
-            'kcal' => 'integer',
-            'potassium' => 'integer',
+            'kcal' => 'integer|min:0',
+            'potassium' => 'integer|min:0',
         ];
     }
 }
