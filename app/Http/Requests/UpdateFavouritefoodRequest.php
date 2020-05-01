@@ -25,8 +25,8 @@ class UpdateFavouritefoodRequest extends FormRequest
     {
         return [
             'user_id' => 'integer',
-            'alias' => 'string|nullable',
-            'description' => 'required',
+            'alias' => 'string|min:1',
+            'description' => 'string|min:1',
             'kcal' => 'integer|min:0',
             'potassium' => 'integer|min:0',
         ];

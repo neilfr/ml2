@@ -46,7 +46,6 @@ class FavouritefoodController extends Controller
         $favouritefood->update($request->validated());
 
         return redirect()->route('favouritefoods.index');
-
     }
 
 }
