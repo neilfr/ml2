@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Favouritefood;
 use App\Http\Requests\CreateFavouritefoodRequest;
+use App\Http\Requests\UpdateFavouritefoodRequest;
 use App\Http\Resources\FavouritefoodResource;
 use App\Http\Resources\FoodResource;
 use App\User;
@@ -22,19 +23,30 @@ class FavouritefoodController extends Controller
         ]);
     }
 
-    public function show(Favouritefood $favouritefood)
-    {
-        $favouritefood = auth()->user()->favouritefoods->where('id', '=', $favouritefood->id);
-
-        return Inertia::render('Favouritefood/Index', [
-            'favouriteFood' => FavouritefoodResource::collection($favouritefood),
-        ]);
-    }
-
     public function store(CreateFavouritefoodRequest $request)
     {
         Favouritefood::create($request->validated());
 
         return redirect()->route('favouritefoods.index');
     }
+
+    public function show(Favouritefood $favouritefood)
+    {
+        if($favouritefood->user_id === auth()->user()->id) {
+            return Inertia::render('Favouritefood/Index', [
+                'favouriteFood' => new FavouritefoodResource($favouritefood),
+            ]);
+        } else {
+            return redirect()->route('favouritefoods.index');
+        }
+    }
+
+    public function update(UpdateFavouritefoodRequest $request, Favouritefood $favouritefood)
+    {
+        $favouritefood->update($request->validated());
+
+        return redirect()->route('favouritefoods.index');
+
+    }
+
 }
