@@ -129,7 +129,6 @@ class FavouritefoodControllerTest extends TestCase
         ]))
             ->assertDontSee($favouritefood->description);
         $response->assertRedirect(route('favouritefoods.index'));
-
     }
 
     /** @test */
@@ -243,8 +242,6 @@ class FavouritefoodControllerTest extends TestCase
     /** @test */
     public function anAuthorizedUserCanUpdateAFavouritefoodAlias()
     {
-        $this->withoutExceptionHandling();
-
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
@@ -267,8 +264,6 @@ class FavouritefoodControllerTest extends TestCase
     /** @test */
     public function anAuthorizedUserCanUpdateAFavouritefoodDescription()
     {
-        $this->withoutExceptionHandling();
-
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
@@ -291,8 +286,6 @@ class FavouritefoodControllerTest extends TestCase
     /** @test */
     public function anAuthorizedUserCanUpdateAFavouritefoodKcal()
     {
-        $this->withoutExceptionHandling();
-
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
@@ -315,8 +308,6 @@ class FavouritefoodControllerTest extends TestCase
     /** @test */
     public function anAuthorizedUserCanUpdateAFavouritefoodPotassium()
     {
-        $this->withoutExceptionHandling();
-
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
@@ -337,11 +328,8 @@ class FavouritefoodControllerTest extends TestCase
     }
 
     /** @test */
-    // todo : fix this
     public function anAuthorizedUserCannotUpdateACode()
     {
-//        $this->withoutExceptionHandling();
-
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
@@ -354,9 +342,10 @@ class FavouritefoodControllerTest extends TestCase
             'potassium' => 204,
         ]);
 
-        $response = $this->patch(route('favouritefoods.show', $favouritefood), ['code' => '1'])
-            ->assertSessionHasErrors(['code']);
+        $response = $this->patch(route('favouritefoods.show', $favouritefood), ['code' => '1']);
 
-//        $response->assertRedirect(route('favouritefoods.index'));
+        $this->assertDatabaseMissing('favouritefoods', ['code' => '1']);
+
+        $response->assertRedirect(route('favouritefoods.index'));
     }
 }
