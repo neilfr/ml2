@@ -27,9 +27,13 @@ Route:: group(['middleware' => 'auth'], function(){
     Route::post('/favouritefoods', 'FavouritefoodController@store');
 
     Route::get('/favouritefoods/{favouritefood}', 'FavouritefoodController@show')->name('favouritefoods.show');
+    Route::patch('/favouritefoods/{favouritefood}', 'FavouritefoodController@update');
+//    Route::patch('/favouritefoods/{favouritefood}', function() {
+//        var_dump('in route');
+//    });
 
-
-    Route::get('/meals/{meal}/favouritefoods', 'MealFavouritefoodController@index')->name('mealsFavouritefoods.index');
+    Route::get('/meals/
+}{meal}/favouritefoods', 'MealFavouritefoodController@index')->name('mealsFavouritefoods.index');
 
     Route::get('/meals', 'MealController@index')->name('meals.index');
     Route::get('/meals/{meal}', 'MealController@show')->name('meals.show');

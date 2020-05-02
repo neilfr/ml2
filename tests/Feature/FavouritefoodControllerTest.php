@@ -103,7 +103,11 @@ class FavouritefoodControllerTest extends TestCase
             'favouritefood' => $favouritefood,
         ]))
             ->assertSuccessful()
-            ->assertSee($favouritefood->description);
+            ->assertSee($favouritefood->code)
+            ->assertSee($favouritefood->alias)
+            ->assertSee($favouritefood->description)
+            ->assertSee($favouritefood->kcal)
+            ->assertSee($favouritefood->potassium);
     }
 
     /** @test */
@@ -119,12 +123,12 @@ class FavouritefoodControllerTest extends TestCase
             "description" => "UserB favourite food",
         ]);
 
-        $this->get(route('favouritefoods.show',[
-            'user' => $userA,
+        $response = $this->get(route('favouritefoods.show',[
+            'user' => $userB,
             'favouritefood' => $favouritefood,
         ]))
-            ->assertSuccessful()
             ->assertDontSee($favouritefood->description);
+        $response->assertRedirect(route('favouritefoods.index'));
     }
 
     /** @test */
@@ -233,5 +237,115 @@ class FavouritefoodControllerTest extends TestCase
         $response = $this->post(route('favouritefoods.index',$favouritefood));
 
         $response->assertSessionHasErrors(['potassium']);
+    }
+
+    /** @test */
+    public function anAuthorizedUserCanUpdateAFavouritefoodAlias()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $favouritefood = factory(Favouritefood::class)->create([
+            'user_id' => $user->id,
+            'code' => null,
+            'alias' => 'my alias',
+            'description' => 'my favourite food',
+            'kcal' => 119,
+            'potassium' => 204,
+        ]);
+
+        $response = $this->patch(route('favouritefoods.show', $favouritefood), ['alias' => 'taco']);
+
+        $this->assertDatabaseHas('favouritefoods', ['alias' => 'taco']);
+
+        $response->assertRedirect(route('favouritefoods.index'));
+    }
+
+    /** @test */
+    public function anAuthorizedUserCanUpdateAFavouritefoodDescription()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $favouritefood = factory(Favouritefood::class)->create([
+            'user_id' => $user->id,
+            'code' => null,
+            'alias' => 'my alias',
+            'description' => 'my favourite food',
+            'kcal' => 119,
+            'potassium' => 204,
+        ]);
+
+        $response = $this->patch(route('favouritefoods.show', $favouritefood), ['description' => 'new description']);
+
+        $this->assertDatabaseHas('favouritefoods', ['description' => 'new description']);
+
+        $response->assertRedirect(route('favouritefoods.index'));
+    }
+
+    /** @test */
+    public function anAuthorizedUserCanUpdateAFavouritefoodKcal()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $favouritefood = factory(Favouritefood::class)->create([
+            'user_id' => $user->id,
+            'code' => null,
+            'alias' => 'my alias',
+            'description' => 'my favourite food',
+            'kcal' => 119,
+            'potassium' => 204,
+        ]);
+
+        $response = $this->patch(route('favouritefoods.show', $favouritefood), ['kcal' => 5]);
+
+        $this->assertDatabaseHas('favouritefoods', ['kcal' => 5]);
+
+        $response->assertRedirect(route('favouritefoods.index'));
+    }
+
+    /** @test */
+    public function anAuthorizedUserCanUpdateAFavouritefoodPotassium()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $favouritefood = factory(Favouritefood::class)->create([
+            'user_id' => $user->id,
+            'code' => null,
+            'alias' => 'my alias',
+            'description' => 'my favourite food',
+            'kcal' => 119,
+            'potassium' => 204,
+        ]);
+
+        $response = $this->patch(route('favouritefoods.show', $favouritefood), ['potassium' => 0]);
+
+        $this->assertDatabaseHas('favouritefoods', ['potassium' => 0]);
+
+        $response->assertRedirect(route('favouritefoods.index'));
+    }
+
+    /** @test */
+    public function anAuthorizedUserCannotUpdateACode()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $favouritefood = factory(Favouritefood::class)->create([
+            'user_id' => $user->id,
+            'code' => null,
+            'alias' => 'my alias',
+            'description' => 'my favourite food',
+            'kcal' => 119,
+            'potassium' => 204,
+        ]);
+
+        $response = $this->patch(route('favouritefoods.show', $favouritefood), ['code' => '1']);
+
+        $this->assertDatabaseMissing('favouritefoods', ['code' => '1']);
+
+        $response->assertRedirect(route('favouritefoods.index'));
     }
 }
