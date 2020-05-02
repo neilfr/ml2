@@ -234,4 +234,44 @@ class FavouritefoodControllerTest extends TestCase
 
         $response->assertSessionHasErrors(['potassium']);
     }
+
+    /** @test */
+    public function anAuthenticatedUserCanDeleteTheirFavouritefood()
+    {
+        $this->withoutExceptionHandling();
+
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $favouritefood = factory(Favouritefood::class)->create([
+            'user_id' => $user->id,
+        ]);
+
+        $this->assertDatabaseHas('favouritefoods', ['description' => $favouritefood->description]);
+
+        $this->delete(route('favouritefoods.destroy', ['favouritefood' => $favouritefood]));
+
+        $this->assertDatabaseMissing('favouritefoods', ['description' => $favouritefood->description]);
+    }
+
+    /** @test */
+    public function anAuthenticatedUserCannotDeleteSomeoneElsesFavouritefood()
+    {
+        $this->withoutExceptionHandling();
+
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $someoneelse = factory(User::class)->create();
+
+        $favouritefood = factory(Favouritefood::class)->create([
+            'user_id' => $someoneelse->id,
+        ]);
+
+        $this->assertDatabaseHas('favouritefoods', ['description' => $favouritefood->description]);
+
+        $this->delete(route('favouritefoods.destroy', ['favouritefood' => $favouritefood]));
+
+        $this->assertDatabaseHas('favouritefoods', ['description' => $favouritefood->description]);
+    }
 }

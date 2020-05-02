@@ -28,6 +28,7 @@ Route:: group(['middleware' => 'auth'], function(){
 
     Route::get('/favouritefoods/{favouritefood}', 'FavouritefoodController@show')->name('favouritefoods.show');
 
+    Route::delete('/favouritefoods/{favouritefood}', 'FavouritefoodController@delete')->name('favouritefoods.destroy');
 
     Route::get('/meals/{meal}/favouritefoods', 'MealFavouritefoodController@index')->name('mealsFavouritefoods.index');
 

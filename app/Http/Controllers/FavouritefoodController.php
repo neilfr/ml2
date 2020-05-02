@@ -37,4 +37,14 @@ class FavouritefoodController extends Controller
 
         return redirect()->route('favouritefoods.index');
     }
+
+    public function delete(Favouritefood $favouritefood)
+    {
+//        dd('ffuid', $favouritefood->user_id, 'uuid', auth()->user()->id);
+        if($favouritefood->user_id == auth()->user()->id) {
+            Favouritefood::destroy($favouritefood->id);
+        }
+
+        return redirect()->route('favouritefoods.index');
+    }
 }
