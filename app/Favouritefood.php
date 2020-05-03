@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Favouritefood extends Model
 {
+    protected $casts = [
+        'user_id' => 'integer',
+        'kcal' => 'integer',
+        'potassium' => 'integer',
+    ];
+
     protected $fillable = [
         'user_id',
         'code',

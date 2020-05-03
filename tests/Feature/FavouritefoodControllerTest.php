@@ -123,7 +123,7 @@ class FavouritefoodControllerTest extends TestCase
             'user' => $userA,
             'favouritefood' => $favouritefood,
         ]))
-            ->assertSuccessful()
+            ->assertRedirect(route('favouritefoods.index'))
             ->assertDontSee($favouritefood->description);
     }
 

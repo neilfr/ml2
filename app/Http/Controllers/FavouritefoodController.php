@@ -18,17 +18,19 @@ class FavouritefoodController extends Controller
         $favouritefoods = auth()->user()->favouritefoods;
 
         return Inertia::render('Favouritefood/Index', [
-            'favouriteFoods' => FavouritefoodResource::collection($favouritefoods),
+            'favouritefoods' => FavouritefoodResource::collection($favouritefoods),
         ]);
     }
 
     public function show(Favouritefood $favouritefood)
     {
-        $favouritefood = auth()->user()->favouritefoods->where('id', '=', $favouritefood->id);
+        if($favouritefood->user_id === auth()->user()->id) {
+            return Inertia::render('Favouritefood/Index', [
+                'favouritefood' => new FavouritefoodResource($favouritefood),
+            ]);
+        }
+        return redirect()->route('favouritefoods.index');
 
-        return Inertia::render('Favouritefood/Index', [
-            'favouriteFood' => FavouritefoodResource::collection($favouritefood),
-        ]);
     }
 
     public function store(CreateFavouritefoodRequest $request)
@@ -40,8 +42,7 @@ class FavouritefoodController extends Controller
 
     public function delete(Favouritefood $favouritefood)
     {
-//        dd('ffuid', $favouritefood->user_id, 'uuid', auth()->user()->id);
-        if($favouritefood->user_id == auth()->user()->id) {
+        if($favouritefood->user_id === auth()->user()->id) {
             Favouritefood::destroy($favouritefood->id);
         }
 
