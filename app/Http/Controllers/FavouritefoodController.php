@@ -15,8 +15,11 @@ class FavouritefoodController extends Controller
 {
     public function index()
     {
-        $favouritefoods = auth()->user()->favouritefoods;
-
+//        $favouritefoods = auth()->user()->favouritefoods;
+        $favouritefoods = Favouritefood::where('user_id',auth()->user()->id)
+            ->orderBy('alias','ASC')
+            ->orderBy('description','ASC')
+            ->get();
         return Inertia::render('Favouritefood/Index', [
             'favouritefoods' => FavouritefoodResource::collection($favouritefoods),
         ]);

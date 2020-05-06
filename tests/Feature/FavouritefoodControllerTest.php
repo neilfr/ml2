@@ -49,6 +49,7 @@ class FavouritefoodControllerTest extends TestCase
     /** @test */
     public function anAuthorizedUserCanAccessTheirOwnFavouritefood()
     {
+        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
@@ -168,7 +169,7 @@ class FavouritefoodControllerTest extends TestCase
             "potassium" => 204,
         ];
 
-        $response = $this->post(route('favouritefoods.index',$favouritefood));
+        $response = $this->post(route('favouritefoods.store',$favouritefood));
 
         $this->assertDatabaseHas('favouritefoods',$favouritefood);
 
@@ -273,5 +274,45 @@ class FavouritefoodControllerTest extends TestCase
         $this->delete(route('favouritefoods.destroy', ['favouritefood' => $favouritefood]));
 
         $this->assertDatabaseHas('favouritefoods', ['description' => $favouritefood->description]);
+    }
+
+    /** @test */
+    public function aUsersFavouriteFoodsAreSortedByAliasThenDescription()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $fourthFavouritefood = factory(Favouritefood::class)->create([
+            'user_id' => $user->id,
+            'alias' => 'b',
+            'description' => 'b',
+        ]);
+
+        $thirdFavouritefood = factory(Favouritefood::class)->create([
+            'user_id' => $user->id,
+            'alias' => 'b',
+            'description' => 'a',
+        ]);
+
+        $secondFavouritefood = factory(Favouritefood::class)->create([
+            'user_id' => $user->id,
+            'alias' => 'a',
+            'description' => 'b',
+        ]);
+
+        $firstFavouritefood = factory(Favouritefood::class)->create([
+            'user_id' => $user->id,
+            'alias' => 'a',
+            'description' => 'a',
+        ]);
+
+        $response = $this->get(route('favouritefoods.index'))
+            ->assertSuccessful()
+            ->assertSeeInOrder([
+                $firstFavouritefood->description,
+                $secondFavouritefood->description,
+                $thirdFavouritefood->description,
+                $fourthFavouritefood->description,
+                ]);
     }
 }

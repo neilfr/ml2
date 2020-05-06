@@ -24,7 +24,7 @@ Route:: group(['middleware' => 'auth'], function(){
     Route::get('/favouritefoods/{favouritefood}/meals', 'FavouritefoodMealController@index')->name('favouritefoodsMeals.index');
 
     Route::get('/favouritefoods', 'FavouritefoodController@index')->name('favouritefoods.index');
-    Route::post('/favouritefoods', 'FavouritefoodController@store');
+    Route::post('/favouritefoods', 'FavouritefoodController@store')->name('favouritefoods.store');
 
     Route::get('/favouritefoods/{favouritefood}', 'FavouritefoodController@show')->name('favouritefoods.show');
 
