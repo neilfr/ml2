@@ -30,6 +30,9 @@ class FavouritefoodControllerTest extends TestCase
 
         $this->assertTrue(auth()->user()->favouritefoods->contains($favouritefood1));
         $this->assertTrue(auth()->user()->favouritefoods->contains($favouritefood2));
+        $this->assertDatabaseHas('favouritefoods', ['description' => $favouritefood1->description]);
+        $this->assertDatabaseHas('favouritefoods', ['description' => $favouritefood2->description]);
+
     }
 
     /** @test */
@@ -49,7 +52,6 @@ class FavouritefoodControllerTest extends TestCase
     /** @test */
     public function anAuthorizedUserCanAccessTheirOwnFavouritefood()
     {
-        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
@@ -91,7 +93,6 @@ class FavouritefoodControllerTest extends TestCase
     /** @test */
     public function anAuthorizedUserCanAccessTheirOwnSpecificFavouritefood()
     {
-        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
@@ -100,11 +101,15 @@ class FavouritefoodControllerTest extends TestCase
             "description" => "my favourite food",
         ]);
 
-        $this->get(route('favouritefoods.show',[
+        $this->get(route('favouritefoods.show', [
             'favouritefood' => $favouritefood,
         ]))
             ->assertSuccessful()
-            ->assertSee($favouritefood->description);
+            ->assertSee($favouritefood->code)
+            ->assertSee($favouritefood->alias)
+            ->assertSee($favouritefood->description)
+            ->assertSee($favouritefood->kcal)
+            ->assertSee($favouritefood->potassium);
     }
 
     /** @test */
@@ -120,8 +125,8 @@ class FavouritefoodControllerTest extends TestCase
             "description" => "UserB favourite food",
         ]);
 
-        $this->get(route('favouritefoods.show',[
-            'user' => $userA,
+        $response = $this->get(route('favouritefoods.show', [
+            'user' => $userB,
             'favouritefood' => $favouritefood,
         ]))
             ->assertRedirect(route('favouritefoods.index'))
@@ -142,14 +147,14 @@ class FavouritefoodControllerTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        foreach ($meals as $meal){
+        foreach ($meals as $meal) {
             $favouritefood->meals()->attach($meal->id);
         }
 
-        $this->assertDatabaseHas('favouritefood_meal',[
+        $this->assertDatabaseHas('favouritefood_meal', [
             'favouritefood_id' => 1,
             'meal_id' => 1,
-        ])->assertDatabaseHas('favouritefood_meal',[
+        ])->assertDatabaseHas('favouritefood_meal', [
             'favouritefood_id' => 1,
             'meal_id' => 2,
         ]);
@@ -169,9 +174,9 @@ class FavouritefoodControllerTest extends TestCase
             "potassium" => 204,
         ];
 
-        $response = $this->post(route('favouritefoods.store',$favouritefood));
+        $response = $this->post(route('favouritefoods.store', $favouritefood));
 
-        $this->assertDatabaseHas('favouritefoods',$favouritefood);
+        $this->assertDatabaseHas('favouritefoods', $favouritefood);
 
         $response->assertRedirect(route('favouritefoods.index'));
     }
@@ -191,7 +196,7 @@ class FavouritefoodControllerTest extends TestCase
             "potassium" => 204,
         ];
 
-        $response = $this->post(route('favouritefoods.index',$favouritefood));
+        $response = $this->post(route('favouritefoods.index', $favouritefood));
 
         $response->assertSessionHasErrors(['description']);
     }
@@ -211,7 +216,7 @@ class FavouritefoodControllerTest extends TestCase
             "potassium" => 204,
         ];
 
-        $response = $this->post(route('favouritefoods.index',$favouritefood));
+        $response = $this->post(route('favouritefoods.index', $favouritefood));
 
         $response->assertSessionHasErrors(['kcal']);
     }
@@ -231,7 +236,7 @@ class FavouritefoodControllerTest extends TestCase
             "potassium" => -1,
         ];
 
-        $response = $this->post(route('favouritefoods.index',$favouritefood));
+        $response = $this->post(route('favouritefoods.index', $favouritefood));
 
         $response->assertSessionHasErrors(['potassium']);
     }
@@ -239,8 +244,6 @@ class FavouritefoodControllerTest extends TestCase
     /** @test */
     public function anAuthenticatedUserCanDeleteTheirFavouritefood()
     {
-        $this->withoutExceptionHandling();
-
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
@@ -258,8 +261,6 @@ class FavouritefoodControllerTest extends TestCase
     /** @test */
     public function anAuthenticatedUserCannotDeleteSomeoneElsesFavouritefood()
     {
-        $this->withoutExceptionHandling();
-
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
@@ -313,6 +314,6 @@ class FavouritefoodControllerTest extends TestCase
                 $secondFavouritefood->description,
                 $thirdFavouritefood->description,
                 $fourthFavouritefood->description,
-                ]);
+            ]);
     }
 }

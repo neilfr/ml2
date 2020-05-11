@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route:: group(['middleware' => 'auth'], function(){
+
+Route::group(['middleware' => 'auth'], function () {
     Route::get('/', 'HomeController@index');
 
     Route::get('/foods', 'FoodController@index')->name('foods.index');
@@ -27,6 +28,10 @@ Route:: group(['middleware' => 'auth'], function(){
     Route::post('/favouritefoods', 'FavouritefoodController@store')->name('favouritefoods.store');
 
     Route::get('/favouritefoods/{favouritefood}', 'FavouritefoodController@show')->name('favouritefoods.show');
+    Route::patch('/favouritefoods/{favouritefood}', 'FavouritefoodController@update');
+    //    Route::patch('/favouritefoods/{favouritefood}', function() {
+    //        var_dump('in route');
+    //    });
 
     Route::delete('/favouritefoods/{favouritefood}', 'FavouritefoodController@delete')->name('favouritefoods.destroy');
 

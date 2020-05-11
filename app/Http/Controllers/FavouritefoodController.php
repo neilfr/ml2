@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Favouritefood;
 use App\Http\Requests\CreateFavouritefoodRequest;
+use App\Http\Requests\UpdateFavouritefoodRequest;
 use App\Http\Resources\FavouritefoodResource;
 use App\Http\Resources\FoodResource;
 use App\User;
@@ -15,25 +16,13 @@ class FavouritefoodController extends Controller
 {
     public function index()
     {
-//        $favouritefoods = auth()->user()->favouritefoods;
-        $favouritefoods = Favouritefood::where('user_id',auth()->user()->id)
-            ->orderBy('alias','ASC')
-            ->orderBy('description','ASC')
+        $favouritefoods = Favouritefood::where('user_id', auth()->user()->id)
+            ->orderBy('alias', 'ASC')
+            ->orderBy('description', 'ASC')
             ->get();
         return Inertia::render('Favouritefood/Index', [
             'favouritefoods' => FavouritefoodResource::collection($favouritefoods),
         ]);
-    }
-
-    public function show(Favouritefood $favouritefood)
-    {
-        if($favouritefood->user_id === auth()->user()->id) {
-            return Inertia::render('Favouritefood/Index', [
-                'favouritefood' => new FavouritefoodResource($favouritefood),
-            ]);
-        }
-        return redirect()->route('favouritefoods.index');
-
     }
 
     public function store(CreateFavouritefoodRequest $request)
@@ -43,9 +32,27 @@ class FavouritefoodController extends Controller
         return redirect()->route('favouritefoods.index');
     }
 
+    public function show(Favouritefood $favouritefood)
+    {
+        if ($favouritefood->user_id === auth()->user()->id) {
+            return Inertia::render('Favouritefood/Index', [
+                'favouriteFood' => new FavouritefoodResource($favouritefood),
+            ]);
+        } else {
+            return redirect()->route('favouritefoods.index');
+        }
+    }
+
+    public function update(UpdateFavouritefoodRequest $request, Favouritefood $favouritefood)
+    {
+        $favouritefood->update($request->validated());
+
+        return redirect()->route('favouritefoods.index');
+    }
+
     public function delete(Favouritefood $favouritefood)
     {
-        if($favouritefood->user_id === auth()->user()->id) {
+        if ($favouritefood->user_id === auth()->user()->id) {
             Favouritefood::destroy($favouritefood->id);
         }
 
