@@ -41,6 +41,22 @@ class FoodControllerTest extends TestCase
     }
 
     /** @test */
+    public function anAuthorizedUserCanSeePaginatedFoods()
+    {
+        $this->withoutExceptionHandling();
+
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $foods = factory(Food::class,env('PAGINATION_PER_PAGE')+5)->create();
+
+        $this->get(route('foods.index'))
+            ->assertSuccessful()
+            ->assertSee($foods[0]->description)
+            ->assertDontSee($foods[env('PAGINATION_PER_PAGE')]->description);
+    }
+
+    /** @test */
     public function anAuthorizedUserCanSeeASpecificFood()
     {
         $user = factory(User::class)->create();
