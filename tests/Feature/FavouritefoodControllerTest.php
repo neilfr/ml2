@@ -316,4 +316,33 @@ class FavouritefoodControllerTest extends TestCase
                 $fourthFavouritefood->description,
             ]);
     }
+
+    /** @test */
+    public function aUsersFavouritefoodsArePaginated()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+      $favouritefoods = factory(Favouritefood::class, (env('PAGINATION_PER_PAGE'))+1)->create([
+            'user_id' => $user->id,
+            'alias' => 'alias',
+            'description' => 'a page1',
+        ]);
+
+        $favouritefoods = factory(Favouritefood::class)->create([
+            'user_id' => $user->id,
+            'alias' => 'alias',
+            'description' => 'z page2',
+        ]);
+
+        $response = $this->get(route('favouritefoods.index'))
+            ->assertSuccessful()
+            ->assertSee('a page1')
+            ->assertDontSee('z page2');
+
+        $request = $this->call('GET', route('favouritefoods.index'), ["page"=>"2"])
+            ->assertSuccessful()
+            ->assertSee('z page2');
+
+    }
 }

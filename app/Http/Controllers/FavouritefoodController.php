@@ -19,7 +19,7 @@ class FavouritefoodController extends Controller
         $favouritefoods = Favouritefood::where('user_id', auth()->user()->id)
             ->orderBy('alias', 'ASC')
             ->orderBy('description', 'ASC')
-            ->get();
+            ->paginate(env('PAGINATION_PER_PAGE'));
         return Inertia::render('Favouritefood/Index', [
             'favouritefoods' => FavouritefoodResource::collection($favouritefoods),
         ]);
