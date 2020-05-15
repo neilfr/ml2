@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Favouritefood;
+use App\Foodgroup;
 use App\Meal;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -52,6 +53,7 @@ class FavouritefoodControllerTest extends TestCase
     /** @test */
     public function anAuthorizedUserCanAccessTheirOwnFavouritefood()
     {
+        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
@@ -320,6 +322,8 @@ class FavouritefoodControllerTest extends TestCase
     /** @test */
     public function aUsersFavouritefoodsArePaginated()
     {
+        $this->markTestSkipped('revist with custom front end paginator');
+
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
@@ -345,4 +349,24 @@ class FavouritefoodControllerTest extends TestCase
             ->assertSee('z page2');
 
     }
+
+//    /** @test */
+//    public function a_favouritefood_belongs_to_a_foodgroup() {
+//        $user = factory(User::class)->create();
+//        $this->actingAs($user);
+//
+//        $food
+//    }
+
+//    /** @test */
+//    public function it_returns_Foodgroups_with_Favouritefoods() {
+//        $user = factory(User::class)->create();
+//        $this->actingAs($user);
+//
+//        $foodgroups = factory(Foodgroup::class,5)->create();
+//        $favouritefoods = factory(Favouritefood::class, 3)->create();
+//
+//        $this->get(route('favouritefoods.index'))
+//            ->assertSuccessful();
+//    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Favouritefood;
+use App\Foodgroup;
 use App\Http\Requests\CreateFavouritefoodRequest;
 use App\Http\Requests\UpdateFavouritefoodRequest;
 use App\Http\Resources\FavouritefoodResource;
@@ -19,9 +20,14 @@ class FavouritefoodController extends Controller
         $favouritefoods = Favouritefood::where('user_id', auth()->user()->id)
             ->orderBy('alias', 'ASC')
             ->orderBy('description', 'ASC')
-            ->paginate(env('PAGINATION_PER_PAGE'));
+// revisit with custom front end paginator for inertia
+//            ->paginate(env('PAGINATION_PER_PAGE'));
+              ->get();
+        $foodgroups = Foodgroup::all();
+
         return Inertia::render('Favouritefood/Index', [
             'favouritefoods' => FavouritefoodResource::collection($favouritefoods),
+//            'foodgroups' => Foodgroup::collection($foodgroups),
         ]);
     }
 
