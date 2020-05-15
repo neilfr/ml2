@@ -7,6 +7,7 @@ use App\Foodgroup;
 use App\Http\Requests\CreateFavouritefoodRequest;
 use App\Http\Requests\UpdateFavouritefoodRequest;
 use App\Http\Resources\FavouritefoodResource;
+use App\Http\Resources\FoodgroupResource;
 use App\Http\Resources\FoodResource;
 use App\User;
 use Illuminate\Http\Request;
@@ -27,7 +28,7 @@ class FavouritefoodController extends Controller
 
         return Inertia::render('Favouritefood/Index', [
             'favouritefoods' => FavouritefoodResource::collection($favouritefoods),
-//            'foodgroups' => Foodgroup::collection($foodgroups),
+            'foodgroups' => FoodgroupResource::collection($foodgroups),
         ]);
     }
 

@@ -365,14 +365,22 @@ class FavouritefoodControllerTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_Foodgroups_with_Favouritefoods() {
+    public function it_returns_all_Foodgroups_with_all_Favouritefoods() {
+        $this->withoutExceptionHandling();
+
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
-        $foodgroups = factory(Foodgroup::class,5)->create();
+        $foodgroups = factory(Foodgroup::class,2)->create();
         $favouritefoods = factory(Favouritefood::class, 3)->create();
 
         $this->get(route('favouritefoods.index'))
-            ->assertSuccessful();
+            ->assertSuccessful()
+            ->assertSee($favouritefoods[0]->description)
+            ->assertSee($favouritefoods[1]->description)
+            ->assertSee($favouritefoods[2]->description)
+            ->assertSee($foodgroups[0]->description)
+            ->assertSee(5, $foodgroups[1]->description)
+        ;
     }
 }
