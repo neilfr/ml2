@@ -350,23 +350,29 @@ class FavouritefoodControllerTest extends TestCase
 
     }
 
-//    /** @test */
-//    public function a_favouritefood_belongs_to_a_foodgroup() {
-//        $user = factory(User::class)->create();
-//        $this->actingAs($user);
-//
-//        $food
-//    }
+    /** @test */
+    public function a_favouritefood_belongs_to_a_foodgroup() {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
 
-//    /** @test */
-//    public function it_returns_Foodgroups_with_Favouritefoods() {
-//        $user = factory(User::class)->create();
-//        $this->actingAs($user);
-//
-//        $foodgroups = factory(Foodgroup::class,5)->create();
-//        $favouritefoods = factory(Favouritefood::class, 3)->create();
-//
-//        $this->get(route('favouritefoods.index'))
-//            ->assertSuccessful();
-//    }
+        $foodgroup = factory(Foodgroup::class)->create();
+
+        $favouritefood = factory(Favouritefood::class)->create([
+            'foodgroup_id' => $foodgroup->id,
+        ]);
+
+        $this->assertEquals($foodgroup->description, $favouritefood->foodgroup->description);
+    }
+
+    /** @test */
+    public function it_returns_Foodgroups_with_Favouritefoods() {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $foodgroups = factory(Foodgroup::class,5)->create();
+        $favouritefoods = factory(Favouritefood::class, 3)->create();
+
+        $this->get(route('favouritefoods.index'))
+            ->assertSuccessful();
+    }
 }
