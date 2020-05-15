@@ -13,7 +13,10 @@ class FoodController extends Controller
 {
     public function index()
     {
-        $foods = Food::paginate(env('PAGINATION_PER_PAGE'));
+
+// revisit with inertia compatible paginator
+        //        $foods = Food::paginate(env('PAGINATION_PER_PAGE'));
+        $foods = Food::all();
 
         return Inertia::render('Foods/Index', [
             'foods' => FoodResource::collection($foods),

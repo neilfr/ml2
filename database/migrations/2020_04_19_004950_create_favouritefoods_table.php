@@ -16,6 +16,7 @@ class CreateFavouritefoodsTable extends Migration
         Schema::create('favouritefoods', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('foodgroup_id');
             $table->string('code')->nullable();
             $table->string('alias')->nullable();
             $table->string('description');
@@ -24,6 +25,7 @@ class CreateFavouritefoodsTable extends Migration
             $table->timestamps();
 
             $table->foreign('user_id')->on('users')->references('id');
+            $table->foreign('foodgroup_id')->on('foodgroups')->references('id');
         });
     }
 

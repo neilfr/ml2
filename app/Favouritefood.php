@@ -29,4 +29,9 @@ class Favouritefood extends Model
     {
         return $this->belongsToMany(Meal::class);
     }
+
+    public function foodgroup()
+    {
+        return $this->belongsTo(Foodgroup::class);
+    }
 }

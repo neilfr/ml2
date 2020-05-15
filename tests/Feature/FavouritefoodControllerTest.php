@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Favouritefood;
+use App\Foodgroup;
 use App\Meal;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -52,6 +53,7 @@ class FavouritefoodControllerTest extends TestCase
     /** @test */
     public function anAuthorizedUserCanAccessTheirOwnFavouritefood()
     {
+        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
@@ -320,6 +322,8 @@ class FavouritefoodControllerTest extends TestCase
     /** @test */
     public function aUsersFavouritefoodsArePaginated()
     {
+        $this->markTestSkipped('revist with custom front end paginator');
+
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
@@ -344,5 +348,39 @@ class FavouritefoodControllerTest extends TestCase
             ->assertSuccessful()
             ->assertSee('z page2');
 
+    }
+
+    /** @test */
+    public function a_favouritefood_belongs_to_a_foodgroup() {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $foodgroup = factory(Foodgroup::class)->create();
+
+        $favouritefood = factory(Favouritefood::class)->create([
+            'foodgroup_id' => $foodgroup->id,
+        ]);
+
+        $this->assertEquals($foodgroup->description, $favouritefood->foodgroup->description);
+    }
+
+    /** @test */
+    public function it_returns_all_Foodgroups_with_all_Favouritefoods() {
+        $this->withoutExceptionHandling();
+
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $foodgroups = factory(Foodgroup::class,2)->create();
+        $favouritefoods = factory(Favouritefood::class, 3)->create();
+
+        $this->get(route('favouritefoods.index'))
+            ->assertSuccessful()
+            ->assertSee($favouritefoods[0]->description)
+            ->assertSee($favouritefoods[1]->description)
+            ->assertSee($favouritefoods[2]->description)
+            ->assertSee($foodgroups[0]->description)
+            ->assertSee($foodgroups[1]->description)
+        ;
     }
 }
