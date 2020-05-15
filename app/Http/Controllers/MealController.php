@@ -11,7 +11,9 @@ class MealController extends Controller
 {
     public function index()
     {
-        $meals = auth()->user()->meals;
+        $meals = Meal::where('user_id', auth()->user()->id)
+            ->orderBy('description', 'ASC')
+            ->get();
 
         return Inertia::render('Meals/Index', [
             'meals' => MealResource::collection($meals),
@@ -24,7 +26,6 @@ class MealController extends Controller
 
         return Inertia::render('Meal/Index', [
             'meal' => MealResource::collection($meal),
-//            'meal' => new MealResource($meal),
         ]);
     }
 }

@@ -366,8 +366,6 @@ class FavouritefoodControllerTest extends TestCase
 
     /** @test */
     public function it_returns_all_Foodgroups_with_all_Favouritefoods() {
-        $this->withoutExceptionHandling();
-
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
