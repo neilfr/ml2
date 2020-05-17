@@ -8,6 +8,7 @@ class Favouritefood extends Model
 {
     protected $casts = [
         'user_id' => 'integer',
+        'foodgroup_id' => 'integer',
         'kcal' => 'integer',
         'potassium' => 'integer',
     ];

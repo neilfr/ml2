@@ -165,11 +165,13 @@ class FavouritefoodControllerTest extends TestCase
     /** @test */
     public function anAuthorizedUserCanCreateAFavouritefood()
     {
+        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
         $favouritefood = [
             "user_id" => $user->id,
+            "foodgroup_id" => factory(Foodgroup::class)->create()->id,
             "alias" => 'my alias',
             "description" => "my favourite food",
             "kcal" => 119,

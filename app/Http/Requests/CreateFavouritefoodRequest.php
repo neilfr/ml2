@@ -31,6 +31,7 @@ class CreateFavouritefoodRequest extends FormRequest
     {
         return [
             'user_id' => 'integer',
+            'foodgroup_id' => 'integer|exists:foodgroups,id',
             'alias' => 'string|nullable',
             'description' => 'required',
             'kcal' => 'integer|min:0',

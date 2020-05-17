@@ -34,6 +34,7 @@ class FavouritefoodController extends Controller
 
     public function store(CreateFavouritefoodRequest $request)
     {
+        var_dump($request->validated());
         Favouritefood::create($request->validated());
 
         return redirect()->route('favouritefoods.index');
