@@ -18,6 +18,7 @@ class FavouritefoodResource extends JsonResource
         return [
             'id' => $this->id,
             'user_id' => auth()->user()->id,
+            'foodgroup_id' => $this->foodgroup_id,
             'code' => $this->code,
             'alias' => $this->alias,
             'description' => $this->description,

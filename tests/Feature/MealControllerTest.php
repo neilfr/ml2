@@ -14,6 +14,41 @@ class MealControllerTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
+    public function anAuthorizedUserCanCreateAMeal()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $payload = [
+            'user_id' => $user->id,
+            'description' => 'my meal',
+        ];
+
+        $this->post(route('meals.store'), $payload)
+        ->assertRedirect(route('meals.index'));
+
+        $this->assertDatabaseHas('meals', $payload);
+    }
+
+    /** @test */
+    public function anAuthorizedUserCannotCreateSomeoneElsesMeal()
+    {
+        $thisUser = factory(User::class)->create();
+        $this->actingAs($thisUser);
+
+        $anotherUser = factory(User::class)->create();
+
+        $payload = [
+            'user_id' => $anotherUser->id,
+            'description' => 'my meal',
+        ];
+
+        $this->post(route('meals.store'), $payload)
+            ->assertRedirect(route('meals.index'));
+        $this->assertDatabaseMissing('meals', $payload);
+    }
+
+    /** @test */
     public function aUserCanHaveManyMeals()
     {
         $user = factory(User::class)->create();
@@ -47,9 +82,8 @@ class MealControllerTest extends TestCase
     }
 
     /** @test */
-    public function anAuthorizedUserCanAccessTheirMeals()
+    public function anAuthorizedUserCanAccessTheirMeal()
     {
-        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
@@ -64,7 +98,7 @@ class MealControllerTest extends TestCase
     }
 
     /** @test */
-    public function anAuthorizedUserCannotSeeSomeoneElsesMeals()
+    public function anAuthorizedUserCannotSeeSomeoneElsesMeal()
     {
         $user = factory(User::class)->create();
         $this->actingAs($user);
@@ -83,8 +117,6 @@ class MealControllerTest extends TestCase
     /** @test */
     public function anAuthorizedUserCanAccessTheirOwnSpecificMeal()
     {
-        $this->withoutExceptionHandling();
-
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
@@ -146,7 +178,28 @@ class MealControllerTest extends TestCase
             'favouritefood_id' => 2,
             'meal_id' => 1,
         ]);
-
     }
+
+    /** @test */
+    public function aUsersMealsAreOrderedByDescription()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $meal1 = factory(Meal::class)->create([
+            "user_id" => $user->id,
+            "description" => "z is my last meal",
+        ]);
+        $meal2 = factory(Meal::class)->create([
+            "user_id" => $user->id,
+            "description" => "a is my first meal",
+        ]);
+
+        $this->get(route('meals.index'))
+            ->assertSeeInOrder([
+                $meal2->description,
+                $meal1->description,
+            ]);
+        }
 
 }

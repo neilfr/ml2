@@ -10,4 +10,9 @@ class Foodgroup extends Model
     {
         return $this->hasMany(Food::class);
     }
+
+    public function favouritefoods()
+    {
+        return $this->hasMany(Favouritefoods::class);
+    }
 }

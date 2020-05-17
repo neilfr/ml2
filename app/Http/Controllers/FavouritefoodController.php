@@ -21,7 +21,6 @@ class FavouritefoodController extends Controller
         $favouritefoods = Favouritefood::where('user_id', auth()->user()->id)
             ->orderBy('alias', 'ASC')
             ->orderBy('description', 'ASC')
-
 // revisit with custom front end paginator for inertia
 //            ->paginate(env('PAGINATION_PER_PAGE'));
               ->get();

@@ -8,12 +8,14 @@ class Favouritefood extends Model
 {
     protected $casts = [
         'user_id' => 'integer',
+        'foodgroup_id' => 'integer',
         'kcal' => 'integer',
         'potassium' => 'integer',
     ];
 
     protected $fillable = [
         'user_id',
+        'foodgroup_id',
         'alias',
         'description',
         'kcal',
