@@ -15,6 +15,7 @@ class Favouritefood extends Model
 
     protected $fillable = [
         'user_id',
+        'foodgroup_id',
         'alias',
         'description',
         'kcal',
