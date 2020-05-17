@@ -379,7 +379,7 @@ class FavouritefoodControllerTest extends TestCase
             ->assertSee($favouritefoods[1]->description)
             ->assertSee($favouritefoods[2]->description)
             ->assertSee($foodgroups[0]->description)
-            ->assertSee(5, $foodgroups[1]->description)
+            ->assertSee($foodgroups[1]->description)
         ;
     }
 }
