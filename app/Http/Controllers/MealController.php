@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateMealRequest;
 use App\Http\Resources\MealResource;
 use App\Meal;
 use Illuminate\Http\Request;
@@ -27,5 +28,15 @@ class MealController extends Controller
         return Inertia::render('Meal/Index', [
             'meal' => MealResource::collection($meal),
         ]);
+    }
+
+    public function store(CreateMealRequest $request)
+    {
+        $meal = $request->validated();
+        if($meal['user_id'] === auth()->user()->id){
+            Meal::create($meal);
+        }
+
+        return redirect(route('meals.index'));
     }
 }

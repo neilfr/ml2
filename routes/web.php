@@ -29,9 +29,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/favouritefoods/{favouritefood}', 'FavouritefoodController@show')->name('favouritefoods.show');
     Route::patch('/favouritefoods/{favouritefood}', 'FavouritefoodController@update');
-    //    Route::patch('/favouritefoods/{favouritefood}', function() {
-    //        var_dump('in route');
-    //    });
 
     Route::delete('/favouritefoods/{favouritefood}', 'FavouritefoodController@delete')->name('favouritefoods.destroy');
 
@@ -39,6 +36,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/meals', 'MealController@index')->name('meals.index');
     Route::get('/meals/{meal}', 'MealController@show')->name('meals.show');
+    Route::post('/meals', 'MealController@store')->name('meals.store');
 
     Route::get('/foodsApi', 'Foods\FoodApiController@index');
 });
