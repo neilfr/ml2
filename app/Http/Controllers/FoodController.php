@@ -13,9 +13,7 @@ class FoodController extends Controller
 {
     public function index()
     {
-// revisit with inertia compatible paginator
-        //        $foods = Food::paginate(env('PAGINATION_PER_PAGE'));
-        $foods = Food::all();
+        $foods = Food::where('user_id', auth()->user()->id)->get();
 
         return Inertia::render('Foods/Index', [
             'foods' => FoodResource::collection($foods),
@@ -24,8 +22,12 @@ class FoodController extends Controller
 
     public function show(Food $food)
     {
-        return Inertia::render('Foods/Show', [
-            'food' => new FoodResource($food),
-        ]);
+        if($food->user_id === auth()->user()->id){
+            return Inertia::render('Foods/Show', [
+                'food' => new FoodResource($food),
+            ]);
+        } else {
+            return redirect()->route('foods.index');
+        }
     }
 }

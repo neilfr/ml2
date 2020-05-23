@@ -7,15 +7,15 @@ use Faker\Generator as Faker;
 
 $factory->define(Food::class, function (Faker $faker) {
     return [
-        'code' => $faker->unique()->numberBetween(0,7000),
         'description' => $faker->sentence,
+        'alias' => $faker->sentence,
         'kcal' => $faker->numberBetween(1,300),
         'fat' => $faker->numberBetween(1,300),
         'protein' => $faker->numberBetween(1,300),
         'carbohydrate' => $faker->numberBetween(1,300),
         'potassium' => $faker->numberBetween(1,300),
-        'foodgroup_id' => function(){
-            return factory(\App\Foodgroup::class)->create()->id;
-        }
+        'favourite' => $faker->boolean,
+        'foodgroup_id' => factory(\App\Foodgroup::class)->create()->id,
+        'user_id' => auth()->user()->id,
     ];
 });

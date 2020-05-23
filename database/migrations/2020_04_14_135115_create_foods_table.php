@@ -15,17 +15,20 @@ class CreateFoodsTable extends Migration
     {
         Schema::create('foods', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->nullable();
+            $table->string('alias')->nullable();
             $table->string('description');
             $table->integer('kcal');
             $table->integer('fat');
             $table->integer('protein');
             $table->integer('carbohydrate');
             $table->integer('potassium');
+            $table->boolean('favourite');
             $table->unsignedBigInteger('foodgroup_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
             $table->foreign('foodgroup_id')->on('foodgroups')->references('id');
+            $table->foreign('user_id')->on('users')->references('id');
 
         });
     }
