@@ -7,6 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Food extends Model
 {
+    protected $fillable = [
+        'alias',
+        'description',
+        'kcal',
+        'fat',
+        'protein',
+        'carbohydrate',
+        'potassium',
+        'favourite',
+        'source',
+        'foodgroup_id',
+        'user_id',
+    ];
     protected $casts = [
         'user_id' => 'integer',
 //        'kcal' => 'integer',

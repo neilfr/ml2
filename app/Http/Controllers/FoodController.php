@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Food;
+use App\Http\Requests\CreateFoodRequest;
 use App\Http\Resources\FoodResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +19,13 @@ class FoodController extends Controller
         return Inertia::render('Foods/Index', [
             'foods' => FoodResource::collection($foods),
         ]);
+    }
+
+    public function store(CreateFoodRequest $request)
+    {
+        Food::create($request->validated());
+
+        return redirect()->route('foods.index');
     }
 
     public function show(Food $food)

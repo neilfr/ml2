@@ -52,6 +52,13 @@ class FoodControllerTest extends TestCase
         $this->assertEquals($foodgroup->description,$food->foodgroup->description);
     }
 
+
+//    /** @test */
+//    public function it_belongs_to_many_meals()
+//    {
+//
+//    }
+
     /** @test */
     public function it_can_display_user_owned_foods()
     {
@@ -99,7 +106,7 @@ class FoodControllerTest extends TestCase
     }
 
     /** @test */
-    public function it_cannot_display_a_specific_food_owned_by_anoother_user()
+    public function it_cannot_display_a_specific_food_owned_by_another_user()
     {
         $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
@@ -115,13 +122,14 @@ class FoodControllerTest extends TestCase
     }
 
     /** @test */
-    public function it_can_have_these_fields()
+    public function it_can_store_a_food()
     {
+        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $this->actingAs($user);
         $foodgroup = factory(Foodgroup::class)->create();
 
-        $food = factory(Food::class)->create([
+        $payload = [
             'alias' => 'alias',
             'description' => 'description',
             'kcal' => 123,
@@ -130,10 +138,14 @@ class FoodControllerTest extends TestCase
             'carbohydrate' => 135,
             'potassium' => 456,
             'favourite' => true,
+            'source' => 'Health Canada',
             'foodgroup_id' => $foodgroup->id,
             'user_id' => $user->id,
-        ]);
+        ];
 
+        $response = $this->post(route('foods.store'), $payload);
+
+        $response->assertRedirect(route('foods.index'));
         $this->assertDatabaseHas('foods',[
             'alias' => 'alias',
             'description' => 'description',
@@ -143,8 +155,38 @@ class FoodControllerTest extends TestCase
             'carbohydrate' => 135,
             'potassium' => 456,
             'favourite' => true,
+            'source' => 'Health Canada',
             'foodgroup_id' => $foodgroup->id,
             'user_id' => $user->id,
         ]);
     }
+
+    /** @test */
+    public function it_redirects_if_food_is_invalid()
+    {
+//        $this->withoutExceptionHandling();
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+        $foodgroup = factory(Foodgroup::class)->create();
+
+        $payload = [
+            'alias' => 'alias',
+            'description' => 'my food',
+            'kcal' => 'not an integer',
+            'fat' => 789,
+            'protein' => 246,
+            'carbohydrate' => 135,
+            'potassium' => 456,
+            'favourite' => true,
+            'source' => 'Health Canada',
+            'foodgroup_id' => $foodgroup->id,
+            'user_id' => $user->id,
+        ];
+
+        $response = $this->post(route('foods.store'), $payload);
+
+//        $response->assertRedirect(route('foods.index'));
+        $response->assertSessionHasErrors(['kcal']);
+    }
+
 }

@@ -17,6 +17,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/', 'HomeController@index');
 
     Route::get('/foods', 'FoodController@index')->name('foods.index');
+    Route::post('/foods', 'FoodController@store')->name('foods.store');
     Route::get('/foods/{food}', 'FoodController@show')->name('foods.show');
 
     Route::get('/foodgroups', 'FoodgroupController@index')->name('foodgroups.index');

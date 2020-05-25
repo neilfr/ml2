@@ -15,6 +15,7 @@ $factory->define(Food::class, function (Faker $faker) {
         'carbohydrate' => $faker->numberBetween(1,300),
         'potassium' => $faker->numberBetween(1,300),
         'favourite' => $faker->boolean,
+        'source' => $faker->word,
         'foodgroup_id' => factory(\App\Foodgroup::class)->create()->id,
         'user_id' => auth()->user()->id,
     ];
