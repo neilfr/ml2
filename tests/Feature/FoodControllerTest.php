@@ -161,32 +161,67 @@ class FoodControllerTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function it_redirects_if_food_is_invalid()
+    /**
+     * @test
+     * @dataProvider validationProvider
+     */
+    public function it_cannot_store_food_if_food_data_is_invalid($getData)
     {
-//        $this->withoutExceptionHandling();
+        $this->withoutExceptionHandling();
+        [$ruleName, $payload] = $getData();
+
         $user = factory(User::class)->create();
         $this->actingAs($user);
-        $foodgroup = factory(Foodgroup::class)->create();
+//        $foodgroup = factory(Foodgroup::class)->create();
 
-        $payload = [
+//        $payload = [
+//            'alias' => 'alias',
+//            'description' => 'my food',
+//            'kcal' => 'not an integer',
+//            'fat' => 789,
+//            'protein' => 246,
+//            'carbohydrate' => 135,
+//            'potassium' => 456,
+//            'favourite' => true,
+//            'source' => 'Health Canada',
+//            'foodgroup_id' => $foodgroup->id,
+//            'user_id' => $user->id,
+//        ];
+dd($payload);
+        $response = $this->post(route('foods.store'), $payload);
+
+//        $response->assertRedirect(route('foods.index'));
+        $response->assertSessionHasErrors($ruleName);
+    }
+
+    public function validationProvider()
+    {
+        return [
+            'it fails if description is null' => [
+                function() {
+                    return [
+                        'description',
+                        array_merge($this->getValidData(), ['description' => null]),
+                    ];
+                }
+            ]
+        ];
+    }
+
+    public function getValidData()
+    {
+        return[
             'alias' => 'alias',
             'description' => 'my food',
-            'kcal' => 'not an integer',
+            'kcal' => 123,
             'fat' => 789,
             'protein' => 246,
             'carbohydrate' => 135,
             'potassium' => 456,
             'favourite' => true,
             'source' => 'Health Canada',
-            'foodgroup_id' => $foodgroup->id,
-            'user_id' => $user->id,
+            'foodgroup_id' => factory(Foodgroup::class)->create()->pluck('id'),
+            'user_id' => auth()->user()->id,
         ];
-
-        $response = $this->post(route('foods.store'), $payload);
-
-//        $response->assertRedirect(route('foods.index'));
-        $response->assertSessionHasErrors(['kcal']);
     }
-
 }

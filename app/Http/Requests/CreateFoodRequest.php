@@ -24,17 +24,17 @@ class CreateFoodRequest extends FormRequest
     public function rules()
     {
         return [
-//            'alias' => 'string',
-//            'description' => 'string',
+            'alias' => 'string',
+            'description' => 'string',
             'kcal' => 'integer',
-//            'fat' => 'integer',
-//            'protein' => 'integer',
-//            'carbohydrate' => 'integer',
-//            'potassium' => 'integer',
-//            'favourite' => 'boolean',
-//            'source' => 'string',
-//            'foodgroup_id' => 'integer',
-//            'user_id' => 'integer',
+            'fat' => 'integer',
+            'protein' => 'integer',
+            'carbohydrate' => 'integer',
+            'potassium' => 'integer',
+            'favourite' => 'boolean',
+            'source' => 'string',
+            'foodgroup_id' => 'integer',
+            'user_id' => 'integer',
         ];
     }
 }
