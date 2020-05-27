@@ -167,41 +167,104 @@ class FoodControllerTest extends TestCase
      */
     public function it_cannot_store_food_if_food_data_is_invalid($getData)
     {
-        $this->withoutExceptionHandling();
-        [$ruleName, $payload] = $getData();
-
         $user = factory(User::class)->create();
         $this->actingAs($user);
-//        $foodgroup = factory(Foodgroup::class)->create();
 
-//        $payload = [
-//            'alias' => 'alias',
-//            'description' => 'my food',
-//            'kcal' => 'not an integer',
-//            'fat' => 789,
-//            'protein' => 246,
-//            'carbohydrate' => 135,
-//            'potassium' => 456,
-//            'favourite' => true,
-//            'source' => 'Health Canada',
-//            'foodgroup_id' => $foodgroup->id,
-//            'user_id' => $user->id,
-//        ];
-dd($payload);
+        [$ruleName, $payload] = $getData();
+
         $response = $this->post(route('foods.store'), $payload);
 
-//        $response->assertRedirect(route('foods.index'));
         $response->assertSessionHasErrors($ruleName);
     }
 
     public function validationProvider()
     {
         return [
-            'it fails if description is null' => [
+            'it fails if description is not a string' => [
+                function() {
+                    return [
+                        'alias',
+                        array_merge($this->getValidData(), ['alias' => []]),
+                    ];
+                }
+            ],
+            'it fails if description is not a non-empty string' => [
                 function() {
                     return [
                         'description',
-                        array_merge($this->getValidData(), ['description' => null]),
+                        array_merge($this->getValidData(), ['description' => '']),
+                    ];
+                }
+            ],
+            'it fails if kcal is not an integer' => [
+                function() {
+                    return [
+                        'kcal',
+                        array_merge($this->getValidData(), ['kcal' => 'not an integer']),
+                    ];
+                }
+            ],
+            'it fails if fat is not an integer' => [
+                function() {
+                    return [
+                        'fat',
+                        array_merge($this->getValidData(), ['fat' => 'not an integer']),
+                    ];
+                }
+            ],
+            'it fails if protein is not an integer' => [
+                function() {
+                    return [
+                        'protein',
+                        array_merge($this->getValidData(), ['protein' => 'not an integer']),
+                    ];
+                }
+            ],
+            'it fails if carbohydrate is not an integer' => [
+                function() {
+                    return [
+                        'carbohydrate',
+                        array_merge($this->getValidData(), ['carbohydrate' => 'not an integer']),
+                    ];
+                }
+            ],
+            'it fails if potassium is not an integer' => [
+                function() {
+                    return [
+                        'potassium',
+                        array_merge($this->getValidData(), ['potassium' => 'not an integer']),
+                    ];
+                }
+            ],
+            'it fails if favourite is not a boolean' => [
+                function() {
+                    return [
+                        'favourite',
+                        array_merge($this->getValidData(), ['favourite' => 'not a boolean']),
+                    ];
+                }
+            ],
+            'it fails if source is not a non-empty string' => [
+                function() {
+                    return [
+                        'source',
+                        array_merge($this->getValidData(), ['source' => '']),
+                    ];
+                }
+            ],
+            'it fails if foodgroup_id is not a valid foodgroup id' => [
+                function() {
+                    return [
+                        'foodgroup_id',
+                        array_merge($this->getValidData(), ['foodgroup_id' => 99999999]),
+                    ];
+                }
+            ],
+            'it fails if user_id is not a valid user id' => [
+                function() {
+                    return [
+                        'user_id',
+                        array_merge($this->getValidData(), ['user_id' => 99999999]),
                     ];
                 }
             ]

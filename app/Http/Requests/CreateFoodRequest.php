@@ -24,7 +24,7 @@ class CreateFoodRequest extends FormRequest
     public function rules()
     {
         return [
-            'alias' => 'string',
+            'alias' => 'string|nullable',
             'description' => 'string',
             'kcal' => 'integer',
             'fat' => 'integer',
@@ -33,8 +33,8 @@ class CreateFoodRequest extends FormRequest
             'potassium' => 'integer',
             'favourite' => 'boolean',
             'source' => 'string',
-            'foodgroup_id' => 'integer',
-            'user_id' => 'integer',
+            'foodgroup_id' => 'exists:App\Foodgroup,id',
+            'user_id' => 'exists:App\User,id',
         ];
     }
 }
