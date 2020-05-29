@@ -30,12 +30,20 @@ class FoodController extends Controller
 
     public function show(Food $food)
     {
-        if($food->user_id === auth()->user()->id){
+        if ($food->user_id === auth()->user()->id) {
             return Inertia::render('Foods/Show', [
                 'food' => new FoodResource($food),
             ]);
         } else {
             return redirect()->route('foods.index');
         }
+    }
+
+    public function update(Request $request, Food $food)
+    {
+        // dd($request->input());
+        $food->update($request->input());
+
+        return redirect(route('foods.index'));
     }
 }
