@@ -159,6 +159,7 @@ class FoodControllerTest extends TestCase
         $food = factory(Food::class)->create();
 
         $payload = $food->toArray();
+        unset($payload['created_at'], $payload['updated_at']);
         $payload['description'] = 'new description';
 
         $response = $this->withoutExceptionHandling()->patch(route('foods.update', $food->id), $payload);
