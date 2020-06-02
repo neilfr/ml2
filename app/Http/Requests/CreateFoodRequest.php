@@ -32,8 +32,8 @@ class CreateFoodRequest extends FormRequest
             'carbohydrate' => 'integer',
             'potassium' => 'integer',
             'favourite' => 'boolean',
-            'source' => 'string',
             'foodgroup_id' => 'exists:App\Foodgroup,id',
+            'foodsource_id' => 'exists:App\Foodsource,id',
             'user_id' => 'exists:App\User,id',
         ];
     }

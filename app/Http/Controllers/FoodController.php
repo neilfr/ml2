@@ -41,8 +41,9 @@ class FoodController extends Controller
 
     public function update(Request $request, Food $food)
     {
-        // dd($request->input());
-        $food->update($request->input());
+        if ($food->foodsource->updatable) {
+            $food->update($request->input());
+        }
 
         return redirect(route('foods.index'));
     }

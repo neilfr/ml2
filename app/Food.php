@@ -16,18 +16,12 @@ class Food extends Model
         'carbohydrate',
         'potassium',
         'favourite',
-        'source',
         'foodgroup_id',
+        'foodsource_id',
         'user_id',
     ];
     protected $casts = [
         'user_id' => 'integer',
-//        'kcal' => 'integer',
-//        'fat' => 'integer',
-//        'protein' => 'integer',
-//        'carbohydrate' => 'integer',
-//        'potassium' => 'integer',
-//        'foodgroup_id' => 'integer',
     ];
 
     public function foodgroup()
@@ -38,5 +32,10 @@ class Food extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function foodsource()
+    {
+        return $this->belongsTo(Foodsource::class);
     }
 }

@@ -3,10 +3,11 @@
 namespace Tests\Feature;
 
 use App\Food;
-use App\Foodgroup;
 use App\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Foodgroup;
+use App\Foodsource;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class FoodControllerTest extends TestCase
 {
@@ -51,6 +52,22 @@ class FoodControllerTest extends TestCase
 
         $this->assertEquals($foodgroup->description, $food->foodgroup->description);
     }
+
+    /** @test */
+    public function it_belongs_to_a_foodsource()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $foodsource = factory(Foodsource::class)->create();
+        $food = factory(Food::class)->create([
+            "foodsource_id" => $foodsource->id,
+        ]);
+
+        $this->assertEquals($foodsource->name, $food->foodsource->name);
+    }
+
+
 
 
     //    /** @test */
@@ -127,7 +144,6 @@ class FoodControllerTest extends TestCase
         $this->actingAs($user);
 
         $payload = $this->getValidFoodData();
-
         $response = $this->post(route('foods.store'), $payload);
 
         $response->assertRedirect(route('foods.index'));
@@ -151,12 +167,18 @@ class FoodControllerTest extends TestCase
     }
 
     /** @test */
-    public function it_can_update_a_food()
+    public function it_can_update_a_food_if_its_foodsource_is_updatable()
     {
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
-        $food = factory(Food::class)->create();
+        $foodsource = factory(Foodsource::class)->create([
+            'updatable' => true,
+        ]);
+
+        $food = factory(Food::class)->create([
+            'foodsource_id' => $foodsource->id,
+        ]);
 
         $payload = $food->toArray();
         unset($payload['created_at'], $payload['updated_at']);
@@ -166,6 +188,30 @@ class FoodControllerTest extends TestCase
 
         $response->assertRedirect(route('foods.index'));
         $this->assertDatabaseHas('foods', $payload);
+    }
+
+    /** @test */
+    public function it_cannot_update_a_food_if_its_foodsource_is_not_updatable()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $foodsource = factory(Foodsource::class)->create([
+            'updatable' => false,
+        ]);
+
+        $food = factory(Food::class)->create([
+            'foodsource_id' => $foodsource->id,
+        ]);
+
+        $payload = $food->toArray();
+        unset($payload['created_at'], $payload['updated_at']);
+        $payload['description'] = 'new description';
+
+        $response = $this->patch(route('foods.update', $food->id), $payload);
+
+        $response->assertRedirect(route('foods.index'));
+        $this->assertDatabaseMissing('foods', $payload);
     }
 
     public function foodValidationProvider()
@@ -235,14 +281,6 @@ class FoodControllerTest extends TestCase
                     ];
                 }
             ],
-            'it fails if source is not a non-empty string' => [
-                function () {
-                    return [
-                        'source',
-                        array_merge($this->getValidFoodData(), ['source' => '']),
-                    ];
-                }
-            ],
             'it fails if foodgroup_id is not a valid foodgroup id' => [
                 function () {
                     return [
@@ -273,8 +311,8 @@ class FoodControllerTest extends TestCase
             'carbohydrate' => 135,
             'potassium' => 456,
             'favourite' => true,
-            'source' => 'Health Canada',
             'foodgroup_id' => factory(Foodgroup::class)->create()->id,
+            'foodsource_id' => factory(Foodsource::class)->create()->id,
             'user_id' => auth()->user()->id,
         ];
     }
