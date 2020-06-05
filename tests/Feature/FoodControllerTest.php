@@ -214,6 +214,36 @@ class FoodControllerTest extends TestCase
         $this->assertDatabaseMissing('foods', $payload);
     }
 
+    /** @test */
+    public function it_can_display_other_users_shared_foods()
+    {
+        $this->withoutExceptionHandling();
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $anotherUser = factory(User::class)->create();
+        $foodsources = factory(Foodsource::class, 2)->create([
+            'sharable' => true,
+        ]);
+
+        $food1 = factory(Food::class)->create([
+            'user_id' => $anotherUser->id,
+            'foodsource_id' => $foodsources[0]->id,
+        ]);
+
+        $food2 = factory(Food::class)->create([
+            'user_id' => $anotherUser->id,
+            'foodsource_id' => $foodsources[1]->id,
+        ]);
+
+        $foods = $this->get(route('foods.index'))
+
+            // dd($foods->response);
+            ->assertSuccessful()
+            ->assertSee($food1->description)
+            ->assertSee($food2->description);
+    }
+
     public function foodValidationProvider()
     {
         return [

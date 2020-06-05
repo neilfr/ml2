@@ -3,18 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Food;
-use App\Http\Requests\CreateFoodRequest;
-use App\Http\Resources\FoodResource;
+use App\Foodsource;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Inertia\Inertia;
+use App\Http\Resources\FoodResource;
+use App\Http\Requests\CreateFoodRequest;
 use phpDocumentor\Reflection\Types\Integer;
 
 class FoodController extends Controller
 {
     public function index()
     {
-        $foods = Food::where('user_id', auth()->user()->id)->get();
+        $sharableFoodsources = Foodsource::where('sharable', '=', true);
+        dd($sharableFoodsources);
+
+        // $foods = Food::where('user_id', auth()->user()->id)
+        //     ->orWhere('foodsource_id', '=', $sharableFoodsource->id)
+        //     ->get();
+
+        // dd($sharableFoodsourceId, $foods);
+
+        //$foods2 = foods->foodsource->sharable===true;
 
         return Inertia::render('Foods/Index', [
             'foods' => FoodResource::collection($foods),

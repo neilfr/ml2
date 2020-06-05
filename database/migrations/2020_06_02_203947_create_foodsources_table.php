@@ -18,6 +18,7 @@ class CreateFoodsourcesTable extends Migration
             $table->string('name');
             $table->boolean('deletable');
             $table->boolean('updatable');
+            $table->boolean('sharable');
             $table->timestamps();
         });
     }

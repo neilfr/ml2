@@ -10,5 +10,6 @@ $factory->define(Foodsource::class, function (Faker $faker) {
         'name' => $faker->word,
         'deletable' => $faker->boolean,
         'updatable' => $faker->boolean,
+        'sharable' => $faker->boolean,
     ];
 });
