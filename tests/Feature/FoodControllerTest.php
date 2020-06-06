@@ -90,14 +90,40 @@ class FoodControllerTest extends TestCase
     }
 
     /** @test */
-    public function it_cannot_display_foods_owned_by_other_users()
+    public function it_can_display_other_users_shared_foods()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $anotherUser = factory(User::class)->create();
+        $foodsource = factory(Foodsource::class)->create([
+            'sharable' => true,
+        ]);
+
+        $food = factory(Food::class)->create([
+            'user_id' => $anotherUser->id,
+            'foodsource_id' => $foodsource->id,
+        ]);
+
+        $foods = $this->get(route('foods.index'))
+            ->assertSuccessful()
+            ->assertSee($food->description);
+    }
+
+    /** @test */
+    public function it_cannot_display_other_users_foods_that_are_not_sharable()
     {
         $user = factory(User::class)->create();
         $otherUser = factory(User::class)->create();
         $this->actingAs($user);
 
+        $foodsource = factory(Foodsource::class)->create([
+            'sharable' => false,
+        ]);
+
         $food = factory(Food::class)->create([
             'user_id' => $otherUser->id,
+            'foodsource_id' => $foodsource->id,
         ]);
 
         $this->get(route('foods.index'))
@@ -120,14 +146,42 @@ class FoodControllerTest extends TestCase
     }
 
     /** @test */
-    public function it_cannot_display_a_specific_food_owned_by_another_user()
+    public function it_can_display_a_specific_food_owned_by_another_user_if_the_food_is_sharable()
+    {
+        $this->withoutExceptionHandling();
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+        $otheruser = factory(User::class)->create();
+
+        $foodsource = factory(Foodsource::class)->create([
+            'sharable' => true,
+        ]);
+
+        $food = factory(Food::class)->create([
+            'user_id' => $otheruser->id,
+            'foodsource_id' => $foodsource->id,
+        ]);
+
+        $response = $this->get(route('foods.show', $food))
+            ->assertSuccessful();
+
+        $response->assertSee($food->description);
+    }
+
+    /** @test */
+    public function it_cannot_display_a_specific_food_owned_by_another_user_that_is_not_sharable()
     {
         $user = factory(User::class)->create();
         $this->actingAs($user);
         $otheruser = factory(User::class)->create();
 
+        $foodsource = factory(Foodsource::class)->create([
+            'sharable' => false,
+        ]);
+
         $food = factory(Food::class)->create([
             'user_id' => $otheruser->id,
+            'foodsource_id' => $foodsource->id,
         ]);
 
         $this->get(route('foods.show', $food))
@@ -164,73 +218,48 @@ class FoodControllerTest extends TestCase
     }
 
     /** @test */
-    public function it_can_update_a_food_if_its_foodsource_is_updatable()
+    public function it_can_update_a_users_food()
     {
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
-        $foodsource = factory(Foodsource::class)->create([
-            'updatable' => true,
-        ]);
-
         $food = factory(Food::class)->create([
-            'foodsource_id' => $foodsource->id,
+            'user_id' => $user->id,
         ]);
 
-        $payload = $food->toArray();
-        unset($payload['created_at'], $payload['updated_at']);
-        $payload['description'] = 'new description';
+        $payload = [
+            'description' => 'new description',
+        ];
 
-        $response = $this->withoutExceptionHandling()->patch(route('foods.update', $food->id), $payload);
+        $response = $this->patch(route('foods.update', $food->id), $payload);
 
         $response->assertRedirect(route('foods.index'));
         $this->assertDatabaseHas('foods', $payload);
     }
 
     /** @test */
-    public function it_cannot_update_a_food_if_its_foodsource_is_not_updatable()
-    {
-        $user = factory(User::class)->create();
-        $this->actingAs($user);
-
-        $foodsource = factory(Foodsource::class)->create([
-            'updatable' => false,
-        ]);
-
-        $food = factory(Food::class)->create([
-            'foodsource_id' => $foodsource->id,
-        ]);
-
-        $payload = $food->toArray();
-        unset($payload['created_at'], $payload['updated_at']);
-        $payload['description'] = 'new description';
-
-        $response = $this->patch(route('foods.update', $food->id), $payload);
-
-        $response->assertRedirect(route('foods.index'));
-        $this->assertDatabaseMissing('foods', $payload);
-    }
-
-    /** @test */
-    public function it_can_display_other_users_shared_foods()
+    public function it_cannot_update_another_users_food()
     {
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
         $anotherUser = factory(User::class)->create();
-        $foodsource = factory(Foodsource::class)->create([
-            'sharable' => true,
-        ]);
 
         $food = factory(Food::class)->create([
             'user_id' => $anotherUser->id,
-            'foodsource_id' => $foodsource->id,
         ]);
 
-        $foods = $this->get(route('foods.index'))
-            ->assertSuccessful()
-            ->assertSee($food->description);
+        $payload = [
+            'description' => 'new description'
+        ];
+
+        $response = $this->patch(route('foods.update', $food->id), $payload);
+
+        $this->assertDatabaseMissing('foods', $payload);
+        $response->assertRedirect(route('foods.index'));
     }
+
+
 
     public function foodValidationProvider()
     {
@@ -330,9 +359,7 @@ class FoodControllerTest extends TestCase
             'potassium' => 456,
             'favourite' => true,
             'foodgroup_id' => factory(Foodgroup::class)->create()->id,
-            'foodsource_id' => factory(Foodsource::class)->create([
-                'sharable' => false,
-            ])->id,
+            'foodsource_id' => factory(Foodsource::class)->create()->id,
             'user_id' => auth()->user()->id,
         ];
     }

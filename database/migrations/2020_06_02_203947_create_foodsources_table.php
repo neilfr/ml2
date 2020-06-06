@@ -16,8 +16,6 @@ class CreateFoodsourcesTable extends Migration
         Schema::create('foodsources', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->boolean('deletable');
-            $table->boolean('updatable');
             $table->boolean('sharable');
             $table->timestamps();
         });
