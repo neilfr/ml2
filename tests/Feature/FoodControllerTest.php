@@ -67,9 +67,6 @@ class FoodControllerTest extends TestCase
         $this->assertEquals($foodsource->name, $food->foodsource->name);
     }
 
-
-
-
     //    /** @test */
     //    public function it_belongs_to_many_meals()
     //    {
@@ -217,31 +214,22 @@ class FoodControllerTest extends TestCase
     /** @test */
     public function it_can_display_other_users_shared_foods()
     {
-        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
         $anotherUser = factory(User::class)->create();
-        $foodsources = factory(Foodsource::class, 2)->create([
+        $foodsource = factory(Foodsource::class)->create([
             'sharable' => true,
         ]);
 
-        $food1 = factory(Food::class)->create([
+        $food = factory(Food::class)->create([
             'user_id' => $anotherUser->id,
-            'foodsource_id' => $foodsources[0]->id,
-        ]);
-
-        $food2 = factory(Food::class)->create([
-            'user_id' => $anotherUser->id,
-            'foodsource_id' => $foodsources[1]->id,
+            'foodsource_id' => $foodsource->id,
         ]);
 
         $foods = $this->get(route('foods.index'))
-
-            // dd($foods->response);
             ->assertSuccessful()
-            ->assertSee($food1->description)
-            ->assertSee($food2->description);
+            ->assertSee($food->description);
     }
 
     public function foodValidationProvider()
@@ -342,7 +330,9 @@ class FoodControllerTest extends TestCase
             'potassium' => 456,
             'favourite' => true,
             'foodgroup_id' => factory(Foodgroup::class)->create()->id,
-            'foodsource_id' => factory(Foodsource::class)->create()->id,
+            'foodsource_id' => factory(Foodsource::class)->create([
+                'sharable' => false,
+            ])->id,
             'user_id' => auth()->user()->id,
         ];
     }

@@ -15,16 +15,11 @@ class FoodController extends Controller
 {
     public function index()
     {
-        $sharableFoodsources = Foodsource::where('sharable', '=', true);
-        dd($sharableFoodsources);
+        $sharableFoodsourceIds = Foodsource::where('sharable', '=', true)->get()->pluck('id');
 
-        // $foods = Food::where('user_id', auth()->user()->id)
-        //     ->orWhere('foodsource_id', '=', $sharableFoodsource->id)
-        //     ->get();
-
-        // dd($sharableFoodsourceId, $foods);
-
-        //$foods2 = foods->foodsource->sharable===true;
+        $foods = Food::where('user_id', auth()->user()->id)
+            ->orWhere('foodsource_id', '=', $sharableFoodsourceIds)
+            ->get();
 
         return Inertia::render('Foods/Index', [
             'foods' => FoodResource::collection($foods),

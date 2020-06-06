@@ -8,8 +8,8 @@ use Faker\Generator as Faker;
 $factory->define(Foodsource::class, function (Faker $faker) {
     return [
         'name' => $faker->word,
-        'deletable' => $faker->boolean,
-        'updatable' => $faker->boolean,
-        'sharable' => $faker->boolean,
+        'deletable' => false,
+        'updatable' => false,
+        'sharable' => false,
     ];
 });
