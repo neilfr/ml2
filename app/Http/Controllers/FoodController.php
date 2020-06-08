@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\FoodResource;
 use App\Http\Requests\CreateFoodRequest;
+use App\Http\Requests\UpdateFoodRequest;
 use phpDocumentor\Reflection\Types\Integer;
 
 class FoodController extends Controller
@@ -44,7 +45,7 @@ class FoodController extends Controller
         }
     }
 
-    public function update(Request $request, Food $food)
+    public function update(UpdateFoodRequest $request, Food $food)
     {
         if ($food->user_id === auth()->user()->id) {
             $food->update($request->input());

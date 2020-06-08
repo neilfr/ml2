@@ -203,7 +203,7 @@ class FoodControllerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider foodValidationProvider
+     * @dataProvider foodStoreValidationProvider
      */
     public function it_cannot_store_food_if_food_data_is_invalid($getData)
     {
@@ -213,6 +213,28 @@ class FoodControllerTest extends TestCase
         [$ruleName, $payload] = $getData();
 
         $response = $this->post(route('foods.store'), $payload);
+
+        $response->assertSessionHasErrors($ruleName);
+    }
+
+
+    /**
+     * @test
+     * @dataProvider foodUpdateValidationProvider
+     */
+    public function it_cannot_update_food_if_food_data_is_invalid($getData)
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $food = factory(Food::class)->create([
+            'user_id' => $user->id,
+        ]);
+
+        [$ruleName, $payload] = $getData();
+        // dd($ruleName, $payload);
+
+        $response = $this->patch(route('foods.update', $food->id), $payload);
 
         $response->assertSessionHasErrors($ruleName);
     }
@@ -259,12 +281,10 @@ class FoodControllerTest extends TestCase
         $response->assertRedirect(route('foods.index'));
     }
 
-
-
-    public function foodValidationProvider()
+    public function foodStoreValidationProvider()
     {
         return [
-            'it fails if description is not a string' => [
+            'it fails if alias is not a string' => [
                 function () {
                     return [
                         'alias',
@@ -341,6 +361,82 @@ class FoodControllerTest extends TestCase
                     return [
                         'user_id',
                         array_merge($this->getValidFoodData(), ['user_id' => 99999999]),
+                    ];
+                }
+            ]
+        ];
+    }
+
+    public function foodUpdateValidationProvider()
+    {
+        return [
+            'it fails if alias is not a string' => [
+                function () {
+                    return [
+                        'alias', ['alias' => []],
+                    ];
+                }
+            ],
+            'it fails if description is not a non-empty string' => [
+                function () {
+                    return [
+                        'description', ['description' => ''],
+                    ];
+                }
+            ],
+            'it fails if kcal is not an integer' => [
+                function () {
+                    return [
+                        'kcal', ['kcal' => 'not an integer'],
+                    ];
+                }
+            ],
+            'it fails if fat is not an integer' => [
+                function () {
+                    return [
+                        'fat', ['fat' => 'not an integer'],
+                    ];
+                }
+            ],
+            'it fails if protein is not an integer' => [
+                function () {
+                    return [
+                        'protein', ['protein' => 'not an integer'],
+                    ];
+                }
+            ],
+            'it fails if carbohydrate is not an integer' => [
+                function () {
+                    return [
+                        'carbohydrate', ['carbohydrate' => 'not an integer'],
+                    ];
+                }
+            ],
+            'it fails if potassium is not an integer' => [
+                function () {
+                    return [
+                        'potassium', ['potassium' => 'not an integer'],
+                    ];
+                }
+            ],
+            'it fails if favourite is not a boolean' => [
+                function () {
+                    return [
+                        'favourite', ['favourite' => 'not a boolean'],
+                    ];
+                }
+            ],
+            'it fails if foodgroup_id is not a valid foodgroup id' => [
+                function () {
+                    return [
+                        'foodgroup_id', ['foodgroup_id' => 99999999],
+                    ];
+                }
+            ],
+            'it fails if user_id is not a valid user id' => [
+                function () {
+                    return [
+                        'user_id', ['user_id' => 99999999],
                     ];
                 }
             ]
