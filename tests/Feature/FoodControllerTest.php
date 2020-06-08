@@ -83,10 +83,12 @@ class FoodControllerTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $this->get(route('foods.index'))
+        $response = $this->get(route('foods.index'))
             ->assertSuccessful()
             ->assertSee($foods[0]->description)
             ->assertSee($foods[1]->description);
+
+        dd($response->original->getData());
     }
 
     /** @test */
@@ -148,7 +150,6 @@ class FoodControllerTest extends TestCase
     /** @test */
     public function it_can_display_a_specific_food_owned_by_another_user_if_the_food_is_sharable()
     {
-        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $this->actingAs($user);
         $otheruser = factory(User::class)->create();
@@ -216,7 +217,6 @@ class FoodControllerTest extends TestCase
 
         $response->assertSessionHasErrors($ruleName);
     }
-
 
     /**
      * @test
