@@ -52,4 +52,13 @@ class FoodController extends Controller
         }
         return redirect(route('foods.index'));
     }
+
+    public function destroy(Food $food)
+    {
+        if ($food->user_id === auth()->user()->id) {
+            Food::destroy($food->id);
+        }
+
+        return redirect()->route('foods.index');
+    }
 }

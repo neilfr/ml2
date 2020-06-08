@@ -281,6 +281,40 @@ class FoodControllerTest extends TestCase
         $response->assertRedirect(route('foods.index'));
     }
 
+    /** @test */
+    public function it_can_delete_a_users_food()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $food = factory(Food::class)->create([
+            'user_id' => $user->id,
+        ]);
+
+        $response = $this->delete(route('foods.destroy', $food->id))
+            ->assertRedirect(route('foods.index'));
+
+        $response = $this->assertDatabaseMissing('foods', ['id' => $food->id]);
+    }
+
+    /** @test */
+    public function it_cannot_delete_another_users_food()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $anotherUser = factory(User::class)->create();
+
+        $food = factory(Food::class)->create([
+            'user_id' => $anotherUser->id,
+        ]);
+
+        $response = $this->delete(route('foods.destroy', $food->id))
+            ->assertRedirect(route('foods.index'));
+
+        $response = $this->assertDatabaseHas('foods', ['id' => $food->id]);
+    }
+
     public function foodStoreValidationProvider()
     {
         return [
