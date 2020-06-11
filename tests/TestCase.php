@@ -85,6 +85,7 @@ abstract class TestCase extends BaseTestCase
             $this->ensureResponseHasInertia();
 
             $this->assertHasProp($key);
+            dd($this->props($key)['data'], $value);
 
             Assert::assertNotContains($value, $this->props($key)['data']);
 

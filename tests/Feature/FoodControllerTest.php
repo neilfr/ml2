@@ -134,8 +134,7 @@ class FoodControllerTest extends TestCase
 
         $this->get(route('foods.index'))
             ->assertStatus(Response::HTTP_OK)
-            ->assertPropMissingValue('foods', $food);
-        // ->assertDontSee($food->description);
+            ->assertPropMissingValue('foods', $food->toArray());
     }
 
     /** @test */
@@ -148,8 +147,10 @@ class FoodControllerTest extends TestCase
 
         $this->get(route('foods.show', $foods[0]))
             ->assertStatus(Response::HTTP_OK)
-            ->assertSee($foods[0]->description)
-            ->assertDontSee($foods[1]->description);
+            ->assertPropHasValue('food', $foods[0]->toArray())
+            ->assertPropMissingValue('food', $foods[1]->toArray());
+        // ->assertSee($foods[0]->description)
+        // ->assertDontSee($foods[1]->description);
     }
 
     /** @test */
