@@ -102,7 +102,7 @@ class FoodControllerTest extends TestCase
             'sharable' => true,
         ]);
 
-        $food = factory(Food::class)->create([
+        $foods = factory(Food::class, 2)->create([
             'user_id' => $anotherUser->id,
             'foodsource_id' => $foodsource->id,
         ]);
@@ -111,8 +111,9 @@ class FoodControllerTest extends TestCase
             ->assertStatus(Response::HTTP_OK);
 
         $response->assertHasProp('foods')
-            ->assertPropCount('foods', 1)
-            ->assertPropHasValue('foods', $food->toArray());
+            ->assertPropCount('foods', 2)
+            ->assertPropHasValue('foods', $foods[0]->toArray())
+            ->assertPropHasValue('foods', $foods[1]->toArray());
     }
 
     /** @test */
@@ -133,7 +134,8 @@ class FoodControllerTest extends TestCase
 
         $this->get(route('foods.index'))
             ->assertStatus(Response::HTTP_OK)
-            ->assertDontSee($food->description);
+            ->assertPropMissingValue('foods', $food);
+        // ->assertDontSee($food->description);
     }
 
     /** @test */
