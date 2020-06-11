@@ -106,14 +106,13 @@ class FoodControllerTest extends TestCase
             'user_id' => $anotherUser->id,
             'foodsource_id' => $foodsource->id,
         ]);
-        // dd($food->toArray());
 
         $response = $this->get(route('foods.index'))
             ->assertStatus(Response::HTTP_OK);
 
         $response->assertHasProp('foods')
             ->assertPropCount('foods', 1)
-            ->assertPropValue('foods', $food->toArray());
+            ->assertPropHasValue('foods', $food->toArray());
     }
 
     /** @test */

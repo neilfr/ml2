@@ -65,6 +65,22 @@ abstract class TestCase extends BaseTestCase
             return $this;
         });
 
+        //mod
+        TestResponse::macro('assertPropHasValue', function ($key, $value) {
+            $this->ensureResponseHasInertia();
+
+            $this->assertHasProp($key);
+
+            if (is_callable($value)) {
+                $value($this->props($key));
+            } else {
+                // dd($this->props($key)['data'], $value);
+                Assert::assertContains($value, $this->props($key)['data']);
+            }
+
+            return $this;
+        });
+
         TestResponse::macro('assertPropCount', function ($key, $count) {
             $this->ensureResponseHasInertia();
 

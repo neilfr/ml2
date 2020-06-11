@@ -21,8 +21,9 @@ class Food extends Model
         'user_id',
     ];
     protected $casts = [
-        'user_id' => 'integer',
         'favourite' => 'boolean',
+        'user_id' => 'integer',
+
     ];
 
     public function foodgroup()
