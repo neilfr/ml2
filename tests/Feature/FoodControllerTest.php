@@ -7,6 +7,7 @@ use App\User;
 use App\Foodgroup;
 use App\Foodsource;
 use Tests\TestCase;
+use Illuminate\Http\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class FoodControllerTest extends TestCase
@@ -17,7 +18,7 @@ class FoodControllerTest extends TestCase
     public function it_can_access_foods_as_authorized_user()
     {
         $user = factory(User::class)->create();
-        $this->actingAs($user)->get(route('foods.index'))->assertSuccessful();
+        $this->actingAs($user)->get(route('foods.index'))->assertStatus(Response::HTTP_OK);
     }
 
     /** @test */
@@ -74,7 +75,7 @@ class FoodControllerTest extends TestCase
     //    }
 
     /** @test */
-    public function it_can_display_user_owned_foods()
+    public function it_can_display_user_owned_food()
     {
         $user = factory(User::class)->create();
         $this->actingAs($user);
@@ -84,11 +85,10 @@ class FoodControllerTest extends TestCase
         ]);
 
         $response = $this->get(route('foods.index'))
-            ->assertSuccessful()
-            ->assertSee($foods[0]->description)
-            ->assertSee($foods[1]->description);
+            ->assertStatus(Response::HTTP_OK);
 
-        dd($response->original->getData());
+        $response->assertHasProp('foods')
+            ->assertPropCount('foods', 2);
     }
 
     /** @test */
@@ -106,10 +106,14 @@ class FoodControllerTest extends TestCase
             'user_id' => $anotherUser->id,
             'foodsource_id' => $foodsource->id,
         ]);
+        // dd($food->toArray());
 
-        $foods = $this->get(route('foods.index'))
-            ->assertSuccessful()
-            ->assertSee($food->description);
+        $response = $this->get(route('foods.index'))
+            ->assertStatus(Response::HTTP_OK);
+
+        $response->assertHasProp('foods')
+            ->assertPropCount('foods', 1)
+            ->assertPropValue('foods', $food->toArray());
     }
 
     /** @test */
@@ -129,7 +133,7 @@ class FoodControllerTest extends TestCase
         ]);
 
         $this->get(route('foods.index'))
-            ->assertSuccessful()
+            ->assertStatus(Response::HTTP_OK)
             ->assertDontSee($food->description);
     }
 
@@ -142,7 +146,7 @@ class FoodControllerTest extends TestCase
         $foods = factory(Food::class, 2)->create();
 
         $this->get(route('foods.show', $foods[0]))
-            ->assertSuccessful()
+            ->assertStatus(Response::HTTP_OK)
             ->assertSee($foods[0]->description)
             ->assertDontSee($foods[1]->description);
     }
@@ -164,7 +168,7 @@ class FoodControllerTest extends TestCase
         ]);
 
         $response = $this->get(route('foods.show', $food))
-            ->assertSuccessful();
+            ->assertStatus(Response::HTTP_OK);
 
         $response->assertSee($food->description);
     }
