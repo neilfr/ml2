@@ -12,8 +12,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class FoodControllerTest extends TestCase
 {
-    use RefreshDatabase;
 
+    use RefreshDatabase;
     /** @test */
     public function it_can_access_foods_as_authorized_user()
     {
@@ -75,7 +75,7 @@ class FoodControllerTest extends TestCase
     //    }
 
     /** @test */
-    public function it_can_display_user_owned_food()
+    public function it_can_return_user_owned_foods()
     {
         $user = factory(User::class)->create();
         $this->actingAs($user);
@@ -87,12 +87,14 @@ class FoodControllerTest extends TestCase
         $response = $this->get(route('foods.index'))
             ->assertStatus(Response::HTTP_OK);
 
-        $response->assertHasProp('foods')
-            ->assertPropCount('foods', 2);
+        $response->assertPropValue('foods', function ($returnedFoods) use ($foods) {
+            $this->assertCount(2, $returnedFoods['data']);
+            $this->assertEquals($returnedFoods['data'], $foods->toArray());
+        });
     }
 
     /** @test */
-    public function it_can_display_other_users_shared_foods()
+    public function it_can_return_other_users_shared_foods()
     {
         $user = factory(User::class)->create();
         $this->actingAs($user);
@@ -110,14 +112,14 @@ class FoodControllerTest extends TestCase
         $response = $this->get(route('foods.index'))
             ->assertStatus(Response::HTTP_OK);
 
-        $response->assertHasProp('foods')
-            ->assertPropCount('foods', 2)
-            ->assertPropHasValue('foods', $foods[0]->toArray())
-            ->assertPropHasValue('foods', $foods[1]->toArray());
+        $response->assertPropValue('foods', function ($returnedFoods) use ($foods) {
+            $this->assertCount(2, $returnedFoods['data']);
+            $this->assertEquals($returnedFoods['data'], $foods->toArray());
+        });
     }
 
     /** @test */
-    public function it_cannot_display_other_users_foods_that_are_not_sharable()
+    public function it_cannot_return_other_users_foods_that_are_not_sharable()
     {
         $user = factory(User::class)->create();
         $otherUser = factory(User::class)->create();
@@ -127,34 +129,39 @@ class FoodControllerTest extends TestCase
             'sharable' => false,
         ]);
 
-        $food = factory(Food::class)->create([
+        $foods = factory(Food::class, 2)->create([
             'user_id' => $otherUser->id,
             'foodsource_id' => $foodsource->id,
         ]);
 
-        $this->get(route('foods.index'))
-            ->assertStatus(Response::HTTP_OK)
-            ->assertPropMissingValue('foods', $food->toArray());
+        $response = $this->get(route('foods.index'));
+
+        $response->assertPropValue('foods', function ($returnedFoods) use ($foods) {
+            $this->assertCount(0, $returnedFoods['data']);
+        });
     }
 
     /** @test */
-    public function it_can_display_a_specific_user_owned_food()
+    public function it_can_return_a_specific_user_owned_food()
     {
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
-        $foods = factory(Food::class, 2)->create();
+        $foods = factory(Food::class, 2)->create([
+            'favourite' => true,
+        ]);
 
-        $this->get(route('foods.show', $foods[0]))
-            ->assertStatus(Response::HTTP_OK)
-            ->assertPropHasValue('food', $foods[0]->toArray())
-            ->assertPropMissingValue('food', $foods[1]->toArray());
-        // ->assertSee($foods[0]->description)
-        // ->assertDontSee($foods[1]->description);
+        $response = $this->get(route('foods.show', $foods[0]));
+
+        $response->assertStatus(Response::HTTP_OK)
+            ->assertPropValue('food', function ($returnedFood) use ($foods) {
+                $this->assertCount(14, $returnedFood['data']);
+                $this->assertEquals($returnedFood['data'], $foods[0]->toArray());
+            });
     }
 
     /** @test */
-    public function it_can_display_a_specific_food_owned_by_another_user_if_the_food_is_sharable()
+    public function it_can_return_a_specific_food_owned_by_another_user_if_the_food_is_sharable()
     {
         $user = factory(User::class)->create();
         $this->actingAs($user);
@@ -169,14 +176,17 @@ class FoodControllerTest extends TestCase
             'foodsource_id' => $foodsource->id,
         ]);
 
-        $response = $this->get(route('foods.show', $food))
-            ->assertStatus(Response::HTTP_OK);
+        $response = $this->get(route('foods.show', $food));
 
-        $response->assertSee($food->description);
+        $response->assertStatus(Response::HTTP_OK)
+            ->assertPropValue('food', function ($returnedFood) use ($food) {
+                $this->assertCount(14, $returnedFood['data']);
+                $this->assertEquals($returnedFood['data'], $food->toArray());
+            });
     }
 
     /** @test */
-    public function it_cannot_display_a_specific_food_owned_by_another_user_that_is_not_sharable()
+    public function it_cannot_return_a_specific_food_owned_by_another_user_that_is_not_sharable()
     {
         $user = factory(User::class)->create();
         $this->actingAs($user);
@@ -191,8 +201,9 @@ class FoodControllerTest extends TestCase
             'foodsource_id' => $foodsource->id,
         ]);
 
-        $this->get(route('foods.show', $food))
-            ->assertRedirect(route('foods.index'));
+        $response = $this->get(route('foods.show', $food));
+
+        $response->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
     /** @test */

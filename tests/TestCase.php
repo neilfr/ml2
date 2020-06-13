@@ -52,42 +52,13 @@ abstract class TestCase extends BaseTestCase
 
         TestResponse::macro('assertPropValue', function ($key, $value) {
             $this->ensureResponseHasInertia();
-
             $this->assertHasProp($key);
 
             if (is_callable($value)) {
                 $value($this->props($key));
             } else {
-                //mod ['data'][0]
-                Assert::assertEquals($this->props($key)['data'][0], $value);
+                Assert::assertEquals($this->props($key), $value);
             }
-
-            return $this;
-        });
-
-        //mod
-        TestResponse::macro('assertPropHasValue', function ($key, $value) {
-            $this->ensureResponseHasInertia();
-
-            $this->assertHasProp($key);
-
-            if (is_callable($value)) {
-                $value($this->props($key));
-            } else {
-                // dd($this->props($key)['data'], $value);
-                Assert::assertContains($value, $this->props($key)['data']);
-            }
-
-            return $this;
-        });
-
-        TestResponse::macro('assertPropMissingValue', function ($key, $value) {
-            $this->ensureResponseHasInertia();
-
-            $this->assertHasProp($key);
-            dd($this->props($key)['data'], $value);
-
-            Assert::assertNotContains($value, $this->props($key)['data']);
 
             return $this;
         });
@@ -97,8 +68,7 @@ abstract class TestCase extends BaseTestCase
 
             $this->assertHasProp($key);
 
-            //mod ['data']
-            Assert::assertCount($count, $this->props($key)['data']);
+            Assert::assertCount($count, $this->props($key));
 
             return $this;
         });

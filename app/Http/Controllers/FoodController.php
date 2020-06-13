@@ -6,6 +6,7 @@ use App\Food;
 use App\Foodsource;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\FoodResource;
 use App\Http\Requests\CreateFoodRequest;
@@ -41,7 +42,7 @@ class FoodController extends Controller
                 'food' => new FoodResource($food),
             ]);
         } else {
-            return redirect()->route('foods.index');
+            return Response::HTTP_FORBIDDEN;
         }
     }
 

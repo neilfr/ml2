@@ -23,7 +23,13 @@ class Food extends Model
     protected $casts = [
         'favourite' => 'boolean',
         'user_id' => 'integer',
-
+        'foodsource_id' => 'integer',
+        'foodgroup_id' => 'integer',
+        'kcal' => 'integer',
+        'fat' => 'integer',
+        'protein' => 'integer',
+        'carbohydrate' => 'integer',
+        'potassium' => 'integer',
     ];
 
     public function foodgroup()
