@@ -68,6 +68,27 @@ class FoodControllerTest extends TestCase
         $this->assertEquals($foodsource->name, $food->foodsource->name);
     }
 
+    /** @test */
+    public function it_has_many_child_foods()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $childfood = factory(Food::class, 2)->create();
+
+        $parentfood = factory(Food::class)->create([
+            'description' => 'parentfood',
+        ]);
+
+        foreach ($childfood as $food) {
+            $parentfood->childfoods()->attach($food->id);
+        }
+
+        foreach ($childfood as $food) {
+            $this->assertEquals($food->description, $parentfood->childfoods()->find($food->id)->description);
+        }
+    }
+
     //    /** @test */
     //    public function it_belongs_to_many_meals()
     //    {

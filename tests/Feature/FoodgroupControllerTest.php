@@ -32,7 +32,7 @@ class FoodgroupControllerTest extends TestCase
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
-        $foodgroups = factory(Foodgroup::class,2)->create();
+        $foodgroups = factory(Foodgroup::class, 2)->create();
 
         $this->get(route('foodgroups.index'))
             ->assertSuccessful()
@@ -43,11 +43,10 @@ class FoodgroupControllerTest extends TestCase
     /** @test */
     public function anAuthorizedUserCanSeeASpecificFoodgroup()
     {
-        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
-        $foodgroups = factory(Foodgroup::class,2)->create();
+        $foodgroups = factory(Foodgroup::class, 2)->create();
 
         $this->get(route('foodgroups.show', $foodgroups[0]))
             ->assertSuccessful()
@@ -61,12 +60,11 @@ class FoodgroupControllerTest extends TestCase
         $this->actingAs($user);
 
         $foodgroup = factory(Foodgroup::class)->create();
-        $foods = factory(Food::class,2)->create([
+        $foods = factory(Food::class, 2)->create([
             'foodgroup_id' => $foodgroup->id,
         ]);
 
         $this->assertTrue($foodgroup->foods->contains($foods[0]));
         $this->assertTrue($foodgroup->foods->contains($foods[1]));
     }
-
 }

@@ -46,4 +46,14 @@ class Food extends Model
     {
         return $this->belongsTo(Foodsource::class);
     }
+
+    public function parentfoods()
+    {
+        return $this->belongsToMany(Food::class, 'food_food', 'child_food_id', 'parent_food_id');
+    }
+
+    public function childfoods()
+    {
+        return $this->belongsToMany(Food::class, 'food_food', 'parent_food_id', 'child_food_id');
+    }
 }
