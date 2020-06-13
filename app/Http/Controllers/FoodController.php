@@ -42,7 +42,7 @@ class FoodController extends Controller
                 'food' => new FoodResource($food),
             ]);
         } else {
-            return Response::HTTP_FORBIDDEN;
+            return redirect()->route('foods.index');
         }
     }
 

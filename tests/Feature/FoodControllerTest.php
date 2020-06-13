@@ -203,7 +203,7 @@ class FoodControllerTest extends TestCase
 
         $response = $this->get(route('foods.show', $food));
 
-        $response->assertStatus(Response::HTTP_FORBIDDEN);
+        $response->assertRedirect(route('foods.index'));
     }
 
     /** @test */
