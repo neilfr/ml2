@@ -16,10 +16,20 @@ class FoodResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'code' => $this->code,
             'description' => $this->description,
-            'potassium' => $this->potassium,
+            'alias' => $this->alias,
             'kcal' => $this->kcal,
+            'fat' => $this->fat,
+            'protein' => $this->protein,
+            'carbohydrate' => $this->carbohydrate,
+            'potassium' => $this->potassium,
+            'favourite' => $this->favourite,
+            'foodgroup_id' => $this->foodgroup_id,
+            'foodsource_id' => $this->foodsource_id,
+            'user_id' => $this->user_id,
+            'updated_at' => $this->updated_at,
+            'created_at' => $this->created_at,
+
         ];
     }
 }
