@@ -17,6 +17,8 @@ class CreateFoodFoodTable extends Migration
             $table->id();
             $table->unsignedBigInteger('parent_food_id');
             $table->unsignedBigInteger('child_food_id');
+            $table->integer('quantity');
+
             $table->timestamps();
 
             $table->foreign('parent_food_id')->on('foods')->references('id');

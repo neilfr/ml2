@@ -81,7 +81,7 @@ class FoodControllerTest extends TestCase
         ]);
 
         foreach ($childfoods as $food) {
-            $parentfood->childfoods()->attach($food->id);
+            $parentfood->childfoods()->attach($food->id, ['quantity' => 100]);
         }
 
         foreach ($childfoods as $food) {
@@ -102,18 +102,38 @@ class FoodControllerTest extends TestCase
         ]);
 
         foreach ($parentfoods as $food) {
-            $childfood->parentfoods()->attach($food->id);
+            $childfood->parentfoods()->attach($food->id, ['quantity' => 555]);
         }
 
         foreach ($parentfoods as $food) {
             $this->assertEquals($food->description, $childfood->parentfoods()->find($food->id)->description);
         }
     }
-    //    /** @test */
-    //    public function it_belongs_to_many_meals()
-    //    {
-    //
-    //    }
+
+    /** @test */
+    public function childfoods_have_quantities()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $childfood = factory(Food::class)->create([
+            'description' => 'childfood',
+        ]);
+
+        $parentfood = factory(Food::class)->create([
+            'description' => 'parentfood',
+        ]);
+
+        $parentfood->childfoods()->attach($childfood->id, ['quantity' => 555]);
+
+        // dd($parentfood->childfoods()->first()->pivot->quantity);
+
+        $this->assertDatabaseHas('food_food', [
+            'parent_food_id' => $parentfood->id,
+            'child_food_id' => $childfood->id,
+            'quantity' => 555,
+        ]);
+    }
 
     /** @test */
     public function it_can_return_user_owned_foods()
