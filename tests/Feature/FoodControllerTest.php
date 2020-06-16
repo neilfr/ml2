@@ -128,7 +128,7 @@ class FoodControllerTest extends TestCase
 
         // dd($parentfood->childfoods()->first()->pivot->quantity);
 
-        $this->assertDatabaseHas('food_food', [
+        $this->assertDatabaseHas('ingredients', [
             'parent_food_id' => $parentfood->id,
             'child_food_id' => $childfood->id,
             'quantity' => 555,
