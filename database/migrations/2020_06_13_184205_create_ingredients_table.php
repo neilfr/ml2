@@ -16,13 +16,13 @@ class CreateIngredientsTable extends Migration
         Schema::create('ingredients', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('parent_food_id');
-            $table->unsignedBigInteger('child_food_id');
+            $table->unsignedBigInteger('ingredient_id');
             $table->integer('quantity');
 
             $table->timestamps();
 
             $table->foreign('parent_food_id')->on('foods')->references('id');
-            $table->foreign('child_food_id')->on('foods')->references('id');
+            $table->foreign('ingredient_id')->on('foods')->references('id');
         });
     }
 

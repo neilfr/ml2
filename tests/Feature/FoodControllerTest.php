@@ -130,7 +130,7 @@ class FoodControllerTest extends TestCase
 
         $this->assertDatabaseHas('ingredients', [
             'parent_food_id' => $parentfood->id,
-            'child_food_id' => $ingredient->id,
+            'ingredient_id' => $ingredient->id,
             'quantity' => 555,
         ]);
     }
