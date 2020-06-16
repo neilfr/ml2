@@ -52,7 +52,7 @@ class Food extends Model
         return $this->belongsToMany(Food::class, 'ingredients', 'child_food_id', 'parent_food_id');
     }
 
-    public function childfoods()
+    public function ingredients()
     {
         return $this->belongsToMany(Food::class, 'ingredients', 'parent_food_id', 'child_food_id')
             ->withPivot('quantity');

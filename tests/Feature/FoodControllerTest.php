@@ -69,68 +69,68 @@ class FoodControllerTest extends TestCase
     }
 
     /** @test */
-    public function it_has_many_child_foods()
+    public function it_has_many_ingredients()
     {
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
-        $childfoods = factory(Food::class, 2)->create();
+        $ingredients = factory(Food::class, 2)->create();
 
         $parentfood = factory(Food::class)->create([
             'description' => 'parentfood',
         ]);
 
-        foreach ($childfoods as $food) {
-            $parentfood->childfoods()->attach($food->id, ['quantity' => 100]);
+        foreach ($ingredients as $ingredient) {
+            $parentfood->ingredients()->attach($ingredient->id, ['quantity' => 100]);
         }
 
-        foreach ($childfoods as $food) {
-            $this->assertEquals($food->description, $parentfood->childfoods()->find($food->id)->description);
+        foreach ($ingredients as $food) {
+            $this->assertEquals($food->description, $parentfood->ingredients()->find($food->id)->description);
         }
     }
 
     /** @test */
-    public function it_has_many_parent_foods()
+    public function ingredients_have_many_parent_foods()
     {
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
         $parentfoods = factory(Food::class, 2)->create();
 
-        $childfood = factory(Food::class)->create([
-            'description' => 'childfood',
+        $ingredient = factory(Food::class)->create([
+            'description' => 'ingredient',
         ]);
 
         foreach ($parentfoods as $food) {
-            $childfood->parentfoods()->attach($food->id, ['quantity' => 555]);
+            $ingredient->parentfoods()->attach($food->id, ['quantity' => 555]);
         }
 
         foreach ($parentfoods as $food) {
-            $this->assertEquals($food->description, $childfood->parentfoods()->find($food->id)->description);
+            $this->assertEquals($food->description, $ingredient->parentfoods()->find($food->id)->description);
         }
     }
 
     /** @test */
-    public function childfoods_have_quantities()
+    public function ingredients_have_quantities()
     {
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
-        $childfood = factory(Food::class)->create([
-            'description' => 'childfood',
+        $ingredient = factory(Food::class)->create([
+            'description' => 'ingredient',
         ]);
 
         $parentfood = factory(Food::class)->create([
             'description' => 'parentfood',
         ]);
 
-        $parentfood->childfoods()->attach($childfood->id, ['quantity' => 555]);
+        $parentfood->ingredients()->attach($ingredient->id, ['quantity' => 555]);
 
-        // dd($parentfood->childfoods()->first()->pivot->quantity);
+        // dd($parentfood->ingredients()->first()->pivot->quantity);
 
         $this->assertDatabaseHas('ingredients', [
             'parent_food_id' => $parentfood->id,
-            'child_food_id' => $childfood->id,
+            'child_food_id' => $ingredient->id,
             'quantity' => 555,
         ]);
     }
