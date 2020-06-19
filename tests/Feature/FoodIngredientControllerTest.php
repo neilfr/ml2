@@ -14,9 +14,52 @@ class FoodIngredientControllerTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function it_can_add_an_ingredient_to_a_food()
+    public function it_can_return_a_list_of_ingredients_for_a_user_owned_food()
     {
-        $this->withoutExceptionHandling();
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $ingredients = factory(Food::class, 2)->create();
+
+        $food = factory(Food::class)->create([
+            'user_id' => $user->id,
+        ]);
+
+        foreach ($ingredients as $ingredient) {
+            $food->ingredients()->attach($ingredient->id, ['quantity' => 100]);
+        }
+
+        $response = $this->get(route('food.ingredient.index', $food));
+
+        $response->assertStatus(Response::HTTP_OK);
+    }
+
+    /** @test */
+    public function it_cannot_return_a_list_of_ingredients_for_another_users_food()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $anotherUser = factory(User::class)->create();
+
+        $ingredients = factory(Food::class, 2)->create();
+
+        $food = factory(Food::class)->create([
+            'user_id' => $anotherUser->id,
+        ]);
+
+        foreach ($ingredients as $ingredient) {
+            $food->ingredients()->attach($ingredient->id, ['quantity' => 100]);
+        }
+
+        $response = $this->get(route('food.ingredient.index', $food));
+
+        $response->assertRedirect(route('foods.index'));
+    }
+
+    /** @test */
+    public function it_can_add_an_ingredient_to_a_user_owned_food()
+    {
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
@@ -25,15 +68,39 @@ class FoodIngredientControllerTest extends TestCase
         $ingredient = factory(Food::class)->create();
 
         $payload = [
-            'parent_food_id' => $food->id,
             'ingredient_id' => $ingredient->id,
             'quantity' => 200,
         ];
 
-        $response = $this->post(route('food.ingredient.store'), $payload);
+        $response = $this->post(route('food.ingredient.store', $food), $payload);
 
         $response->assertRedirect(route('foods.show', $food));
         $this->assertDatabaseHas('ingredients', $payload);
+    }
+
+    /** @test */
+    public function it_cannot_add_an_ingredient_to_another_users_food()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $anotherUser = factory(User::class)->create();
+
+        $food = factory(Food::class)->create([
+            'user_id' => $anotherUser->id,
+        ]);
+
+        $ingredient = factory(Food::class)->create();
+
+        $payload = [
+            'ingredient_id' => $ingredient->id,
+            'quantity' => 200,
+        ];
+
+        $response = $this->post(route('food.ingredient.store', $food), $payload);
+
+        $response->assertRedirect(route('foods.index'));
+        $this->assertDatabaseMissing('ingredients', $payload);
     }
 
     /** @test */
