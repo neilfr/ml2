@@ -5,12 +5,36 @@ namespace Tests\Feature;
 use App\Food;
 use App\User;
 use Tests\TestCase;
+use Illuminate\Http\Response;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class IngredientControllerTest extends TestCase
+class FoodIngredientControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+    /** @test */
+    public function it_can_add_an_ingredient_to_a_food()
+    {
+        $this->withoutExceptionHandling();
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $food = factory(Food::class)->create();
+
+        $ingredient = factory(Food::class)->create();
+
+        $payload = [
+            'parent_food_id' => $food->id,
+            'ingredient_id' => $ingredient->id,
+            'quantity' => 200,
+        ];
+
+        $response = $this->post(route('food.ingredient.store'), $payload);
+
+        $response->assertRedirect(route('foods.show', $food));
+        $this->assertDatabaseHas('ingredients', $payload);
+    }
 
     /** @test */
     public function ingredients_have_many_parent_foods()

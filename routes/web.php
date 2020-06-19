@@ -22,6 +22,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::patch('/foods/{food}', 'FoodController@update')->name('foods.update');
     Route::delete('/foods/{food}', 'FoodController@destroy')->name('foods.destroy');
 
+    Route::post('/food/ingredient', 'FoodIngredientController@store')->name('food.ingredient.store');
 
     Route::get('/foodgroups', 'FoodgroupController@index')->name('foodgroups.index');
     Route::get('/foodgroups/{foodgroup}', 'FoodgroupController@show')->name('foodgroups.show');
