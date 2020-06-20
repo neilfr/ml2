@@ -59,6 +59,7 @@ class FoodIngredientControllerTest extends TestCase
         ]);
     }
 
+
     /** @test */
     public function it_can_return_a_list_of_ingredients_for_a_user_owned_food()
     {
@@ -128,15 +129,42 @@ class FoodIngredientControllerTest extends TestCase
         $this->assertDatabaseHas('ingredients', $payload);
     }
 
+
     /** @test */
-    public function it_can_update_an_ingredients_quantity_for_a_user_owned_food()
+    public function it_cannot_update_ingredient_if_ingredient_data_is_invalid()
     {
+        //WORKING HERE
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
         $food = factory(Food::class)->create();
 
         $ingredient = factory(Food::class)->create();
+
+        $payload = [
+            'ingredient_id' => $ingredient->id,
+            'quantity' => 200,
+        ];
+
+        $response = $this->post(route('food.ingredient.store', $food), $payload);
+
+        $response->assertRedirect(route('foods.show', $food));
+        $this->assertDatabaseHas('ingredients', $payload);
+    }
+
+    /** @test */
+    public function it_can_update_an_ingredients_quantity_for_a_user_owned_food()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $food = factory(Food::class)->create([
+            'description' => 'parent food',
+        ]);
+
+        $ingredient = factory(Food::class)->create([
+            'description' => 'ingredient',
+        ]);
 
         $food->ingredients()->attach($ingredient->id, ['quantity' => 100]);
 
