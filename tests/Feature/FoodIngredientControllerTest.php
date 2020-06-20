@@ -14,6 +14,52 @@ class FoodIngredientControllerTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
+    public function ingredients_have_many_parent_foods()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $parentfoods = factory(Food::class, 2)->create();
+
+        $ingredient = factory(Food::class)->create([
+            'description' => 'ingredient',
+        ]);
+
+        foreach ($parentfoods as $food) {
+            $ingredient->parentfoods()->attach($food->id, ['quantity' => 555]);
+        }
+
+        foreach ($parentfoods as $food) {
+            $this->assertEquals($food->description, $ingredient->parentfoods()->find($food->id)->description);
+        }
+    }
+
+    /** @test */
+    public function ingredients_have_quantities()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $ingredient = factory(Food::class)->create([
+            'description' => 'ingredient',
+        ]);
+
+        $parentfood = factory(Food::class)->create([
+            'description' => 'parentfood',
+        ]);
+
+        $parentfood->ingredients()->attach($ingredient->id, ['quantity' => 555]);
+
+        // dd($parentfood->ingredients()->first()->pivot->quantity);
+
+        $this->assertDatabaseHas('ingredients', [
+            'parent_food_id' => $parentfood->id,
+            'ingredient_id' => $ingredient->id,
+            'quantity' => 555,
+        ]);
+    }
+
+    /** @test */
     public function it_can_return_a_list_of_ingredients_for_a_user_owned_food()
     {
         $user = factory(User::class)->create();
@@ -171,46 +217,25 @@ class FoodIngredientControllerTest extends TestCase
     }
 
     /** @test */
-    public function ingredients_have_many_parent_foods()
+    public function it_can_remove_an_ingredient_from_a_user_owned_food()
     {
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
-        $parentfoods = factory(Food::class, 2)->create();
+        $food = factory(Food::class)->create();
 
-        $ingredient = factory(Food::class)->create([
-            'description' => 'ingredient',
-        ]);
+        $ingredient = factory(Food::class)->create();
 
-        foreach ($parentfoods as $food) {
-            $ingredient->parentfoods()->attach($food->id, ['quantity' => 555]);
-        }
+        $food->ingredients()->attach($ingredient->id, ['quantity' => 555]);
 
-        foreach ($parentfoods as $food) {
-            $this->assertEquals($food->description, $ingredient->parentfoods()->find($food->id)->description);
-        }
-    }
+        $response = $this->delete(route('food.ingredient.destroy', [
+            'food' => $food,
+            'ingredient' => $ingredient,
+        ]));
 
-    /** @test */
-    public function ingredients_have_quantities()
-    {
-        $user = factory(User::class)->create();
-        $this->actingAs($user);
-
-        $ingredient = factory(Food::class)->create([
-            'description' => 'ingredient',
-        ]);
-
-        $parentfood = factory(Food::class)->create([
-            'description' => 'parentfood',
-        ]);
-
-        $parentfood->ingredients()->attach($ingredient->id, ['quantity' => 555]);
-
-        // dd($parentfood->ingredients()->first()->pivot->quantity);
-
-        $this->assertDatabaseHas('ingredients', [
-            'parent_food_id' => $parentfood->id,
+        $response->assertRedirect(route('foods.show', $food));
+        $this->assertDatabaseMissing('ingredients', [
+            'parent_food_id' => $food->id,
             'ingredient_id' => $ingredient->id,
             'quantity' => 555,
         ]);
