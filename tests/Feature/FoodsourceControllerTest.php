@@ -17,4 +17,10 @@ class FoodsourceControllerTest extends TestCase
 
     //     $food
     // }
+
+    /** @test */
+    public function it_has_many_foods()
+    {
+        $this->assertTrue(true);
+    }
 }
