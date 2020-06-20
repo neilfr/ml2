@@ -83,6 +83,69 @@ class FoodIngredientControllerTest extends TestCase
     }
 
     /** @test */
+    public function it_can_update_an_ingredients_quantity_for_a_user_owned_food()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $food = factory(Food::class)->create();
+
+        $ingredient = factory(Food::class)->create();
+
+        $food->ingredients()->attach($ingredient->id, ['quantity' => 100]);
+
+        $payload = [
+            'quantity' => 200,
+        ];
+
+        $response = $this->patch(route('food.ingredient.update', [
+            'food' => $food,
+            'ingredient' => $ingredient,
+        ]), $payload);
+
+        $response->assertRedirect(route('foods.show', $food));
+        $this->assertDatabaseHas('ingredients', [
+            'parent_food_id' => $food->id,
+            'ingredient_id' => $ingredient->id,
+            'quantity' => $payload['quantity'],
+        ]);
+    }
+
+    /** @test */
+    public function it_cannot_update_an_ingredients_quantity_for_another_users_food()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $anotherUser = factory(User::class)->create();
+
+        $food = factory(Food::class)->create([
+            'user_id' => $anotherUser->id,
+        ]);
+
+        $ingredient = factory(Food::class)->create();
+
+        $food->ingredients()->attach($ingredient->id, ['quantity' => 100]);
+
+        $payload = [
+            'quantity' => 200,
+        ];
+
+        $response = $this->patch(route('food.ingredient.update', [
+            'food' => $food,
+            'ingredient' => $ingredient,
+        ]), $payload);
+
+        $response->assertRedirect(route('foods.index'));
+
+        $this->assertDatabaseMissing('ingredients', [
+            'parent_food_id' => $food->id,
+            'ingredient_id' => $ingredient->id,
+            'quantity' => $payload['quantity'],
+        ]);
+    }
+
+    /** @test */
     public function it_cannot_add_an_ingredient_to_another_users_food()
     {
         $user = factory(User::class)->create();

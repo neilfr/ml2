@@ -30,4 +30,14 @@ class FoodIngredientController extends Controller
         }
         return redirect()->route('foods.index');
     }
+
+    public function update(Request $request, Food $food, Food $ingredient)
+    {
+        if ($food->user_id === auth()->user()->id) {
+            $payload = $request->input();
+            $food->ingredients()->updateExistingPivot($ingredient->id, ['quantity' => $payload['quantity']]);
+            return redirect()->route('foods.show', $food);
+        }
+        return redirect()->route('foods.index');
+    }
 }
