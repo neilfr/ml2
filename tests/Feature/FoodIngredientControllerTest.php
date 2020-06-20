@@ -240,4 +240,33 @@ class FoodIngredientControllerTest extends TestCase
             'quantity' => 555,
         ]);
     }
+
+    /** @test */
+    public function it_cannot_remove_an_ingredient_from_another_users_food()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $anotherUser = factory(User::class)->create();
+
+        $food = factory(Food::class)->create([
+            'user_id' => $anotherUser->id,
+        ]);
+
+        $ingredient = factory(Food::class)->create();
+
+        $food->ingredients()->attach($ingredient->id, ['quantity' => 555]);
+
+        $response = $this->delete(route('food.ingredient.destroy', [
+            'food' => $food,
+            'ingredient' => $ingredient,
+        ]));
+
+        $response->assertRedirect(route('foods.index'));
+        $this->assertDatabaseHas('ingredients', [
+            'parent_food_id' => $food->id,
+            'ingredient_id' => $ingredient->id,
+            'quantity' => 555,
+        ]);
+    }
 }
