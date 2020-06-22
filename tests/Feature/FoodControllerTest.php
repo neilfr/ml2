@@ -264,7 +264,6 @@ class FoodControllerTest extends TestCase
         ]);
 
         [$ruleName, $payload] = $getData();
-        // dd($ruleName, $payload);
 
         $response = $this->patch(route('foods.update', $food->id), $payload);
 

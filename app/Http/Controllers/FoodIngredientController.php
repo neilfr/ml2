@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Food;
+use App\Http\Requests\CreateIngredientRequest;
+use App\Http\Requests\UpdateIngredientRequest;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Resources\FoodResource;
@@ -21,7 +23,7 @@ class FoodIngredientController extends Controller
         return redirect()->route('foods.index');
     }
 
-    public function store(Request $request, Food $food)
+    public function store(CreateIngredientRequest $request, Food $food)
     {
         if ($food->user_id === auth()->user()->id) {
             $payload = $request->input();
@@ -32,7 +34,7 @@ class FoodIngredientController extends Controller
         return redirect()->route('foods.index');
     }
 
-    public function update(Request $request, Food $food, Food $ingredient)
+    public function update(UpdateIngredientRequest $request, Food $food, Food $ingredient)
     {
         if ($food->user_id === auth()->user()->id) {
             $payload = $request->input();

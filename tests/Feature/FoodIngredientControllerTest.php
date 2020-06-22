@@ -131,9 +131,8 @@ class FoodIngredientControllerTest extends TestCase
 
 
     /** @test */
-    public function it_cannot_update_ingredient_if_ingredient_data_is_invalid()
+    public function it_cannot_store_ingredient_if_ingredient_data_is_invalid()
     {
-        //WORKING HERE
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
@@ -143,13 +142,48 @@ class FoodIngredientControllerTest extends TestCase
 
         $payload = [
             'ingredient_id' => $ingredient->id,
-            'quantity' => 200,
+            'quantity' => 'not an integer',
         ];
 
         $response = $this->post(route('food.ingredient.store', $food), $payload);
 
-        $response->assertRedirect(route('foods.show', $food));
-        $this->assertDatabaseHas('ingredients', $payload);
+        $response->assertSessionHasErrors('quantity');
+    }
+
+    /** @test */
+    public function it_cannot_update_ingredient_if_ingredient_data_is_invalid()
+    {
+        //working here
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $food = factory(Food::class)->create();
+
+        $ingredient = factory(Food::class)->create();
+
+        $payload = [
+            'ingredient_id' => $ingredient->id,
+            'quantity' => 'not an integer',
+        ];
+
+        $response = $this->patch(route('food.ingredient.store', [
+            'food' => $food,
+            'ingredient' => $ingredient,
+        ]), $payload);
+
+        $response->assertSessionHasErrors('quantity');
+
+        // $response = $this->patch(route('food.ingredient.update', [
+        //     'food' => $food,
+        //     'ingredient' => $ingredient,
+        // ]), $payload);
+
+        // $response->assertRedirect(route('foods.show', $food));
+        // $this->assertDatabaseHas('ingredients', [
+        //     'parent_food_id' => $food->id,
+        //     'ingredient_id' => $ingredient->id,
+        //     'quantity' => $payload['quantity'],
+        // ]);
     }
 
     /** @test */
