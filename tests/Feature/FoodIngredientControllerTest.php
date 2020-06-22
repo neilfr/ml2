@@ -153,37 +153,24 @@ class FoodIngredientControllerTest extends TestCase
     /** @test */
     public function it_cannot_update_ingredient_if_ingredient_data_is_invalid()
     {
-        //working here
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
-        $food = factory(Food::class)->create();
-
         $ingredient = factory(Food::class)->create();
+        $food = factory(Food::class)->create();
+        $food->ingredients()->attach($ingredient->id, ['quantity' => 100]);
 
         $payload = [
             'ingredient_id' => $ingredient->id,
             'quantity' => 'not an integer',
         ];
 
-        $response = $this->patch(route('food.ingredient.store', [
+        $response = $this->patch(route('food.ingredient.update', [
             'food' => $food,
             'ingredient' => $ingredient,
         ]), $payload);
 
         $response->assertSessionHasErrors('quantity');
-
-        // $response = $this->patch(route('food.ingredient.update', [
-        //     'food' => $food,
-        //     'ingredient' => $ingredient,
-        // ]), $payload);
-
-        // $response->assertRedirect(route('foods.show', $food));
-        // $this->assertDatabaseHas('ingredients', [
-        //     'parent_food_id' => $food->id,
-        //     'ingredient_id' => $ingredient->id,
-        //     'quantity' => $payload['quantity'],
-        // ]);
     }
 
     /** @test */
