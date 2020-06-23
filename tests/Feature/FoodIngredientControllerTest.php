@@ -130,24 +130,20 @@ class FoodIngredientControllerTest extends TestCase
     }
 
 
-    /** @test */
-    public function it_cannot_store_ingredient_if_ingredient_data_is_invalid()
+    /**
+     * @test
+     * @dataProvider ingredientStoreValidationProvider
+     *  */
+    public function it_cannot_store_ingredient_if_ingredient_data_is_invalid($getData)
     {
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
-        $food = factory(Food::class)->create();
+        [$ruleName, $payload] = $getData();
+        // dd($payload);
+        $response = $this->post(route('food.ingredient.store', $payload['parent_food_id']), $payload);
 
-        $ingredient = factory(Food::class)->create();
-
-        $payload = [
-            'ingredient_id' => $ingredient->id,
-            'quantity' => 'not an integer',
-        ];
-
-        $response = $this->post(route('food.ingredient.store', $food), $payload);
-
-        $response->assertSessionHasErrors('quantity');
+        $response->assertSessionHasErrors($ruleName);
     }
 
     /** @test */
@@ -317,5 +313,44 @@ class FoodIngredientControllerTest extends TestCase
             'ingredient_id' => $ingredient->id,
             'quantity' => 555,
         ]);
+    }
+
+    public function ingredientStoreValidationProvider()
+    {
+        return [
+            'it fails if quantity is not an integer' => [
+                function () {
+                    return [
+                        'quantity',
+                        array_merge($this->getValidIngredientData(), ['quantity' => 'not an integer']),
+                    ];
+                }
+            ],
+            'it fails if ingredient_id is not an integer' => [
+                function () {
+                    return [
+                        'ingredient_id',
+                        array_merge($this->getValidIngredientData(), ['ingredient_id' => 'not an integer']),
+                    ];
+                }
+            ],
+            'it fails if ingredient_id is not a valid food id' => [
+                function () {
+                    return [
+                        'ingredient_id',
+                        array_merge($this->getValidIngredientData(), ['ingredient_id' => 99999]),
+                    ];
+                }
+            ]
+        ];
+    }
+
+    public function getValidIngredientData()
+    {
+        return [
+            'parent_food_id' => factory(Food::class)->create()->id,
+            'ingredient_id' => factory(Food::class)->create()->id,
+            'quantity' => 100,
+        ];
     }
 }

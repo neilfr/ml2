@@ -25,6 +25,7 @@ class CreateIngredientRequest extends FormRequest
     {
         return [
             'quantity' => 'integer',
+            'ingredient_id' => 'integer|exists:foods,id',
         ];
     }
 }
