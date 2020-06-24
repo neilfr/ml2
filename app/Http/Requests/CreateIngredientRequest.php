@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateFavouritefoodRequest extends FormRequest
+class CreateIngredientRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,8 @@ class UpdateFavouritefoodRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'integer',
-            'alias' => 'string|min:1',
-            'description' => 'string|min:1',
-            'kcal' => 'integer|min:0',
-            'potassium' => 'integer|min:0',
+            'quantity' => 'integer',
+            'ingredient_id' => 'integer|exists:foods,id',
         ];
     }
 }
