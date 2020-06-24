@@ -1,5 +1,6 @@
 <?php
 
+use App\Foodsource;
 use Illuminate\Database\Seeder;
 
 class FoodsourceSeeder extends Seeder
@@ -11,6 +12,9 @@ class FoodsourceSeeder extends Seeder
      */
     public function run()
     {
-        //
+        factory(Foodsource::class)->create([
+            'name' => 'Health Canada',
+            'sharable' => true,
+        ]);
     }
 }
