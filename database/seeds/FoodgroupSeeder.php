@@ -35,7 +35,8 @@ class FoodgroupSeeder extends Seeder
             (20,'Cereals, Grains and Pasta', now()),
             (21,'Fast Foods', now()),
             (22,'Mixed Dishes', now()),
-            (25,'Snacks', now());
+            (25,'Snacks', now()),
+            (26,'Meals', now());
         ");
     }
 }

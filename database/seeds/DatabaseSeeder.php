@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             FoodsourceSeeder::class,
             FoodgroupSeeder::class,
+            FoodSeeder::class,
         ]);
         // $this->call(UserSeeder::class);
     }
