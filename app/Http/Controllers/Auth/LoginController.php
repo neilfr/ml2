@@ -60,8 +60,9 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
+        if(!$request->remember) $request->remember=false;
         $user = User::firstWhere('email', $credentials['email']);
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $request->remember)) {
             return redirect(route('home'));
         } else {
             dd("NOT AUTHENTICATED!");

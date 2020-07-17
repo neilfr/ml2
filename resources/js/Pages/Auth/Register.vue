@@ -22,11 +22,9 @@ export default {
   },
   data() {
     return {
-    //   form: {
         name: '',
         email: '',
         password: ''
-    //   }
     }
   },
   methods: {

@@ -1949,6 +1949,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     errors: Object,
@@ -1956,17 +1959,17 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      form: {
-        email: 'admin@example.com',
-        password: 'tester'
-      }
+      email: 'admin@example.com',
+      password: 'tester',
+      remember: null
     };
   },
   methods: {
     submit: function submit() {
       this.$inertia.post(this.$route('login'), {
-        email: this.form.email,
-        password: this.form.password
+        email: this.email,
+        password: this.password,
+        remember: this.remember
       });
     }
   }
@@ -2005,11 +2008,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      //   form: {
       name: '',
       email: '',
-      password: '' //   }
-
+      password: ''
     };
   },
   methods: {
@@ -3184,18 +3185,18 @@ var render = function() {
         {
           name: "model",
           rawName: "v-model",
-          value: _vm.form.email,
-          expression: "form.email"
+          value: _vm.email,
+          expression: "email"
         }
       ],
       attrs: { name: "email", id: "email", type: "email", autofocus: "" },
-      domProps: { value: _vm.form.email },
+      domProps: { value: _vm.email },
       on: {
         input: function($event) {
           if ($event.target.composing) {
             return
           }
-          _vm.$set(_vm.form, "email", $event.target.value)
+          _vm.email = $event.target.value
         }
       }
     }),
@@ -3209,18 +3210,58 @@ var render = function() {
         {
           name: "model",
           rawName: "v-model",
-          value: _vm.form.password,
-          expression: "form.password"
+          value: _vm.password,
+          expression: "password"
         }
       ],
       attrs: { type: "password" },
-      domProps: { value: _vm.form.password },
+      domProps: { value: _vm.password },
       on: {
         input: function($event) {
           if ($event.target.composing) {
             return
           }
-          _vm.$set(_vm.form, "password", $event.target.value)
+          _vm.password = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c("label", { attrs: { for: "remember" } }, [_vm._v("Remember me:")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.remember,
+          expression: "remember"
+        }
+      ],
+      attrs: { name: "remember", id: "remember", type: "checkbox" },
+      domProps: {
+        checked: Array.isArray(_vm.remember)
+          ? _vm._i(_vm.remember, null) > -1
+          : _vm.remember
+      },
+      on: {
+        change: function($event) {
+          var $$a = _vm.remember,
+            $$el = $event.target,
+            $$c = $$el.checked ? true : false
+          if (Array.isArray($$a)) {
+            var $$v = null,
+              $$i = _vm._i($$a, $$v)
+            if ($$el.checked) {
+              $$i < 0 && (_vm.remember = $$a.concat([$$v]))
+            } else {
+              $$i > -1 &&
+                (_vm.remember = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            }
+          } else {
+            _vm.remember = $$c
+          }
         }
       }
     }),
