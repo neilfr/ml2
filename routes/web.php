@@ -15,20 +15,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Auth::routes();
-// Auth
-// Route::get('/login', 'LoginController@create')->name('login');
-// Route::post('/login', 'LoginController@store')->name('login.store');
-// Route::get('/logout', 'LoginController@destroy')->name('logout');
-// Route::post('login', 'LoginController@login')->name('login.attempt');
-// ->middleware('guest');
 
-// Route::get('login')->name('login')->uses('Auth\LoginController@showLoginForm');
-// ->middleware('guest');
-Route::post('/login')->name('login.attempt')->uses('Auth\LoginController@loginAttempt');
-    // Route::post('/login', 'LoginController@login')->middleware('guest')->name('login.attempt');
-    // Route::post('logout')->name('logout')->uses('Auth\LoginController@logout');
-Route::get('/register')->name('register')->uses('Auth\LoginController@register');
-Route::post('/user')->name('user.store')->uses('UserController@store');
+Route::post('/login', 'Auth\LoginController@login')->name('login');
+Route::get('/register', 'Auth\LoginController@register')->name('register');
+Route::post('/user', 'UserController@store')->name('user.store');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::post('logout')->name('logout')->uses('Auth\LoginController@logout');

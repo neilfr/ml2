@@ -35,6 +35,7 @@ class LoginController extends Controller
      */
     // protected $redirectTo = '/';
 
+    // what is calling this function???
     public function showLoginForm()
     {
         $name = "Nobody!";
@@ -56,12 +57,11 @@ class LoginController extends Controller
     //     return redirect()->route('home');
     // }
 
-    public function loginAttempt(Request $request)
+    public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
         $user = User::firstWhere('email', $credentials['email']);
         if (Auth::attempt($credentials)) {
-            // dd("AUTHENTICATED!");
             return redirect(route('home'));
         } else {
             dd("NOT AUTHENTICATED!");
@@ -70,7 +70,6 @@ class LoginController extends Controller
 
     public function logout()
     {
-        // dd("logging out");
         Auth::logout();
         return redirect('/');
     }

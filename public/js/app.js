@@ -1973,7 +1973,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     submit: function submit() {
-      this.$inertia.post(this.$route('login.attempt'), {
+      this.$inertia.post(this.$route('login'), {
         email: this.form.email,
         password: this.form.password
       });
