@@ -25,6 +25,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-            return Inertia::render('Home/Index', ['loggedInState' => Auth::check()]);
+        $name = "Nobody!";
+        if (Auth::User())
+            $name = Auth::User()->name;
+        return Inertia::render('Home/Index', ['whoAmI' => $name]);
     }
 }

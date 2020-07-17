@@ -36,7 +36,10 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
-        return Inertia::render('Auth/Login', ['loggedInState' => Auth::check()]);
+        $name = "Nobody!";
+        if(Auth::User())
+            $name=Auth::User()->name;
+        return Inertia::render('Auth/Login', ['whoAmI' => $name]);
     }
 
     // protected function authenticated(Request $request, $user)
@@ -62,7 +65,7 @@ class LoginController extends Controller
     {
         // dd("logging out");
         Auth::logout();
-        return redirect('/login');
+        return redirect('/');
     }
 
     /**

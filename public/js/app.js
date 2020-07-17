@@ -1964,7 +1964,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: {
     errors: Object,
-    loggedInState: Boolean
+    whoAmI: String
   },
   data: function data() {
     return {
@@ -2135,15 +2135,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 // import Layout from "@/Shared/Layout";
 // import PageHeader from "@/Shared/PageHeader";
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    loggedInState: Boolean // foods: Array,
+    whoAmI: String // foods: Array,
     // nutrients: Array,
 
+  },
+  methods: {
+    submit: function submit() {
+      console.log("clicked!!!");
+      this.$inertia.post(this.$route('logout'));
+    }
   } // layout: Layout,
   // components: {
   //     PageHeader
@@ -3193,118 +3197,98 @@ var render = function() {
     },
     [
       _c("div", { staticClass: "w-full max-w-md" }, [
-        _c("div", [_vm._v("Logged in State is:" + _vm._s(_vm.loggedInState))]),
+        _c("div", [_vm._v("Who Am I?  " + _vm._s(_vm.whoAmI))]),
         _vm._v(" "),
-        _c(
-          "form",
-          {
-            staticClass: "mt-8 bg-white rounded-lg shadow-xl overflow-hidden",
-            attrs: { method: "POST", action: _vm.$route("login") },
+        _c("div", { staticClass: "px-10 py-12" }, [
+          _c("h1", { staticClass: "text-center font-bold text-3xl" }, [
+            _vm._v("Login")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "mx-auto mt-6 w-24 border-b-2" }),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "email" } }, [_vm._v("Email:")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.form.email,
+                expression: "form.email"
+              }
+            ],
+            staticClass: "mt-10",
+            attrs: { name: "email", id: "email", type: "email", autofocus: "" },
+            domProps: { value: _vm.form.email },
             on: {
-              submit: function($event) {
-                $event.preventDefault()
-                return _vm.submit($event)
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.form, "email", $event.target.value)
               }
             }
+          }),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "password" } }, [_vm._v("Password:")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.form.password,
+                expression: "form.password"
+              }
+            ],
+            staticClass: "mt-6",
+            attrs: { type: "password" },
+            domProps: { value: _vm.form.password },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.form, "password", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("br")
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "px-10 py-4 bg-gray-100 border-t border-gray-200 flex justify-between items-center"
           },
           [
-            _c("div", { staticClass: "px-10 py-12" }, [
-              _c("h1", { staticClass: "text-center font-bold text-3xl" }, [
-                _vm._v("Login")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "mx-auto mt-6 w-24 border-b-2" }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "email" } }, [_vm._v("Email:")]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.form.email,
-                    expression: "form.email"
-                  }
-                ],
-                staticClass: "mt-10",
-                attrs: {
-                  name: "email",
-                  id: "email",
-                  type: "email",
-                  autofocus: ""
-                },
-                domProps: { value: _vm.form.email },
+            _c(
+              "button",
+              {
+                staticClass: "btn-indigo",
                 on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.form, "email", $event.target.value)
+                  click: function($event) {
+                    return _vm.submit()
                   }
                 }
-              }),
-              _vm._v(" "),
-              _c("br"),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "password" } }, [
-                _vm._v("Password:")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.form.password,
-                    expression: "form.password"
-                  }
-                ],
-                staticClass: "mt-6",
-                attrs: { type: "password" },
-                domProps: { value: _vm.form.password },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.form, "password", $event.target.value)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("br")
-            ]),
-            _vm._v(" "),
-            _vm._m(0),
-            _vm._v(" "),
-            _c("a", { attrs: { href: this.$route("register") } }, [
-              _vm._v("Register")
-            ])
+              },
+              [_vm._v("Login")]
+            )
           ]
-        )
+        ),
+        _vm._v(" "),
+        _c("a", { attrs: { href: this.$route("register") } }, [
+          _vm._v("Register")
+        ])
       ])
     ]
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "px-10 py-4 bg-gray-100 border-t border-gray-200 flex justify-between items-center"
-      },
-      [
-        _c("button", { staticClass: "btn-indigo", attrs: { type: "submit" } }, [
-          _vm._v("Login")
-        ])
-      ]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -3534,22 +3518,20 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container mx-auto px-4" }, [
-    _c("div", [_vm._v("Logged in State is:" + _vm._s(_vm.loggedInState))]),
+    _c("div", [_vm._v("Who am I?  " + _vm._s(_vm.whoAmI))]),
     _vm._v(" "),
     _c("h1", [_vm._v("logged in on home page!!")]),
     _vm._v(" "),
     _c(
-      "form",
+      "button",
       {
-        attrs: { method: "GET", action: _vm.$route("logout") },
         on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.submit($event)
+          click: function($event) {
+            return _vm.submit()
           }
         }
       },
-      [_c("button", { attrs: { type: "submit" } }, [_vm._v("Log Out")])]
+      [_vm._v("Log Out")]
     )
   ])
 }

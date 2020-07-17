@@ -28,12 +28,12 @@ Route::post('login')->name('login.attempt')->uses('Auth\LoginController@loginAtt
     ->middleware('guest');
 Route::get('register')->name('register')->uses('Auth\RegisterController@register')
     ->middleware('guest');
-Route::get('logout')->name('logout')->uses('Auth\LoginController@logout')
-    ->middleware('guest');
-// Route::post('/login', 'LoginController@login')->middleware('guest')->name('login.attempt');
-// Route::post('logout')->name('logout')->uses('Auth\LoginController@logout');
+    // Route::post('/login', 'LoginController@login')->middleware('guest')->name('login.attempt');
+    // Route::post('logout')->name('logout')->uses('Auth\LoginController@logout');
 
 Route::group(['middleware' => 'auth'], function () {
+    Route::post('logout')->name('logout')->uses('Auth\LoginController@logout');
+
     Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/', 'HomeController@index');
 
