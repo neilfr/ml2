@@ -25,14 +25,14 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    // use AuthenticatesUsers;
 
     /**
      * Where to redirect users after login.
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    // protected $redirectTo = '/';
 
     public function showLoginForm()
     {
@@ -40,6 +40,11 @@ class LoginController extends Controller
         if(Auth::User())
             $name=Auth::User()->name;
         return Inertia::render('Auth/Login', ['whoAmI' => $name]);
+    }
+
+    public function register()
+    {
+        dd("Registering!!");
     }
 
     // protected function authenticated(Request $request, $user)
