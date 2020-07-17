@@ -25,7 +25,6 @@
 <script>
 
 export default {
-  metaInfo: { title: 'Login' },
   props: {
     errors: Object,
     whoAmI: String

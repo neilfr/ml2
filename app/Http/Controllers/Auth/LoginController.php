@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
+use App\Http\Requests\CreateUserRequest;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 
@@ -44,7 +45,8 @@ class LoginController extends Controller
 
     public function register()
     {
-        dd("Registering!!");
+        return Inertia::render('Auth/Register');
+
     }
 
     // protected function authenticated(Request $request, $user)

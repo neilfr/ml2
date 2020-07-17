@@ -24,10 +24,11 @@ Auth::routes();
 
 // Route::get('login')->name('login')->uses('Auth\LoginController@showLoginForm');
 // ->middleware('guest');
-Route::post('login')->name('login.attempt')->uses('Auth\LoginController@loginAttempt');
+Route::post('/login')->name('login.attempt')->uses('Auth\LoginController@loginAttempt');
     // Route::post('/login', 'LoginController@login')->middleware('guest')->name('login.attempt');
     // Route::post('logout')->name('logout')->uses('Auth\LoginController@logout');
-Route::get('register')->name('register')->uses('Auth\LoginController@register');
+Route::get('/register')->name('register')->uses('Auth\LoginController@register');
+Route::post('/user')->name('user.store')->uses('UserController@store');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::post('logout')->name('logout')->uses('Auth\LoginController@logout');
