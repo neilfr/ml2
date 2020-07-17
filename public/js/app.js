@@ -1949,15 +1949,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     errors: Object,
@@ -1992,15 +1983,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -3190,104 +3172,76 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass:
-        "p-6 bg-indigo-800 min-h-screen flex justify-center items-center"
-    },
-    [
-      _c("div", { staticClass: "w-full max-w-md" }, [
-        _c("div", [_vm._v("Who Am I?  " + _vm._s(_vm.whoAmI))]),
-        _vm._v(" "),
-        _c("div", { staticClass: "px-10 py-12" }, [
-          _c("h1", { staticClass: "text-center font-bold text-3xl" }, [
-            _vm._v("Login")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mx-auto mt-6 w-24 border-b-2" }),
-          _vm._v(" "),
-          _c("label", { attrs: { for: "email" } }, [_vm._v("Email:")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.form.email,
-                expression: "form.email"
-              }
-            ],
-            staticClass: "mt-10",
-            attrs: { name: "email", id: "email", type: "email", autofocus: "" },
-            domProps: { value: _vm.form.email },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.form, "email", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("br"),
-          _vm._v(" "),
-          _c("label", { attrs: { for: "password" } }, [_vm._v("Password:")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.form.password,
-                expression: "form.password"
-              }
-            ],
-            staticClass: "mt-6",
-            attrs: { type: "password" },
-            domProps: { value: _vm.form.password },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.form, "password", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("br")
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass:
-              "px-10 py-4 bg-gray-100 border-t border-gray-200 flex justify-between items-center"
-          },
-          [
-            _c(
-              "button",
-              {
-                staticClass: "btn-indigo",
-                on: {
-                  click: function($event) {
-                    return _vm.submit()
-                  }
-                }
-              },
-              [_vm._v("Login")]
-            )
-          ]
-        ),
-        _vm._v(" "),
-        _c("a", { attrs: { href: this.$route("register") } }, [
-          _vm._v("Register")
-        ])
-      ])
-    ]
-  )
+  return _c("div", [
+    _c("div", [_vm._v("Who Am I?  " + _vm._s(_vm.whoAmI))]),
+    _vm._v(" "),
+    _c("h1", [_vm._v("Login")]),
+    _vm._v(" "),
+    _c("label", { attrs: { for: "email" } }, [_vm._v("Email:")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.form.email,
+          expression: "form.email"
+        }
+      ],
+      attrs: { name: "email", id: "email", type: "email", autofocus: "" },
+      domProps: { value: _vm.form.email },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.$set(_vm.form, "email", $event.target.value)
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c("label", { attrs: { for: "password" } }, [_vm._v("Password:")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.form.password,
+          expression: "form.password"
+        }
+      ],
+      attrs: { type: "password" },
+      domProps: { value: _vm.form.password },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.$set(_vm.form, "password", $event.target.value)
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        staticClass: "btn-indigo",
+        on: {
+          click: function($event) {
+            return _vm.submit()
+          }
+        }
+      },
+      [_vm._v("Login")]
+    ),
+    _vm._v(" "),
+    _c("a", { attrs: { href: this.$route("register") } }, [_vm._v("Register")])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -3311,124 +3265,97 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass:
-        "p-6 bg-indigo-800 min-h-screen flex justify-center items-center"
-    },
-    [
-      _c("div", { staticClass: "w-full max-w-md" }, [
-        _c("div", { staticClass: "px-10 py-12" }, [
-          _c("h1", { staticClass: "text-center font-bold text-3xl" }, [
-            _vm._v("Register")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mx-auto mt-6 w-24 border-b-2" }),
-          _vm._v(" "),
-          _c("label", { attrs: { for: "name" } }, [_vm._v("Name:")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.name,
-                expression: "name"
-              }
-            ],
-            staticClass: "mt-6",
-            attrs: { type: "text", autofocus: "" },
-            domProps: { value: _vm.name },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.name = $event.target.value
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("br"),
-          _vm._v(" "),
-          _c("label", { attrs: { for: "email" } }, [_vm._v("Email:")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.email,
-                expression: "email"
-              }
-            ],
-            staticClass: "mt-10",
-            attrs: { name: "email", id: "email", type: "email" },
-            domProps: { value: _vm.email },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.email = $event.target.value
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("br"),
-          _vm._v(" "),
-          _c("label", { attrs: { for: "password" } }, [_vm._v("Password:")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.password,
-                expression: "password"
-              }
-            ],
-            staticClass: "mt-6",
-            attrs: { type: "password" },
-            domProps: { value: _vm.password },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.password = $event.target.value
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("br")
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass:
-              "px-10 py-4 bg-gray-100 border-t border-gray-200 flex justify-between items-center"
-          },
-          [
-            _c(
-              "button",
-              {
-                staticClass: "btn-indigo",
-                on: {
-                  click: function($event) {
-                    return _vm.submit()
-                  }
-                }
-              },
-              [_vm._v("Register")]
-            )
-          ]
-        )
-      ])
-    ]
-  )
+  return _c("div", [
+    _c("h1", [_vm._v("Register")]),
+    _vm._v(" "),
+    _c("label", { attrs: { for: "name" } }, [_vm._v("Name:")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.name,
+          expression: "name"
+        }
+      ],
+      attrs: { type: "text", autofocus: "" },
+      domProps: { value: _vm.name },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.name = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c("label", { attrs: { for: "email" } }, [_vm._v("Email:")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.email,
+          expression: "email"
+        }
+      ],
+      attrs: { name: "email", id: "email", type: "email" },
+      domProps: { value: _vm.email },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.email = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c("label", { attrs: { for: "password" } }, [_vm._v("Password:")]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.password,
+          expression: "password"
+        }
+      ],
+      attrs: { type: "password" },
+      domProps: { value: _vm.password },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.password = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        staticClass: "btn-indigo",
+        on: {
+          click: function($event) {
+            return _vm.submit()
+          }
+        }
+      },
+      [_vm._v("Register")]
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
