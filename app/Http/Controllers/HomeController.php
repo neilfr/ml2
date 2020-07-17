@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -23,7 +25,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        dd("Got to home controller index");
-        return view('home');
+            return Inertia::render('Home/Index', ['loggedInState' => Auth::check()]);
     }
 }

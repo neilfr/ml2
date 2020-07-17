@@ -1,11 +1,17 @@
 import { InertiaApp } from "@inertiajs/inertia-vue";
 import Vue from "vue";
 
-Vue.use(InertiaApp);
 
 const app = document.getElementById("app");
 
+Vue.prototype.$route = (...args) => route(...args);
+
+Vue.use(InertiaApp);
+
 new Vue({
+    metaInfo: {
+        titleTemplate: title => (title ? `${title} - ML2` : "ML2")
+    },
     render: h =>
         h(InertiaApp, {
             props: {

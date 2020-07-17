@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\User;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+
 
 class LoginController extends Controller
 {
@@ -31,7 +36,33 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
-        return Inertia::render('Auth/Login');
+        return Inertia::render('Auth/Login', ['loggedInState' => Auth::check()]);
+    }
+
+    // protected function authenticated(Request $request, $user)
+    // {
+    //     flash("Welcome back {$user->name}!");
+
+    //     return redirect()->route('home');
+    // }
+
+    public function loginAttempt(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+        $user = User::firstWhere('email', $credentials['email']);
+        if (Auth::attempt($credentials)) {
+            // dd("AUTHENTICATED!");
+            return redirect(route('home'));
+        } else {
+            dd("NOT AUTHENTICATED!");
+        }
+    }
+
+    public function logout()
+    {
+        // dd("logging out");
+        Auth::logout();
+        return redirect('/login');
     }
 
     /**

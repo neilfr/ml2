@@ -1,7 +1,12 @@
 <template>
     <div class="container mx-auto px-4">
-    <h1>Food List</h1>
-        <inertia-link href="/foodsApi">show foods</inertia-link>
+    <div>Logged in State is:{{loggedInState}}</div>
+
+    <h1>logged in on home page!!</h1>
+    <form method="GET" :action="$route('logout')" @submit.prevent="submit">
+        <button type="submit">Log Out</button>
+    </form>
+        <!-- <inertia-link href="/foodsApi">show foods</inertia-link> -->
 
         <!--        <div class="flex" v-for="food in foods" :key="food.food_code">-->
 <!--            <div class="w-12">{{food.food_code}}</div>-->
@@ -21,6 +26,7 @@
 
     export default {
         props:{
+            loggedInState:Boolean
             // foods: Array,
             // nutrients: Array,
         }
