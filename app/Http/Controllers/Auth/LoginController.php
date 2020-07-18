@@ -63,7 +63,7 @@ class LoginController extends Controller
         if(!$request->remember) $request->remember=false;
         $user = User::firstWhere('email', $credentials['email']);
         if (Auth::attempt($credentials, $request->remember)) {
-            return redirect(route('home'));
+            return redirect(route('foods.index'));
         } else {
             dd("NOT AUTHENTICATED!");
         }
