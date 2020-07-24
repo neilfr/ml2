@@ -2062,6 +2062,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     foods: Object
@@ -3449,6 +3459,15 @@ var render = function() {
         _vm._v(" "),
         _vm._l(_vm.foods.data, function(food) {
           return _c("tr", { key: food.id }, [
+            _c("td", [
+              _c("input", {
+                attrs: { type: "checkbox" },
+                domProps: { value: food.favourite, checked: food.favourite }
+              })
+            ]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(food.alias))]),
+            _vm._v(" "),
             _c("td", [_vm._v(_vm._s(food.description))]),
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(food.kcal))]),
@@ -3473,6 +3492,10 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("tr", [
+      _c("th", [_vm._v("Favourite")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Alias")]),
+      _vm._v(" "),
       _c("th", [_vm._v("Description")]),
       _vm._v(" "),
       _c("th", [_vm._v("KCal")]),
