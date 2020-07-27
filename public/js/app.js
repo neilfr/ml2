@@ -2084,6 +2084,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -2094,7 +2103,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       descriptionSearchText: '',
       aliasSearchText: '',
-      foodgroupSearchId: 0
+      foodgroupFilter: ''
     };
   },
   methods: {
@@ -2111,7 +2120,7 @@ __webpack_require__.r(__webpack_exports__);
         preserveScroll: true
       });
     }, 500),
-    foodgroupFilter: function foodgroupFilter() {
+    foo2: function foo2() {
       var url = "".concat(this.$route("foods.index"));
       url += "?descriptionSearch=".concat(this.descriptionSearchText);
       url += "&aliasSearch=".concat(this.aliasSearchText);
@@ -2120,6 +2129,9 @@ __webpack_require__.r(__webpack_exports__);
         preserveState: true,
         preserveScroll: true
       });
+    },
+    setFavourite: function setFavourite() {
+      console.log("change favourite!");
     }
   }
 });
@@ -20623,28 +20635,25 @@ var render = function() {
           {
             name: "model",
             rawName: "v-model",
-            value: _vm.foodgroupSearchId,
-            expression: "foodgroupSearchId"
+            value: _vm.foodgroupFilter,
+            expression: "foodgroupFilter"
           }
         ],
         attrs: { name: "foodgroups", id: "foodgroups" },
         on: {
-          change: [
-            function($event) {
-              var $$selectedVal = Array.prototype.filter
-                .call($event.target.options, function(o) {
-                  return o.selected
-                })
-                .map(function(o) {
-                  var val = "_value" in o ? o._value : o.value
-                  return val
-                })
-              _vm.foodgroupSearchId = $event.target.multiple
-                ? $$selectedVal
-                : $$selectedVal[0]
-            },
-            _vm.foodgroupFilter
-          ]
+          change: function($event) {
+            var $$selectedVal = Array.prototype.filter
+              .call($event.target.options, function(o) {
+                return o.selected
+              })
+              .map(function(o) {
+                var val = "_value" in o ? o._value : o.value
+                return val
+              })
+            _vm.foodgroupFilter = $event.target.multiple
+              ? $$selectedVal
+              : $$selectedVal[0]
+          }
         }
       },
       _vm._l(_vm.foodgroups.data, function(foodgroup) {
@@ -20656,6 +20665,48 @@ var render = function() {
       }),
       0
     ),
+    _vm._v(" "),
+    _c(
+      "select",
+      {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.foodgroupFilter,
+            expression: "foodgroupFilter"
+          }
+        ],
+        on: {
+          change: [
+            function($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function(o) {
+                  return o.selected
+                })
+                .map(function(o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.foodgroupFilter = $event.target.multiple
+                ? $$selectedVal
+                : $$selectedVal[0]
+            },
+            _vm.foo2
+          ]
+        }
+      },
+      _vm._l(_vm.foodgroups.data, function(foodgroup) {
+        return _c(
+          "option",
+          { key: foodgroup.id, domProps: { value: foodgroup.id } },
+          [_vm._v("\n    " + _vm._s(foodgroup.description) + "\n  ")]
+        )
+      }),
+      0
+    ),
+    _vm._v(" "),
+    _c("span", [_vm._v("Selected: " + _vm._s(_vm.foodgroupFilter))]),
     _vm._v(" "),
     _c("br"),
     _vm._v(" "),
@@ -20729,7 +20780,8 @@ var render = function() {
             _c("td", [
               _c("input", {
                 attrs: { type: "checkbox" },
-                domProps: { value: food.favourite, checked: food.favourite }
+                domProps: { value: food.favourite, checked: food.favourite },
+                on: { change: _vm.setFavourite }
               })
             ]),
             _vm._v(" "),

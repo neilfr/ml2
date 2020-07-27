@@ -2,10 +2,18 @@
     <div class="container">
         <h1>Foods</h1>
         <label for="foodgroups">Food Group:</label>
-        <select name="foodgroups" id="foodgroups" v-on:change="foodgroupFilter" v-model="foodgroupSearchId">
+        <select name="foodgroups" id="foodgroups" v-model="foodgroupFilter">
             <option v-for="foodgroup in foodgroups.data" :key="foodgroup.id" :value="foodgroup.id">{{foodgroup.description}}</option>
         </select>
-        <br/>
+
+<select v-model="foodgroupFilter" @change="foo2">
+  <option v-for="foodgroup in foodgroups.data" v-bind:key="foodgroup.id" v-bind:value="foodgroup.id">
+    {{ foodgroup.description }}
+  </option>
+</select>
+<span>Selected: {{ foodgroupFilter }}</span>
+<br>
+
         <label for="descriptionSearch">Description Search:</label>
         <input type="text" name="descriptionSearch" id="descriptionSearch" @input="search" v-model="descriptionSearchText"/>
         <br/>
@@ -28,6 +36,7 @@
                         type="checkbox"
                         :value="food.favourite"
                         :checked="food.favourite"
+                        @change="setFavourite"
                     />
                 </td>
                 <td>{{food.alias}}</td>
@@ -54,7 +63,7 @@
             return {
                 descriptionSearchText: '',
                 aliasSearchText: '',
-                foodgroupSearchId: 0
+                foodgroupFilter: '',
             }
         },
         methods:{
@@ -71,7 +80,7 @@
                     preserveScroll: true,
                 });
             }, 500),
-            foodgroupFilter(){
+            foo2(){
                 let url = `${this.$route("foods.index")}`;
                 url += `?descriptionSearch=${this.descriptionSearchText}`;
                 url += `&aliasSearch=${this.aliasSearchText}`;
@@ -80,6 +89,9 @@
                     preserveState: true,
                     preserveScroll: true,
                 });
+            },
+            setFavourite(){
+                console.log("change favourite!");
             }
         }
     };
