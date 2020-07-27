@@ -2079,27 +2079,48 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    foods: Object
+    foods: Object,
+    foodgroups: Object
   },
   data: function data() {
     return {
       descriptionSearchText: '',
-      aliasSearchText: ''
+      aliasSearchText: '',
+      foodgroupSearchId: 0
     };
   },
   methods: {
+    foo: function foo() {
+      console.log("foo!");
+    },
     search: Object(lodash__WEBPACK_IMPORTED_MODULE_0__["throttle"])(function (e) {
       var url = "".concat(this.$route("foods.index"));
-      url += "?descriptionSearch=".concat(this.descriptionSearchText, "&aliasSearch=").concat(this.aliasSearchText);
-      console.log("SEARCHING!", url);
+      url += "?descriptionSearch=".concat(this.descriptionSearchText);
+      url += "&aliasSearch=".concat(this.aliasSearchText);
+      url += "&foodgroupSearch=".concat(this.foodgroupSearchId);
       this.$inertia.visit(url, {
         preserveState: true,
         preserveScroll: true
       });
-    }, 500)
+    }, 500),
+    foodgroupFilter: function foodgroupFilter() {
+      var url = "".concat(this.$route("foods.index"));
+      url += "?descriptionSearch=".concat(this.descriptionSearchText);
+      url += "&aliasSearch=".concat(this.aliasSearchText);
+      url += "&foodgroupSearch=".concat(this.foodgroupSearchId);
+      this.$inertia.visit(url, {
+        preserveState: true,
+        preserveScroll: true
+      });
+    }
   }
 });
 
@@ -20592,6 +20613,51 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("h1", [_vm._v("Foods")]),
+    _vm._v(" "),
+    _c("label", { attrs: { for: "foodgroups" } }, [_vm._v("Food Group:")]),
+    _vm._v(" "),
+    _c(
+      "select",
+      {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.foodgroupSearchId,
+            expression: "foodgroupSearchId"
+          }
+        ],
+        attrs: { name: "foodgroups", id: "foodgroups" },
+        on: {
+          change: [
+            function($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function(o) {
+                  return o.selected
+                })
+                .map(function(o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.foodgroupSearchId = $event.target.multiple
+                ? $$selectedVal
+                : $$selectedVal[0]
+            },
+            _vm.foodgroupFilter
+          ]
+        }
+      },
+      _vm._l(_vm.foodgroups.data, function(foodgroup) {
+        return _c(
+          "option",
+          { key: foodgroup.id, domProps: { value: foodgroup.id } },
+          [_vm._v(_vm._s(foodgroup.description))]
+        )
+      }),
+      0
+    ),
+    _vm._v(" "),
+    _c("br"),
     _vm._v(" "),
     _c("label", { attrs: { for: "descriptionSearch" } }, [
       _vm._v("Description Search:")

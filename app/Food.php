@@ -63,6 +63,15 @@ class Food extends Model
         $query->where('description', 'like', "%{$descriptionSearch}%");
     }
 
+    public function scopeFoodgroupSearch(Builder $query, $foodgroupSearch)
+    {
+        if (is_null($foodgroupSearch)) {
+            return $query;
+        }
+
+        $query->where('foodgroup_id', '=', "{$foodgroupSearch}");
+    }
+
     public function foodgroup()
     {
         return $this->belongsTo(Foodgroup::class);

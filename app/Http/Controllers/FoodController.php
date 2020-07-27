@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Food;
+use App\Foodgroup;
 use App\Foodsource;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Resources\FoodResource;
 use App\Http\Requests\CreateFoodRequest;
 use App\Http\Requests\UpdateFoodRequest;
+use App\Http\Resources\FoodgroupResource;
 use phpDocumentor\Reflection\Types\Integer;
 
 class FoodController extends Controller
@@ -19,12 +21,16 @@ class FoodController extends Controller
     {
         $foods = Food::userFoods()
         ->sharedFoods()
+        ->foodgroupSearch($request->query('foodgroupSearch'))
         ->descriptionSearch($request->query('descriptionSearch'))
         ->aliasSearch($request->query('aliasSearch'))
         ->get();
 
+        $foodgroups = Foodgroup::all();
+
         return Inertia::render('Foods/Index', [
             'foods' => FoodResource::collection($foods),
+            'foodgroups' => FoodgroupResource::collection($foodgroups)
         ]);
     }
 
