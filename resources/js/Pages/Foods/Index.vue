@@ -1,6 +1,11 @@
 <template>
     <div class="container">
-        <h1>made it</h1>
+        <h1>Foods</h1>
+        <label for="descriptionSearch">Description Search:</label>
+        <input type="text" name="descriptionSearch" id="descriptionSearch" @input="search" v-model="descriptionSearchText"/>
+        <br/>
+        <label for="aliasSearch">Alias Search:</label>
+        <input type="text" name="aliasSearch" id="aliasSearch" @input="search" v-model="aliasSearchText"/>
         <table>
             <tr>
                 <th>Favourite</th>
@@ -34,9 +39,27 @@
 </template>
 
 <script>
+    import { throttle } from "lodash";
     export default {
         props:{
             foods: Object
+        },
+        data() {
+            return {
+                descriptionSearchText: '',
+                aliasSearchText: '',
+            }
+        },
+        methods:{
+            search: throttle(function(e) {
+                let url = `${this.$route("foods.index")}`;
+                url += `?descriptionSearch=${this.descriptionSearchText}&aliasSearch=${this.aliasSearchText}`;
+                console.log("SEARCHING!", url);
+                this.$inertia.visit(url, {
+                    preserveState: true,
+                    preserveScroll: true,
+                });
+            }, 500)
         }
     };
 </script>

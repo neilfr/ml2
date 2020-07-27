@@ -15,13 +15,13 @@ use phpDocumentor\Reflection\Types\Integer;
 
 class FoodController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $sharableFoodsourceIds = Foodsource::where('sharable', '=', true)->get()->pluck('id');
-
-        $foods = Food::where('user_id', auth()->user()->id)
-            ->orWhere('foodsource_id', '=', $sharableFoodsourceIds)
-            ->get();
+        $foods = Food::userFoods()
+        ->sharedFoods()
+        ->descriptionSearch($request->query('descriptionSearch'))
+        ->aliasSearch($request->query('aliasSearch'))
+        ->get();
 
         return Inertia::render('Foods/Index', [
             'foods' => FoodResource::collection($foods),
