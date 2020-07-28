@@ -32,6 +32,7 @@ class Food extends Model
         'protein' => 'integer',
         'carbohydrate' => 'integer',
         'potassium' => 'integer',
+        'quantity' => 'integer',
     ];
 
     public function scopeUserFoods(Builder $query)

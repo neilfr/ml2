@@ -2,18 +2,12 @@
     <div class="container">
         <h1>Foods</h1>
         <label for="foodgroups">Food Group:</label>
-        <select name="foodgroups" id="foodgroups" v-model="foodgroupFilter">
-            <option v-for="foodgroup in foodgroups.data" :key="foodgroup.id" :value="foodgroup.id">{{foodgroup.description}}</option>
+        <select name="foodgroups" id="foodgroups" v-model="foodgroupFilter" @change="search">
+            <option v-for="foodgroup in foodgroups.data" v-bind:key="foodgroup.id" v-bind:value="foodgroup.id">
+                {{ foodgroup.description }}
+            </option>
         </select>
-
-<select v-model="foodgroupFilter" @change="foo2">
-  <option v-for="foodgroup in foodgroups.data" v-bind:key="foodgroup.id" v-bind:value="foodgroup.id">
-    {{ foodgroup.description }}
-  </option>
-</select>
-<span>Selected: {{ foodgroupFilter }}</span>
-<br>
-
+        <br>
         <label for="descriptionSearch">Description Search:</label>
         <input type="text" name="descriptionSearch" id="descriptionSearch" @input="search" v-model="descriptionSearchText"/>
         <br/>
@@ -29,6 +23,7 @@
                 <th>Fat</th>
                 <th>Carbohydrate</th>
                 <th>Potassium</th>
+                <th>Quantity</th>
             </tr>
             <tr v-for="food in foods.data" :key="food.id">
                 <td>
@@ -46,14 +41,13 @@
                 <td>{{food.fat}}</td>
                 <td>{{food.carbohydrate}}</td>
                 <td>{{food.potassium}}</td>
-
+                <td>{{food.quantity}}</td>
             </tr>
         </table>
     </div>
 </template>
 
 <script>
-    import { throttle } from "lodash";
     export default {
         props:{
             foods: Object,
@@ -67,24 +61,11 @@
             }
         },
         methods:{
-            foo(){
-                console.log("foo!");
-            },
-            search: throttle(function(e) {
+            search(){
                 let url = `${this.$route("foods.index")}`;
                 url += `?descriptionSearch=${this.descriptionSearchText}`;
                 url += `&aliasSearch=${this.aliasSearchText}`;
-                url += `&foodgroupSearch=${this.foodgroupSearchId}`;
-                this.$inertia.visit(url, {
-                    preserveState: true,
-                    preserveScroll: true,
-                });
-            }, 500),
-            foo2(){
-                let url = `${this.$route("foods.index")}`;
-                url += `?descriptionSearch=${this.descriptionSearchText}`;
-                url += `&aliasSearch=${this.aliasSearchText}`;
-                url += `&foodgroupSearch=${this.foodgroupSearchId}`;
+                url += `&foodgroupSearch=${this.foodgroupFilter}`;
                 this.$inertia.visit(url, {
                     preserveState: true,
                     preserveScroll: true,
