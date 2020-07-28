@@ -29,6 +29,7 @@
                 <td>
                     <input
                         type="checkbox"
+                        :name="food.id"
                         :value="food.favourite"
                         :checked="food.favourite"
                         @change="setFavourite"
@@ -71,8 +72,19 @@
                     preserveScroll: true,
                 });
             },
-            setFavourite(){
-                console.log("change favourite!");
+            setFavourite(e){
+                console.log("change favourite!", "name",e.target.name,"value",e.target.value);
+                this.$inertia.patch(
+                    this.$route("foods.update", e.target.name),
+                    {
+                        favourite: !e.target.value
+                    },
+                    {
+                        replace: true,
+                        // preserveState: true,
+                        // preserveScroll: false,
+                        // only: [],
+                    });
             }
         }
     };

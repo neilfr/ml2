@@ -2086,6 +2086,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     foods: Object,
@@ -2109,8 +2110,16 @@ __webpack_require__.r(__webpack_exports__);
         preserveScroll: true
       });
     },
-    setFavourite: function setFavourite() {
-      console.log("change favourite!");
+    setFavourite: function setFavourite(e) {
+      console.log("change favourite!", "name", e.target.name, "value", e.target.value);
+      this.$inertia.patch(this.$route("foods.update", e.target.name), {
+        favourite: !e.target.value
+      }, {
+        replace: true // preserveState: true,
+        // preserveScroll: false,
+        // only: [],
+
+      });
     }
   }
 });
@@ -3607,7 +3616,7 @@ var render = function() {
           return _c("tr", { key: food.id }, [
             _c("td", [
               _c("input", {
-                attrs: { type: "checkbox" },
+                attrs: { type: "checkbox", name: food.id },
                 domProps: { value: food.favourite, checked: food.favourite },
                 on: { change: _vm.setFavourite }
               })
