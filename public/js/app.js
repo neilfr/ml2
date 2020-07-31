@@ -2087,10 +2087,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     foods: Object,
-    foodgroups: Object
+    foodgroups: Object,
+    page: Number
   },
   data: function data() {
     return {
@@ -2116,8 +2121,37 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         replace: true,
         preserveState: true,
-        preserveScroll: true // only: [],
-
+        preserveScroll: true
+      });
+    },
+    previousPage: function previousPage() {
+      console.log("previous");
+      var newPage = this.page - 1;
+      var url = "".concat(this.$route("foods.index"));
+      url += "?descriptionSearch=".concat(this.descriptionSearchText);
+      url += "&aliasSearch=".concat(this.aliasSearchText);
+      url += "&foodgroupSearch=".concat(this.foodgroupFilter);
+      this.$inertia.visit(url, {
+        data: {
+          'page': newPage
+        },
+        preserveState: true,
+        preserveScroll: true
+      });
+    },
+    nextPage: function nextPage() {
+      console.log("next");
+      var newPage = this.page + 1;
+      var url = "".concat(this.$route("foods.index"));
+      url += "?descriptionSearch=".concat(this.descriptionSearchText);
+      url += "&aliasSearch=".concat(this.aliasSearchText);
+      url += "&foodgroupSearch=".concat(this.foodgroupFilter);
+      this.$inertia.visit(url, {
+        data: {
+          'page': newPage
+        },
+        preserveState: true,
+        preserveScroll: true
       });
     }
   }
@@ -3640,7 +3674,13 @@ var render = function() {
         })
       ],
       2
-    )
+    ),
+    _vm._v(" "),
+    _c("div", [
+      _c("button", { on: { click: _vm.previousPage } }, [_vm._v("Previous")]),
+      _vm._v(" "),
+      _c("button", { on: { click: _vm.nextPage } }, [_vm._v("Next")])
+    ])
   ])
 }
 var staticRenderFns = [

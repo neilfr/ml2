@@ -45,6 +45,10 @@
                 <td>{{food.quantity}}</td>
             </tr>
         </table>
+        <div>
+            <button @click="previousPage">Previous</button>
+            <button @click="nextPage">Next</button>
+        </div>
     </div>
 </template>
 
@@ -52,7 +56,8 @@
     export default {
         props:{
             foods: Object,
-            foodgroups: Object
+            foodgroups: Object,
+            page: Number
         },
         data() {
             return {
@@ -82,8 +87,37 @@
                         replace: true,
                         preserveState: true,
                         preserveScroll: true,
-                        // only: [],
                     });
+            },
+            previousPage(){
+                console.log("previous");
+                let newPage=this.page-1;
+                let url = `${this.$route("foods.index")}`;
+                url += `?descriptionSearch=${this.descriptionSearchText}`;
+                url += `&aliasSearch=${this.aliasSearchText}`;
+                url += `&foodgroupSearch=${this.foodgroupFilter}`;
+                this.$inertia.visit(url, {
+                    data:{
+                        'page':newPage
+                    },
+                    preserveState: true,
+                    preserveScroll: true,
+                });
+            },
+            nextPage(){
+                console.log("next");
+                let newPage=this.page+1;
+                let url = `${this.$route("foods.index")}`;
+                url += `?descriptionSearch=${this.descriptionSearchText}`;
+                url += `&aliasSearch=${this.aliasSearchText}`;
+                url += `&foodgroupSearch=${this.foodgroupFilter}`;
+                this.$inertia.visit(url, {
+                    data:{
+                        'page':newPage
+                    },
+                    preserveState: true,
+                    preserveScroll: true,
+                });
             }
         }
     };
