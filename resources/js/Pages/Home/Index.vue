@@ -1,7 +1,10 @@
 <template>
     <div class="container mx-auto px-4">
-    <h1>Food List</h1>
-        <inertia-link href="/foodsApi">show foods</inertia-link>
+    <div>Who am I?  {{whoAmI}}</div>
+
+    <h1>logged in on home page!!</h1>
+        <button @click="submit()">Log Out</button>
+        <!-- <inertia-link href="/foodsApi">show foods</inertia-link> -->
 
         <!--        <div class="flex" v-for="food in foods" :key="food.food_code">-->
 <!--            <div class="w-12">{{food.food_code}}</div>-->
@@ -21,8 +24,15 @@
 
     export default {
         props:{
+            whoAmI:String
             // foods: Array,
             // nutrients: Array,
+        },
+        methods: {
+            submit() {
+                console.log("clicked!!!");
+                this.$inertia.post(this.$route('logout'));
+            }
         }
         // layout: Layout,
         // components: {

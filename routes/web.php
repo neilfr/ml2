@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,7 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Auth::routes();
+
+Route::post('/login', 'Auth\LoginController@login')->name('login');
+Route::get('/register', 'Auth\LoginController@register')->name('register');
+Route::post('/user', 'UserController@store')->name('user.store');
+
 Route::group(['middleware' => 'auth'], function () {
+    Route::post('logout')->name('logout')->uses('Auth\LoginController@logout');
+
+    Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/', 'HomeController@index');
 
     Route::get('/foods', 'FoodController@index')->name('foods.index');
@@ -34,6 +44,4 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 
-Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
