@@ -57,7 +57,7 @@ class FoodController extends Controller
         if ($food->user_id === auth()->user()->id) {
             $food->update($request->input());
         }
-        return redirect(route('foods.index'));
+        return  redirect()->back();
     }
 
     public function destroy(Food $food)

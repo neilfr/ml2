@@ -2111,13 +2111,12 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     setFavourite: function setFavourite(e) {
-      console.log("change favourite!", "name", e.target.name, "value", e.target.value);
-      this.$inertia.patch(this.$route("foods.update", e.target.name), {
-        favourite: !e.target.value
+      this.$inertia.patch(this.$route("foods.update", e.target.id), {
+        favourite: e.target.checked
       }, {
-        replace: true // preserveState: true,
-        // preserveScroll: false,
-        // only: [],
+        replace: true,
+        preserveState: true,
+        preserveScroll: true // only: [],
 
       });
     }
@@ -3616,7 +3615,7 @@ var render = function() {
           return _c("tr", { key: food.id }, [
             _c("td", [
               _c("input", {
-                attrs: { type: "checkbox", name: food.id },
+                attrs: { type: "checkbox", id: food.id },
                 domProps: { value: food.favourite, checked: food.favourite },
                 on: { change: _vm.setFavourite }
               })

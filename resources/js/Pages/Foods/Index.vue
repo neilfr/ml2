@@ -3,7 +3,7 @@
         <h1>Foods</h1>
         <label for="foodgroups">Food Group:</label>
         <select name="foodgroups" id="foodgroups" v-model="foodgroupFilter" @change="search">
-            <option v-for="foodgroup in foodgroups.data" v-bind:key="foodgroup.id" v-bind:value="foodgroup.id">
+            <option v-for="foodgroup in foodgroups.data" :key="foodgroup.id" :value="foodgroup.id">
                 {{ foodgroup.description }}
             </option>
         </select>
@@ -29,7 +29,7 @@
                 <td>
                     <input
                         type="checkbox"
-                        :name="food.id"
+                        :id="food.id"
                         :value="food.favourite"
                         :checked="food.favourite"
                         @change="setFavourite"
@@ -73,16 +73,15 @@
                 });
             },
             setFavourite(e){
-                console.log("change favourite!", "name",e.target.name,"value",e.target.value);
                 this.$inertia.patch(
-                    this.$route("foods.update", e.target.name),
+                    this.$route("foods.update", e.target.id),
                     {
-                        favourite: !e.target.value
+                        favourite: e.target.checked
                     },
                     {
                         replace: true,
-                        // preserveState: true,
-                        // preserveScroll: false,
+                        preserveState: true,
+                        preserveScroll: true,
                         // only: [],
                     });
             }
