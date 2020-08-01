@@ -3,6 +3,7 @@
         <h1>Foods</h1>
         <label for="foodgroups">Food Group:</label>
         <select name="foodgroups" id="foodgroups" v-model="foodgroupFilter" @change="currentPage">
+            <option value="">All</option>
             <option v-for="foodgroup in foodgroups.data" :key="foodgroup.id" :value="foodgroup.id">
                 {{ foodgroup.description }}
             </option>
@@ -74,14 +75,12 @@
                         favourite: e.target.checked
                     },
                     {
-                        replace: true,
-                        // preserveState: true,
                         preserveScroll: true,
                     });
             },
             currentPage(){
                 console.log("current");
-                this.updatePage(this.page);
+                this.updatePage(1);
             },
             previousPage(){
                 console.log("previous");

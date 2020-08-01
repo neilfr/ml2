@@ -2091,6 +2091,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     foods: Object,
@@ -2109,14 +2110,12 @@ __webpack_require__.r(__webpack_exports__);
       this.$inertia.patch(this.$route("foods.update", e.target.id), {
         favourite: e.target.checked
       }, {
-        replace: true,
-        // preserveState: true,
         preserveScroll: true
       });
     },
     currentPage: function currentPage() {
       console.log("current");
-      this.updatePage(this.page);
+      this.updatePage(1);
     },
     previousPage: function previousPage() {
       console.log("previous");
@@ -3549,18 +3548,22 @@ var render = function() {
           ]
         }
       },
-      _vm._l(_vm.foodgroups.data, function(foodgroup) {
-        return _c(
-          "option",
-          { key: foodgroup.id, domProps: { value: foodgroup.id } },
-          [
-            _vm._v(
-              "\n            " + _vm._s(foodgroup.description) + "\n        "
-            )
-          ]
-        )
-      }),
-      0
+      [
+        _c("option", { attrs: { value: "" } }, [_vm._v("All")]),
+        _vm._v(" "),
+        _vm._l(_vm.foodgroups.data, function(foodgroup) {
+          return _c(
+            "option",
+            { key: foodgroup.id, domProps: { value: foodgroup.id } },
+            [
+              _vm._v(
+                "\n            " + _vm._s(foodgroup.description) + "\n        "
+              )
+            ]
+          )
+        })
+      ],
+      2
     ),
     _vm._v(" "),
     _c("br"),
