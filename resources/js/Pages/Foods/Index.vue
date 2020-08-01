@@ -2,17 +2,17 @@
     <div class="container">
         <h1>Foods</h1>
         <label for="foodgroups">Food Group:</label>
-        <select name="foodgroups" id="foodgroups" v-model="foodgroupFilter" @change="search">
+        <select name="foodgroups" id="foodgroups" v-model="foodgroupFilter" @change="currentPage">
             <option v-for="foodgroup in foodgroups.data" :key="foodgroup.id" :value="foodgroup.id">
                 {{ foodgroup.description }}
             </option>
         </select>
         <br>
         <label for="descriptionSearch">Description Search:</label>
-        <input type="text" name="descriptionSearch" id="descriptionSearch" @input="search" v-model="descriptionSearchText"/>
+        <input type="text" name="descriptionSearch" id="descriptionSearch" @input="currentPage" v-model="descriptionSearchText"/>
         <br/>
         <label for="aliasSearch">Alias Search:</label>
-        <input type="text" name="aliasSearch" id="aliasSearch" @input="search" v-model="aliasSearchText"/>
+        <input type="text" name="aliasSearch" id="aliasSearch" @input="currentPage" v-model="aliasSearchText"/>
         <table>
             <tr>
                 <th>Favourite</th>
@@ -67,16 +67,6 @@
             }
         },
         methods:{
-            search(){
-                let url = `${this.$route("foods.index")}`;
-                url += `?descriptionSearch=${this.descriptionSearchText}`;
-                url += `&aliasSearch=${this.aliasSearchText}`;
-                url += `&foodgroupSearch=${this.foodgroupFilter}`;
-                this.$inertia.visit(url, {
-                    preserveState: true,
-                    preserveScroll: true,
-                });
-            },
             setFavourite(e){
                 this.$inertia.patch(
                     this.$route("foods.update", e.target.id),
@@ -85,35 +75,30 @@
                     },
                     {
                         replace: true,
-                        preserveState: true,
+                        // preserveState: true,
                         preserveScroll: true,
                     });
             },
+            currentPage(){
+                console.log("current");
+                this.updatePage(this.page);
+            },
             previousPage(){
                 console.log("previous");
-                let newPage=this.page-1;
-                let url = `${this.$route("foods.index")}`;
-                url += `?descriptionSearch=${this.descriptionSearchText}`;
-                url += `&aliasSearch=${this.aliasSearchText}`;
-                url += `&foodgroupSearch=${this.foodgroupFilter}`;
-                this.$inertia.visit(url, {
-                    data:{
-                        'page':newPage
-                    },
-                    preserveState: true,
-                    preserveScroll: true,
-                });
+                this.updatePage(this.page-1);
             },
             nextPage(){
                 console.log("next");
-                let newPage=this.page+1;
+                this.updatePage(this.page+1);
+            },
+            updatePage(page){
                 let url = `${this.$route("foods.index")}`;
                 url += `?descriptionSearch=${this.descriptionSearchText}`;
                 url += `&aliasSearch=${this.aliasSearchText}`;
                 url += `&foodgroupSearch=${this.foodgroupFilter}`;
                 this.$inertia.visit(url, {
                     data:{
-                        'page':newPage
+                        'page':page
                     },
                     preserveState: true,
                     preserveScroll: true,

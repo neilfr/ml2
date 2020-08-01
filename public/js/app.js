@@ -2105,50 +2105,35 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    search: function search() {
-      var url = "".concat(this.$route("foods.index"));
-      url += "?descriptionSearch=".concat(this.descriptionSearchText);
-      url += "&aliasSearch=".concat(this.aliasSearchText);
-      url += "&foodgroupSearch=".concat(this.foodgroupFilter);
-      this.$inertia.visit(url, {
-        preserveState: true,
-        preserveScroll: true
-      });
-    },
     setFavourite: function setFavourite(e) {
       this.$inertia.patch(this.$route("foods.update", e.target.id), {
         favourite: e.target.checked
       }, {
         replace: true,
-        preserveState: true,
+        // preserveState: true,
         preserveScroll: true
       });
+    },
+    currentPage: function currentPage() {
+      console.log("current");
+      this.updatePage(this.page);
     },
     previousPage: function previousPage() {
       console.log("previous");
-      var newPage = this.page - 1;
-      var url = "".concat(this.$route("foods.index"));
-      url += "?descriptionSearch=".concat(this.descriptionSearchText);
-      url += "&aliasSearch=".concat(this.aliasSearchText);
-      url += "&foodgroupSearch=".concat(this.foodgroupFilter);
-      this.$inertia.visit(url, {
-        data: {
-          'page': newPage
-        },
-        preserveState: true,
-        preserveScroll: true
-      });
+      this.updatePage(this.page - 1);
     },
     nextPage: function nextPage() {
       console.log("next");
-      var newPage = this.page + 1;
+      this.updatePage(this.page + 1);
+    },
+    updatePage: function updatePage(page) {
       var url = "".concat(this.$route("foods.index"));
       url += "?descriptionSearch=".concat(this.descriptionSearchText);
       url += "&aliasSearch=".concat(this.aliasSearchText);
       url += "&foodgroupSearch=".concat(this.foodgroupFilter);
       this.$inertia.visit(url, {
         data: {
-          'page': newPage
+          'page': page
         },
         preserveState: true,
         preserveScroll: true
@@ -3560,7 +3545,7 @@ var render = function() {
                 ? $$selectedVal
                 : $$selectedVal[0]
             },
-            _vm.search
+            _vm.currentPage
           ]
         }
       },
@@ -3607,7 +3592,7 @@ var render = function() {
             }
             _vm.descriptionSearchText = $event.target.value
           },
-          _vm.search
+          _vm.currentPage
         ]
       }
     }),
@@ -3635,7 +3620,7 @@ var render = function() {
             }
             _vm.aliasSearchText = $event.target.value
           },
-          _vm.search
+          _vm.currentPage
         ]
       }
     }),
