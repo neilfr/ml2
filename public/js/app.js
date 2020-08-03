@@ -2092,6 +2092,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     foods: Object,
@@ -2113,19 +2118,19 @@ __webpack_require__.r(__webpack_exports__);
         preserveScroll: true
       });
     },
-    currentPage: function currentPage() {
-      console.log("current");
-      this.updatePage(1);
+    goToPageOne: function goToPageOne() {
+      this.goToPage(1);
     },
     previousPage: function previousPage() {
-      console.log("previous");
-      this.updatePage(this.page - 1);
+      if (this.page > 1) this.goToPage(this.page - 1);
     },
     nextPage: function nextPage() {
-      console.log("next");
-      this.updatePage(this.page + 1);
+      if (this.page < this.foods.meta.last_page) this.goToPage(this.page + 1);
     },
-    updatePage: function updatePage(page) {
+    lastPage: function lastPage() {
+      this.goToPage(this.foods.meta.last_page);
+    },
+    goToPage: function goToPage(page) {
       var url = "".concat(this.$route("foods.index"));
       url += "?descriptionSearch=".concat(this.descriptionSearchText);
       url += "&aliasSearch=".concat(this.aliasSearchText);
@@ -3544,7 +3549,7 @@ var render = function() {
                 ? $$selectedVal
                 : $$selectedVal[0]
             },
-            _vm.currentPage
+            _vm.goToPageOne
           ]
         }
       },
@@ -3595,7 +3600,7 @@ var render = function() {
             }
             _vm.descriptionSearchText = $event.target.value
           },
-          _vm.currentPage
+          _vm.goToPageOne
         ]
       }
     }),
@@ -3623,7 +3628,7 @@ var render = function() {
             }
             _vm.aliasSearchText = $event.target.value
           },
-          _vm.currentPage
+          _vm.goToPageOne
         ]
       }
     }),
@@ -3665,9 +3670,24 @@ var render = function() {
     ),
     _vm._v(" "),
     _c("div", [
+      _c("button", { on: { click: _vm.goToPageOne } }, [_vm._v("First")]),
+      _vm._v(" "),
       _c("button", { on: { click: _vm.previousPage } }, [_vm._v("Previous")]),
       _vm._v(" "),
-      _c("button", { on: { click: _vm.nextPage } }, [_vm._v("Next")])
+      _c("button", { on: { click: _vm.nextPage } }, [_vm._v("Next")]),
+      _vm._v(" "),
+      _c("button", { on: { click: _vm.lastPage } }, [_vm._v("Last")])
+    ]),
+    _vm._v(" "),
+    _c("div", [
+      _c("p", [
+        _vm._v(
+          "Page: " +
+            _vm._s(_vm.foods.meta.current_page) +
+            " of " +
+            _vm._s(_vm.foods.meta.last_page)
+        )
+      ])
     ])
   ])
 }
