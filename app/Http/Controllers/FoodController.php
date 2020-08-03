@@ -46,13 +46,12 @@ class FoodController extends Controller
 
     public function show(Food $food)
     {
-        if (($food->user_id === auth()->user()->id) || ($food->foodsource->sharable === true)) {
+        if (($food->user_id === auth()->user()->id) || ($food->foodsource->sharable === true)){
             return Inertia::render('Foods/Show', [
                 'food' => new FoodResource($food),
             ]);
-        } else {
-            return redirect()->route('foods.index');
         }
+        return redirect()->route('foods.index');
     }
 
     public function update(UpdateFoodRequest $request, Food $food)

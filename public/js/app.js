@@ -2189,6 +2189,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     food: Object
@@ -3792,75 +3796,103 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("label", { attrs: { for: "description" } }, [_vm._v("Description:")]),
+    _c("div", [
+      _c("label", { attrs: { for: "description" } }, [_vm._v("Description:")]),
+      _vm._v(" "),
+      _c("input", {
+        attrs: {
+          id: "description",
+          type: "text",
+          readonly: !_vm.food.data.editable
+        },
+        domProps: { value: _vm.food.data.description }
+      }),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("label", { attrs: { for: "alias" } }, [_vm._v("Alias:")]),
+      _vm._v(" "),
+      _c("input", {
+        attrs: { id: "alias", type: "text", readonly: !_vm.food.data.editable },
+        domProps: { value: _vm.food.data.alias }
+      }),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("label", { attrs: { for: "KCal" } }, [_vm._v("KCal:")]),
+      _vm._v(" "),
+      _c("input", {
+        attrs: { id: "kcal", type: "text", readonly: !_vm.food.data.editable },
+        domProps: { value: _vm.food.data.kcal }
+      }),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("label", { attrs: { for: "Protein" } }, [_vm._v("Protein:")]),
+      _vm._v(" "),
+      _c("input", {
+        attrs: {
+          id: "protein",
+          type: "text",
+          readonly: !_vm.food.data.editable
+        },
+        domProps: { value: _vm.food.data.protein }
+      }),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("label", { attrs: { for: "Fat" } }, [_vm._v("Fat:")]),
+      _vm._v(" "),
+      _c("input", {
+        attrs: { id: "fat", type: "text", readonly: !_vm.food.data.editable },
+        domProps: { value: _vm.food.data.fat }
+      }),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("label", { attrs: { for: "Carbohydrate" } }, [
+        _vm._v("Carbohydrate:")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        attrs: {
+          id: "carbohydrate",
+          type: "text",
+          readonly: !_vm.food.data.editable
+        },
+        domProps: { value: _vm.food.data.carbohydrate }
+      }),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("label", { attrs: { for: "Potassium" } }, [_vm._v("Potassium:")]),
+      _vm._v(" "),
+      _c("input", {
+        attrs: {
+          id: "potassium",
+          type: "text",
+          readonly: !_vm.food.data.editable
+        },
+        domProps: { value: _vm.food.data.potassium }
+      }),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("label", { attrs: { for: "Quantity" } }, [_vm._v("Quantity:")]),
+      _vm._v(" "),
+      _c("input", {
+        attrs: {
+          id: "quantity",
+          type: "text",
+          readonly: !_vm.food.data.editable
+        },
+        domProps: { value: _vm.food.data.quantity }
+      })
+    ]),
     _vm._v(" "),
-    _c("input", {
-      attrs: { id: "description", type: "text" },
-      domProps: { value: _vm.food.data.description }
-    }),
+    _c("button", [_vm._v("Save")]),
     _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c("label", { attrs: { for: "alias" } }, [_vm._v("Alias:")]),
-    _vm._v(" "),
-    _c("input", {
-      attrs: { id: "alias", type: "text" },
-      domProps: { value: _vm.food.data.alias }
-    }),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c("label", { attrs: { for: "KCal" } }, [_vm._v("KCal:")]),
-    _vm._v(" "),
-    _c("input", {
-      attrs: { id: "kcal", type: "text" },
-      domProps: { value: _vm.food.data.kcal }
-    }),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c("label", { attrs: { for: "Protein" } }, [_vm._v("Protein:")]),
-    _vm._v(" "),
-    _c("input", {
-      attrs: { id: "protein", type: "text" },
-      domProps: { value: _vm.food.data.protein }
-    }),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c("label", { attrs: { for: "Fat" } }, [_vm._v("Fat:")]),
-    _vm._v(" "),
-    _c("input", {
-      attrs: { id: "fat", type: "text" },
-      domProps: { value: _vm.food.data.fat }
-    }),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c("label", { attrs: { for: "Carbohydrate" } }, [_vm._v("Carbohydrate:")]),
-    _vm._v(" "),
-    _c("input", {
-      attrs: { id: "carbohydrate", type: "text" },
-      domProps: { value: _vm.food.data.carbohydrate }
-    }),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c("label", { attrs: { for: "Potassium" } }, [_vm._v("Potassium:")]),
-    _vm._v(" "),
-    _c("input", {
-      attrs: { id: "potassium", type: "text" },
-      domProps: { value: _vm.food.data.potassium }
-    }),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c("label", { attrs: { for: "Quantity" } }, [_vm._v("Quantity:")]),
-    _vm._v(" "),
-    _c("input", {
-      attrs: { id: "quantity", type: "text" },
-      domProps: { value: _vm.food.data.quantity }
-    })
+    _c("button", [_vm._v("Cancel")])
   ])
 }
 var staticRenderFns = []

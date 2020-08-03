@@ -30,7 +30,7 @@ class FoodResource extends JsonResource
             'user_id' => $this->user_id,
             'updated_at' => $this->updated_at,
             'created_at' => $this->created_at,
-
+            'editable' => $this->user_id === auth()->user()->id,
         ];
     }
 }
