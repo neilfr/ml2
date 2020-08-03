@@ -2,17 +2,18 @@
     <div class="container">
         <h1>Foods</h1>
         <label for="foodgroups">Food Group:</label>
-        <select name="foodgroups" id="foodgroups" v-model="foodgroupFilter" @change="search">
+        <select name="foodgroups" id="foodgroups" v-model="foodgroupFilter" @change="goToPageOne">
+            <option value="">All</option>
             <option v-for="foodgroup in foodgroups.data" :key="foodgroup.id" :value="foodgroup.id">
                 {{ foodgroup.description }}
             </option>
         </select>
         <br>
         <label for="descriptionSearch">Description Search:</label>
-        <input type="text" name="descriptionSearch" id="descriptionSearch" @input="search" v-model="descriptionSearchText"/>
+        <input type="text" name="descriptionSearch" id="descriptionSearch" @input="goToPageOne" v-model="descriptionSearchText"/>
         <br/>
         <label for="aliasSearch">Alias Search:</label>
-        <input type="text" name="aliasSearch" id="aliasSearch" @input="search" v-model="aliasSearchText"/>
+        <input type="text" name="aliasSearch" id="aliasSearch" @input="goToPageOne" v-model="aliasSearchText"/>
         <table>
             <tr>
                 <th>Favourite</th>
@@ -45,6 +46,15 @@
                 <td>{{food.quantity}}</td>
             </tr>
         </table>
+        <div>
+            <button @click="goToPageOne">First</button>
+            <button @click="previousPage">Previous</button>
+            <button @click="nextPage">Next</button>
+            <button @click="lastPage">Last</button>
+        </div>
+        <div>
+            <p>Page: {{foods.meta.current_page}} of {{foods.meta.last_page}}</p>
+        </div>
     </div>
 </template>
 
@@ -52,7 +62,8 @@
     export default {
         props:{
             foods: Object,
-            foodgroups: Object
+            foodgroups: Object,
+            page: Number
         },
         data() {
             return {
@@ -62,16 +73,6 @@
             }
         },
         methods:{
-            search(){
-                let url = `${this.$route("foods.index")}`;
-                url += `?descriptionSearch=${this.descriptionSearchText}`;
-                url += `&aliasSearch=${this.aliasSearchText}`;
-                url += `&foodgroupSearch=${this.foodgroupFilter}`;
-                this.$inertia.visit(url, {
-                    preserveState: true,
-                    preserveScroll: true,
-                });
-            },
             setFavourite(e){
                 this.$inertia.patch(
                     this.$route("foods.update", e.target.id),
@@ -79,11 +80,33 @@
                         favourite: e.target.checked
                     },
                     {
-                        replace: true,
-                        preserveState: true,
                         preserveScroll: true,
-                        // only: [],
                     });
+            },
+            goToPageOne(){
+                this.goToPage(1);
+            },
+            previousPage(){
+                if(this.page>1) this.goToPage(this.page-1);
+            },
+            nextPage(){
+                if(this.page<this.foods.meta.last_page) this.goToPage(this.page+1);
+            },
+            lastPage(){
+                this.goToPage(this.foods.meta.last_page);
+            },
+            goToPage(page){
+                let url = `${this.$route("foods.index")}`;
+                url += `?descriptionSearch=${this.descriptionSearchText}`;
+                url += `&aliasSearch=${this.aliasSearchText}`;
+                url += `&foodgroupSearch=${this.foodgroupFilter}`;
+                this.$inertia.visit(url, {
+                    data:{
+                        'page':page
+                    },
+                    preserveState: true,
+                    preserveScroll: true,
+                });
             }
         }
     };

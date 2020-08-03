@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\FoodResource;
+use Illuminate\Support\Facades\Config;
 use App\Http\Requests\CreateFoodRequest;
 use App\Http\Requests\UpdateFoodRequest;
 use App\Http\Resources\FoodgroupResource;
@@ -19,16 +20,18 @@ class FoodController extends Controller
 {
     public function index(Request $request)
     {
+        // dump($request->input());
         $foods = Food::userFoods()
         ->sharedFoods()
         ->foodgroupSearch($request->query('foodgroupSearch'))
         ->descriptionSearch($request->query('descriptionSearch'))
         ->aliasSearch($request->query('aliasSearch'))
-        ->get();
+        ->paginate(Config::get('ml2.paginator.per_page'));
 
         $foodgroups = Foodgroup::all();
 
         return Inertia::render('Foods/Index', [
+            'page' => $foods->currentPage(),
             'foods' => FoodResource::collection($foods),
             'foodgroups' => FoodgroupResource::collection($foodgroups)
         ]);
