@@ -36,8 +36,8 @@
                         @change="setFavourite"
                     />
                 </td>
-                <td>{{food.alias}}</td>
-                <td>{{food.description}}</td>
+                <td @click="show" :id="food.id">{{food.alias}}</td>
+                <td @click="show" :id="food.id">{{food.description}}</td>
                 <td>{{food.kcal}}</td>
                 <td>{{food.protein}}</td>
                 <td>{{food.fat}}</td>
@@ -107,6 +107,10 @@
                     preserveState: true,
                     preserveScroll: true,
                 });
+            },
+            show(e){
+                let url = `${this.$route("foods.show", e.target.id)}`;
+                this.$inertia.visit(url);
             }
         }
     };
