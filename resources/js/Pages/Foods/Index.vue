@@ -1,6 +1,8 @@
 <template>
     <div class="container">
         <h1>Foods</h1>
+        <button @click="create">Add</button>
+        <br/>
         <label for="foodgroups">Food Group:</label>
         <select name="foodgroups" id="foodgroups" v-model="foodgroupFilter" @change="goToPageOne">
             <option value="">All</option>
@@ -110,6 +112,11 @@
             },
             show(e){
                 let url = `${this.$route("foods.show", e.target.id)}`;
+                this.$inertia.visit(url);
+            },
+            create(){
+                console.log("create!");
+                let url = `${this.$route("foods.create")}`;
                 this.$inertia.visit(url);
             }
         }

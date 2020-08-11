@@ -25,8 +25,8 @@
       <label for="Quantity">Quantity:</label>
       <input id="quantity" type="text" :value="food.data.quantity" :readonly="!(food.data.editable)"/>
       </div>
-      <button>Save</button>
-      <button>Cancel</button>
+      <button @click="save">Save</button>
+      <button @click="close">Cancel</button>
   </div>
 </template>
 
@@ -34,6 +34,14 @@
 export default {
     props:{
         food: Object
+    },
+    methods:{
+        close () {
+            console.log("closing!");
+        },
+        save () {
+            console.log("saving!");
+        }
     }
 }
 </script>

@@ -37,6 +37,11 @@ class FoodController extends Controller
         ]);
     }
 
+    public function create()
+    {
+        return Inertia::render('Foods/Create');
+    }
+
     public function store(CreateFoodRequest $request)
     {
         Food::create($request->validated());
