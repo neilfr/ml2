@@ -2069,7 +2069,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {// page: Object
+  },
   data: function data() {
     return {
       food: {
@@ -2080,13 +2085,18 @@ __webpack_require__.r(__webpack_exports__);
         fat: 0,
         protein: 0,
         carbohydrate: 0,
-        quantity: 0
+        quantity: 0,
+        favourite: true,
+        user: this.$page.auth.user.id,
+        foodgroup_id: 26,
+        foodsource_id: this.$page.auth.user.id
       }
     };
   },
   methods: {
     store: function store() {
-      console.log("store", food); // this.$inertia.post(
+      console.log("store", this.food);
+      console.log("user", this.$page.auth.user.id); // this.$inertia.post(
       //     this.$route("foods.store", food)
       // );
     }
@@ -3653,6 +3663,15 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
+    _c("div", [_vm._v(_vm._s(_vm.$page.auth.user.id))]),
+    _vm._v(" "),
+    _c("input", {
+      attrs: { id: "user", type: "text" },
+      domProps: { value: _vm.$page.auth.user.id }
+    }),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
     _c("div", [
       _c("label", { attrs: { for: "description" } }, [_vm._v("Description:")]),
       _vm._v(" "),

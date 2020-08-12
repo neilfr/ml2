@@ -1,5 +1,8 @@
 <template>
   <div>
+      <div>{{ $page.auth.user.id }}</div>
+      <input id="user" type="text" :value="$page.auth.user.id"/>
+      <br/>
       <div>
       <label for="description">Description:</label>
       <input id="description" type="text" :value="food.description"/>
@@ -32,6 +35,9 @@
 
 <script>
 export default {
+    props:{
+        // page: Object
+    },
     data() {
         return {
             food:{
@@ -42,13 +48,18 @@ export default {
                 fat: 0,
                 protein: 0,
                 carbohydrate: 0,
-                quantity: 0
+                quantity: 0,
+                favourite: true,
+                user: this.$page.auth.user.id,
+                foodgroup_id: 26,
+                foodsource_id: this.$page.auth.user.id
             }
         }
     },
     methods: {
         store(){
-            console.log("store", food);
+            console.log("store", this.food);
+            console.log("user", this.$page.auth.user.id);
             // this.$inertia.post(
             //     this.$route("foods.store", food)
             // );
