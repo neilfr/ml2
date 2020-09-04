@@ -16,5 +16,9 @@ class FoodsourceSeeder extends Seeder
             'name' => 'Health Canada',
             'sharable' => true,
         ]);
+        factory(Foodsource::class)->create([
+            'name' => 'User',
+            'sharable' => false,
+        ]);
     }
 }

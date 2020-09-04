@@ -44,6 +44,7 @@ class FoodController extends Controller
 
     public function store(CreateFoodRequest $request)
     {
+        // dd($request->validated());
         Food::create($request->validated());
 
         return redirect()->route('foods.index');

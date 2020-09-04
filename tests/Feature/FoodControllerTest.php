@@ -224,6 +224,7 @@ class FoodControllerTest extends TestCase
     /** @test */
     public function it_can_store_a_food()
     {
+        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
@@ -519,6 +520,7 @@ class FoodControllerTest extends TestCase
             'carbohydrate' => 135,
             'potassium' => 456,
             'favourite' => true,
+            'quantity' => 200,
             'foodgroup_id' => factory(Foodgroup::class)->create()->id,
             'foodsource_id' => factory(Foodsource::class)->create()->id,
             'user_id' => auth()->user()->id,

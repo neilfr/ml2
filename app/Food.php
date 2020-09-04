@@ -18,6 +18,7 @@ class Food extends Model
         'carbohydrate',
         'potassium',
         'favourite',
+        'quantity',
         'foodgroup_id',
         'foodsource_id',
         'user_id',
