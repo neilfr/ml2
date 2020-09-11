@@ -81,7 +81,9 @@ class FoodIngredientControllerTest extends TestCase
         $response->assertStatus(Response::HTTP_OK);
         $response->assertPropValue('ingredients', function ($returnedIngredients) use ($ingredients) {
             $this->assertCount(2, $returnedIngredients['data']);
-            $this->assertEquals($returnedIngredients['data'], $ingredients->toArray());
+            foreach($returnedIngredients['data'] as $index => $returnedIngredient){
+                $this->assertEquals($returnedIngredient['description'], $ingredients->toArray()[$index]['description']);
+            }
         });
     }
 

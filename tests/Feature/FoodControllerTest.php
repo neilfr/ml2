@@ -103,8 +103,9 @@ class FoodControllerTest extends TestCase
             ->assertStatus(Response::HTTP_OK);
 
         $response->assertPropValue('foods', function ($returnedFoods) use ($foods) {
-            $this->assertCount(2, $returnedFoods['data']);
-            $this->assertEquals($returnedFoods['data'], $foods->toArray());
+            foreach ($returnedFoods['data'] as $index => $food) {
+                $this->assertEquals($food['description'], $foods->toArray()[$index]['description']);
+            }
         });
     }
 
@@ -128,8 +129,9 @@ class FoodControllerTest extends TestCase
             ->assertStatus(Response::HTTP_OK);
 
         $response->assertPropValue('foods', function ($returnedFoods) use ($foods) {
-            $this->assertCount(2, $returnedFoods['data']);
-            $this->assertEquals($returnedFoods['data'], $foods->toArray());
+            foreach ($returnedFoods['data'] as $index => $food) {
+                $this->assertEquals($food['description'], $foods->toArray()[$index]['description']);
+            }
         });
     }
 
@@ -170,8 +172,7 @@ class FoodControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK)
             ->assertPropValue('food', function ($returnedFood) use ($foods) {
-                $this->assertCount(14, $returnedFood['data']);
-                $this->assertEquals($returnedFood['data'], $foods[0]->toArray());
+                $this->assertEquals($foods[0]['description'],$returnedFood['data']['description']);
             });
     }
 
@@ -195,8 +196,7 @@ class FoodControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK)
             ->assertPropValue('food', function ($returnedFood) use ($food) {
-                $this->assertCount(14, $returnedFood['data']);
-                $this->assertEquals($returnedFood['data'], $food->toArray());
+                $this->assertEquals($returnedFood['data']['description'], $food['description']);
             });
     }
 

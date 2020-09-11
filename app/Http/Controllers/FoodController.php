@@ -20,7 +20,6 @@ class FoodController extends Controller
 {
     public function index(Request $request)
     {
-        // dump($request->input());
         $foods = Food::userFoods()
         ->sharedFoods()
         ->foodgroupSearch($request->query('foodgroupSearch'))
@@ -65,7 +64,7 @@ class FoodController extends Controller
         if ($food->user_id === auth()->user()->id) {
             $food->update($request->input());
         }
-        return  redirect()->back();
+        return  redirect(route('foods.index'));
     }
 
     public function destroy(Food $food)
