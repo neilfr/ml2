@@ -1,34 +1,29 @@
 <template>
   <div>
-      <div>
-        {{ $page.auth.user.id }}
-        </div>
         <form method="POST" @submit.prevent="submit">
-            <input id="user" type="text" :value="$page.auth.user.id"/>
-            <br/>
             <label for="description">Description:</label>
-            <input id="description" type="text" :value="food.description">
+            <input id="description" type="text" v-model="food.description">
             <br/>
             <label for="alias">Alias:</label>
-            <input id="alias" type="text" :value="food.alias"/>
+            <input id="alias" type="text" v-model="food.alias"/>
             <br/>
             <label for="KCal">KCal:</label>
-            <input id="kcal" type="number" :value="food.kcal"/>
+            <input id="kcal" type="number" v-model="food.kcal"/>
             <br/>
             <label for="Protein">Protein:</label>
-            <input id="protein" type="number" :value="food.protein"/>
+            <input id="protein" type="number" v-model="food.protein"/>
             <br/>
             <label for="Fat">Fat:</label>
-            <input id="fat" type="number" :value="food.fat"/>
+            <input id="fat" type="number" v-model="food.fat"/>
             <br/>
             <label for="Carbohydrate">Carbohydrate:</label>
-            <input id="carbohydrate" type="number" :value="food.carbohydrate"/>
+            <input id="carbohydrate" type="number" v-model="food.carbohydrate"/>
             <br/>
             <label for="Potassium">Potassium:</label>
-            <input id="potassium" type="number" :value="food.potassium"/>
+            <input id="potassium" type="number" v-model="food.potassium"/>
             <br/>
             <label for="Quantity">Quantity:</label>
-            <input id="quantity" type="number" :value="food.quantity"/>
+            <input id="quantity" type="number" v-model="food.quantity"/>
         </form>
         <button @click="store">Save</button>
         <button>Cancel</button>
@@ -43,8 +38,8 @@ export default {
     data() {
         return {
             food:{
-                alias: 'test',
                 description: 'test',
+                alias: 'test',
                 kcal: 5,
                 fat: 5,
                 protein: 5,
@@ -60,9 +55,13 @@ export default {
     },
     methods: {
         store(){
+            console.log("food",this.food);
             this.$inertia.post(
                 this.$route("foods.store"), this.food
             );
+        },
+        what(){
+            console.log("what", this.food.description);
         }
     }
 }

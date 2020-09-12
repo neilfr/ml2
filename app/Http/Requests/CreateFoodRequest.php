@@ -25,7 +25,7 @@ class CreateFoodRequest extends FormRequest
     {
         return [
             'alias' => 'string|nullable',
-            'description' => 'string',
+            'description' => 'string|unique:foods,description',
             'kcal' => 'integer',
             'fat' => 'integer',
             'protein' => 'integer',

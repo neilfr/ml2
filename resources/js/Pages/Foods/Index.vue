@@ -2,7 +2,6 @@
     <div class="container">
         <h1>Foods</h1>
         <button @click="add">Add</button>
-        <modal :show="showModal"/>
         <br/>
         <label for="foodgroups">Food Group:</label>
         <select name="foodgroups" id="foodgroups" v-model="foodgroupFilter" @change="goToPageOne">
@@ -62,11 +61,10 @@
 </template>
 
 <script>
-    import Modal from "@/Shared/Modal";
 
     export default {
         components:{
-            Modal
+            // Modal
         },
         props:{
             foods: Object,
@@ -78,7 +76,6 @@
                 descriptionSearchText: '',
                 aliasSearchText: '',
                 foodgroupFilter: '',
-                showModal: 'false'
             }
         },
         methods:{
@@ -123,8 +120,6 @@
             },
             add(){
                 console.log("create!");
-                this.showModal=!this.showModal;
-                console.log(this.showModal);
                 let url = `${this.$route("foods.create")}`;
                 this.$inertia.visit(url);
             }

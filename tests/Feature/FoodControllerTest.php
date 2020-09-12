@@ -243,6 +243,10 @@ class FoodControllerTest extends TestCase
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
+        factory(Food::class)->create([
+            'description' => 'existing description',
+        ]);
+
         [$ruleName, $payload] = $getData();
 
         $response = $this->post(route('foods.store'), $payload);
@@ -354,6 +358,14 @@ class FoodControllerTest extends TestCase
                     return [
                         'alias',
                         array_merge($this->getValidFoodData(), ['alias' => []]),
+                    ];
+                }
+            ],
+            'it fails if description is not unique' => [
+                function () {
+                    return [
+                        'description',
+                        array_merge($this->getValidFoodData(), ['description' => 'existing description']),
                     ];
                 }
             ],
