@@ -2069,8 +2069,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: {// page: Object
+  props: {
+    errors: Object // page: Object
+
   },
   data: function data() {
     return {
@@ -2092,8 +2102,13 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     store: function store() {
+      var _this = this;
+
       console.log("food", this.food);
-      this.$inertia.post(this.$route("foods.store"), this.food);
+      this.$inertia.post(this.$route("foods.store"), this.food).then(function () {
+        console.log("respond!");
+        console.log("errors", _this.errors.description);
+      });
     },
     what: function what() {
       console.log("what", this.food.description);
@@ -3675,6 +3690,10 @@ var render = function() {
         }
       },
       [
+        _vm.errors.description
+          ? _c("p", [_vm._v(_vm._s(_vm.errors.description))])
+          : _vm._e(),
+        _vm._v(" "),
         _c("label", { attrs: { for: "description" } }, [
           _vm._v("Description:")
         ]),
@@ -3702,6 +3721,10 @@ var render = function() {
         _vm._v(" "),
         _c("br"),
         _vm._v(" "),
+        _vm.errors.alias
+          ? _c("p", [_vm._v(_vm._s(_vm.errors.alias))])
+          : _vm._e(),
+        _vm._v(" "),
         _c("label", { attrs: { for: "alias" } }, [_vm._v("Alias:")]),
         _vm._v(" "),
         _c("input", {
@@ -3726,6 +3749,8 @@ var render = function() {
         }),
         _vm._v(" "),
         _c("br"),
+        _vm._v(" "),
+        _vm.errors.kcal ? _c("p", [_vm._v(_vm._s(_vm.errors.kcal))]) : _vm._e(),
         _vm._v(" "),
         _c("label", { attrs: { for: "KCal" } }, [_vm._v("KCal:")]),
         _vm._v(" "),
@@ -3752,6 +3777,10 @@ var render = function() {
         _vm._v(" "),
         _c("br"),
         _vm._v(" "),
+        _vm.errors.protein
+          ? _c("p", [_vm._v(_vm._s(_vm.errors.protein))])
+          : _vm._e(),
+        _vm._v(" "),
         _c("label", { attrs: { for: "Protein" } }, [_vm._v("Protein:")]),
         _vm._v(" "),
         _c("input", {
@@ -3777,6 +3806,8 @@ var render = function() {
         _vm._v(" "),
         _c("br"),
         _vm._v(" "),
+        _vm.errors.fat ? _c("p", [_vm._v(_vm._s(_vm.errors.fat))]) : _vm._e(),
+        _vm._v(" "),
         _c("label", { attrs: { for: "Fat" } }, [_vm._v("Fat:")]),
         _vm._v(" "),
         _c("input", {
@@ -3801,6 +3832,10 @@ var render = function() {
         }),
         _vm._v(" "),
         _c("br"),
+        _vm._v(" "),
+        _vm.errors.carbohydrate
+          ? _c("p", [_vm._v(_vm._s(_vm.errors.carbohydrate))])
+          : _vm._e(),
         _vm._v(" "),
         _c("label", { attrs: { for: "Carbohydrate" } }, [
           _vm._v("Carbohydrate:")
@@ -3829,6 +3864,10 @@ var render = function() {
         _vm._v(" "),
         _c("br"),
         _vm._v(" "),
+        _vm.errors.potassium
+          ? _c("p", [_vm._v(_vm._s(_vm.errors.potassium))])
+          : _vm._e(),
+        _vm._v(" "),
         _c("label", { attrs: { for: "Potassium" } }, [_vm._v("Potassium:")]),
         _vm._v(" "),
         _c("input", {
@@ -3853,6 +3892,10 @@ var render = function() {
         }),
         _vm._v(" "),
         _c("br"),
+        _vm._v(" "),
+        _vm.errors.quantity
+          ? _c("p", [_vm._v(_vm._s(_vm.errors.quantity))])
+          : _vm._e(),
         _vm._v(" "),
         _c("label", { attrs: { for: "Quantity" } }, [_vm._v("Quantity:")]),
         _vm._v(" "),
