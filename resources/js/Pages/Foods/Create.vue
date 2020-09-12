@@ -7,7 +7,7 @@
             <input id="user" type="text" :value="$page.auth.user.id"/>
             <br/>
             <label for="description">Description:</label>
-            <input id="description" type="text" :value="food.description"/>
+            <input id="description" type="text" :value="food.description">
             <br/>
             <label for="alias">Alias:</label>
             <input id="alias" type="text" :value="food.alias"/>
@@ -43,15 +43,15 @@ export default {
     data() {
         return {
             food:{
-                alias: '',
-                description: '',
-                kcal: 0,
-                fat: 0,
-                protein: 0,
-                carbohydrate: 0,
-                potassium: 0,
+                alias: 'test',
+                description: 'test',
+                kcal: 5,
+                fat: 5,
+                protein: 5,
+                carbohydrate: 5,
+                potassium: 5,
                 favourite: true,
-                quantity: 0,
+                quantity: 5,
                 foodsource_id: 2,
                 foodgroup_id: 26,
                 user_id: this.$page.auth.user.id
@@ -60,10 +60,8 @@ export default {
     },
     methods: {
         store(){
-            console.log("store", this.food.kcal);
-            console.log("user", this.$page.auth.user.id);
             this.$inertia.post(
-                this.$route("foods.store", this.food)
+                this.$route("foods.store"), this.food
             );
         }
     }
