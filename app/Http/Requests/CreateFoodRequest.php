@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateFoodRequest extends FormRequest
 {
@@ -24,8 +26,19 @@ class CreateFoodRequest extends FormRequest
     public function rules()
     {
         return [
-            'alias' => 'string|nullable',
-            'description' => 'string|unique:foods,description',
+            'alias' => [
+              'string',
+              'nullable',
+                Rule::unique('foods', 'alias')->where(function ($query) {
+                    return $query->where('user_id', Auth::User()->id);
+                }),
+            ],
+            'description' => [
+                'string',
+                Rule::unique('foods', 'description')->where(function ($query){
+                    return $query->where('user_id', Auth::User()->id);
+                }),
+            ],
             'kcal' => 'integer',
             'fat' => 'integer',
             'protein' => 'integer',
