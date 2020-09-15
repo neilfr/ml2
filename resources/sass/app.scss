@@ -4,5 +4,10 @@
 // Variables
 @import 'variables';
 
+// Tailwind
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';

@@ -2077,6 +2077,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     errors: Object // page: Object
@@ -3690,235 +3705,253 @@ var render = function() {
         }
       },
       [
-        _vm.errors.description
-          ? _c("p", [_vm._v(_vm._s(_vm.errors.description))])
-          : _vm._e(),
+        _vm._m(0),
         _vm._v(" "),
-        _c("label", { attrs: { for: "description" } }, [
-          _vm._v("Description:")
-        ]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.food.description,
-              expression: "food.description"
-            }
-          ],
-          attrs: { id: "description", type: "text" },
-          domProps: { value: _vm.food.description },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+        _c("div", { staticClass: "grid grid-cols-4" }, [
+          _c("div", { staticClass: "col-span-2" }, [_vm._v("1")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-span-2" }, [_vm._v("1")]),
+          _vm._v(" "),
+          _c("div", [_vm._v("1")]),
+          _vm._v(" "),
+          _c("div", [_vm._v("1")]),
+          _vm._v(" "),
+          _c("div", [_vm._v("1")]),
+          _vm._v(" "),
+          _c("div", [_vm._v("1")]),
+          _vm._v(" "),
+          _vm.errors.description
+            ? _c("p", [_vm._v(_vm._s(_vm.errors.description))])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "description" } }, [
+            _vm._v("Description:")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.food.description,
+                expression: "food.description"
               }
-              _vm.$set(_vm.food, "description", $event.target.value)
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _vm.errors.alias
-          ? _c("p", [_vm._v(_vm._s(_vm.errors.alias))])
-          : _vm._e(),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "alias" } }, [_vm._v("Alias:")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.food.alias,
-              expression: "food.alias"
-            }
-          ],
-          attrs: { id: "alias", type: "text" },
-          domProps: { value: _vm.food.alias },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+            ],
+            attrs: { id: "description", type: "text" },
+            domProps: { value: _vm.food.description },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.food, "description", $event.target.value)
               }
-              _vm.$set(_vm.food, "alias", $event.target.value)
             }
-          }
-        }),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _vm.errors.kcal ? _c("p", [_vm._v(_vm._s(_vm.errors.kcal))]) : _vm._e(),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "KCal" } }, [_vm._v("KCal:")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.food.kcal,
-              expression: "food.kcal"
-            }
-          ],
-          attrs: { id: "kcal", type: "number", min: "0" },
-          domProps: { value: _vm.food.kcal },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+          }),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _vm.errors.alias
+            ? _c("p", [_vm._v(_vm._s(_vm.errors.alias))])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "alias" } }, [_vm._v("Alias:")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.food.alias,
+                expression: "food.alias"
               }
-              _vm.$set(_vm.food, "kcal", $event.target.value)
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _vm.errors.protein
-          ? _c("p", [_vm._v(_vm._s(_vm.errors.protein))])
-          : _vm._e(),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "Protein" } }, [_vm._v("Protein:")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.food.protein,
-              expression: "food.protein"
-            }
-          ],
-          attrs: { id: "protein", type: "number", min: "0" },
-          domProps: { value: _vm.food.protein },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+            ],
+            attrs: { id: "alias", type: "text" },
+            domProps: { value: _vm.food.alias },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.food, "alias", $event.target.value)
               }
-              _vm.$set(_vm.food, "protein", $event.target.value)
             }
-          }
-        }),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _vm.errors.fat ? _c("p", [_vm._v(_vm._s(_vm.errors.fat))]) : _vm._e(),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "Fat" } }, [_vm._v("Fat:")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.food.fat,
-              expression: "food.fat"
-            }
-          ],
-          attrs: { id: "fat", type: "number", min: "0" },
-          domProps: { value: _vm.food.fat },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+          }),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _vm.errors.kcal
+            ? _c("p", [_vm._v(_vm._s(_vm.errors.kcal))])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "KCal" } }, [_vm._v("KCal:")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.food.kcal,
+                expression: "food.kcal"
               }
-              _vm.$set(_vm.food, "fat", $event.target.value)
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _vm.errors.carbohydrate
-          ? _c("p", [_vm._v(_vm._s(_vm.errors.carbohydrate))])
-          : _vm._e(),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "Carbohydrate" } }, [
-          _vm._v("Carbohydrate:")
-        ]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.food.carbohydrate,
-              expression: "food.carbohydrate"
-            }
-          ],
-          attrs: { id: "carbohydrate", type: "number", min: "0" },
-          domProps: { value: _vm.food.carbohydrate },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+            ],
+            attrs: { id: "kcal", type: "number", min: "0" },
+            domProps: { value: _vm.food.kcal },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.food, "kcal", $event.target.value)
               }
-              _vm.$set(_vm.food, "carbohydrate", $event.target.value)
             }
-          }
-        }),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _vm.errors.potassium
-          ? _c("p", [_vm._v(_vm._s(_vm.errors.potassium))])
-          : _vm._e(),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "Potassium" } }, [_vm._v("Potassium:")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.food.potassium,
-              expression: "food.potassium"
-            }
-          ],
-          attrs: { id: "potassium", type: "number", min: "0" },
-          domProps: { value: _vm.food.potassium },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+          }),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _vm.errors.protein
+            ? _c("p", [_vm._v(_vm._s(_vm.errors.protein))])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "Protein" } }, [_vm._v("Protein:")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.food.protein,
+                expression: "food.protein"
               }
-              _vm.$set(_vm.food, "potassium", $event.target.value)
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _vm.errors.quantity
-          ? _c("p", [_vm._v(_vm._s(_vm.errors.quantity))])
-          : _vm._e(),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "Quantity" } }, [_vm._v("Quantity:")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.food.quantity,
-              expression: "food.quantity"
-            }
-          ],
-          attrs: { id: "quantity", type: "number", min: "0" },
-          domProps: { value: _vm.food.quantity },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+            ],
+            attrs: { id: "protein", type: "number", min: "0" },
+            domProps: { value: _vm.food.protein },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.food, "protein", $event.target.value)
               }
-              _vm.$set(_vm.food, "quantity", $event.target.value)
             }
-          }
-        })
+          }),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _vm.errors.fat ? _c("p", [_vm._v(_vm._s(_vm.errors.fat))]) : _vm._e(),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "Fat" } }, [_vm._v("Fat:")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.food.fat,
+                expression: "food.fat"
+              }
+            ],
+            attrs: { id: "fat", type: "number", min: "0" },
+            domProps: { value: _vm.food.fat },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.food, "fat", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _vm.errors.carbohydrate
+            ? _c("p", [_vm._v(_vm._s(_vm.errors.carbohydrate))])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "Carbohydrate" } }, [
+            _vm._v("Carbohydrate:")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.food.carbohydrate,
+                expression: "food.carbohydrate"
+              }
+            ],
+            attrs: { id: "carbohydrate", type: "number", min: "0" },
+            domProps: { value: _vm.food.carbohydrate },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.food, "carbohydrate", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _vm.errors.potassium
+            ? _c("p", [_vm._v(_vm._s(_vm.errors.potassium))])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "Potassium" } }, [_vm._v("Potassium:")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.food.potassium,
+                expression: "food.potassium"
+              }
+            ],
+            attrs: { id: "potassium", type: "number", min: "0" },
+            domProps: { value: _vm.food.potassium },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.food, "potassium", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _vm.errors.quantity
+            ? _c("p", [_vm._v(_vm._s(_vm.errors.quantity))])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "Quantity" } }, [_vm._v("Quantity:")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.food.quantity,
+                expression: "food.quantity"
+              }
+            ],
+            attrs: { id: "quantity", type: "number", min: "0" },
+            domProps: { value: _vm.food.quantity },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.food, "quantity", $event.target.value)
+              }
+            }
+          })
+        ])
       ]
     ),
     _vm._v(" "),
@@ -3927,7 +3960,22 @@ var render = function() {
     _c("button", [_vm._v("Cancel")])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "bg-red-400 grid grid-cols-2" }, [
+      _c("div", [_vm._v("1")]),
+      _vm._v(" "),
+      _c("div", [_vm._v("2")]),
+      _vm._v(" "),
+      _c("div", [_vm._v("3")]),
+      _vm._v(" "),
+      _c("div", [_vm._v("4")])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -4342,7 +4390,9 @@ var render = function() {
   return _c("div", { staticClass: "container mx-auto px-4" }, [
     _c("div", [_vm._v("Who am I?  " + _vm._s(_vm.whoAmI))]),
     _vm._v(" "),
-    _c("h1", [_vm._v("logged in on home page!!")]),
+    _c("h1", { staticClass: "text-danger" }, [
+      _vm._v("logged in on home page!!")
+    ]),
     _vm._v(" "),
     _c(
       "button",

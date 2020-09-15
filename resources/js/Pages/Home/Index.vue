@@ -2,7 +2,7 @@
     <div class="container mx-auto px-4">
     <div>Who am I?  {{whoAmI}}</div>
 
-    <h1>logged in on home page!!</h1>
+    <h1 class="text-danger">logged in on home page!!</h1>
         <button @click="submit()">Log Out</button>
         <!-- <inertia-link href="/foodsApi">show foods</inertia-link> -->
 
