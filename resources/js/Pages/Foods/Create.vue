@@ -11,27 +11,27 @@
             <br/>
             <p v-if="errors.kcal">{{errors.kcal}}</p>
             <label for="KCal">KCal:</label>
-            <input id="kcal" type="number" v-model="food.kcal"/>
+            <input id="kcal" type="number" v-model="food.kcal" min="0"/>
             <br/>
             <p v-if="errors.protein">{{errors.protein}}</p>
             <label for="Protein">Protein:</label>
-            <input id="protein" type="number" v-model="food.protein"/>
+            <input id="protein" type="number" v-model="food.protein" min="0"/>
             <br/>
             <p v-if="errors.fat">{{errors.fat}}</p>
             <label for="Fat">Fat:</label>
-            <input id="fat" type="number" v-model="food.fat"/>
+            <input id="fat" type="number" v-model="food.fat" min="0"/>
             <br/>
             <p v-if="errors.carbohydrate">{{errors.carbohydrate}}</p>
             <label for="Carbohydrate">Carbohydrate:</label>
-            <input id="carbohydrate" type="number" v-model="food.carbohydrate"/>
+            <input id="carbohydrate" type="number" v-model="food.carbohydrate" min="0"/>
             <br/>
             <p v-if="errors.potassium">{{errors.potassium}}</p>
             <label for="Potassium">Potassium:</label>
-            <input id="potassium" type="number" v-model="food.potassium"/>
+            <input id="potassium" type="number" v-model="food.potassium" min="0"/>
             <br/>
             <p v-if="errors.quantity">{{errors.quantity}}</p>
             <label for="Quantity">Quantity:</label>
-            <input id="quantity" type="number" v-model="food.quantity"/>
+            <input id="quantity" type="number" v-model="food.quantity" min="0"/>
         </form>
         <button @click="store">Save</button>
         <button>Cancel</button>
@@ -47,15 +47,15 @@ export default {
     data() {
         return {
             food:{
-                description: 'test',
-                alias: 'test',
-                kcal: 5,
-                fat: 5,
-                protein: 5,
-                carbohydrate: 5,
-                potassium: 5,
+                description: '',
+                alias: '',
+                kcal: 0,
+                fat: 0,
+                protein: 0,
+                carbohydrate: 0,
+                potassium: 0,
                 favourite: true,
-                quantity: 5,
+                quantity: 0,
                 foodsource_id: 2,
                 foodgroup_id: 26,
                 user_id: this.$page.auth.user.id

@@ -2085,15 +2085,15 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       food: {
-        description: 'test',
-        alias: 'test',
-        kcal: 5,
-        fat: 5,
-        protein: 5,
-        carbohydrate: 5,
-        potassium: 5,
+        description: '',
+        alias: '',
+        kcal: 0,
+        fat: 0,
+        protein: 0,
+        carbohydrate: 0,
+        potassium: 0,
         favourite: true,
-        quantity: 5,
+        quantity: 0,
         foodsource_id: 2,
         foodgroup_id: 26,
         user_id: this.$page.auth.user.id
@@ -3763,7 +3763,7 @@ var render = function() {
               expression: "food.kcal"
             }
           ],
-          attrs: { id: "kcal", type: "number" },
+          attrs: { id: "kcal", type: "number", min: "0" },
           domProps: { value: _vm.food.kcal },
           on: {
             input: function($event) {
@@ -3792,7 +3792,7 @@ var render = function() {
               expression: "food.protein"
             }
           ],
-          attrs: { id: "protein", type: "number" },
+          attrs: { id: "protein", type: "number", min: "0" },
           domProps: { value: _vm.food.protein },
           on: {
             input: function($event) {
@@ -3819,7 +3819,7 @@ var render = function() {
               expression: "food.fat"
             }
           ],
-          attrs: { id: "fat", type: "number" },
+          attrs: { id: "fat", type: "number", min: "0" },
           domProps: { value: _vm.food.fat },
           on: {
             input: function($event) {
@@ -3850,7 +3850,7 @@ var render = function() {
               expression: "food.carbohydrate"
             }
           ],
-          attrs: { id: "carbohydrate", type: "number" },
+          attrs: { id: "carbohydrate", type: "number", min: "0" },
           domProps: { value: _vm.food.carbohydrate },
           on: {
             input: function($event) {
@@ -3879,7 +3879,7 @@ var render = function() {
               expression: "food.potassium"
             }
           ],
-          attrs: { id: "potassium", type: "number" },
+          attrs: { id: "potassium", type: "number", min: "0" },
           domProps: { value: _vm.food.potassium },
           on: {
             input: function($event) {
@@ -3908,7 +3908,7 @@ var render = function() {
               expression: "food.quantity"
             }
           ],
-          attrs: { id: "quantity", type: "number" },
+          attrs: { id: "quantity", type: "number", min: "0" },
           domProps: { value: _vm.food.quantity },
           on: {
             input: function($event) {
