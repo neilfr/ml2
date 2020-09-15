@@ -608,11 +608,25 @@ class FoodControllerTest extends TestCase
                     ];
                 }
             ],
+            'it fails if kcal is not a non-negative integer' => [
+                function () {
+                    return [
+                        'kcal', ['kcal' => -1],
+                    ];
+                }
+            ],
             'it fails if fat is not an integer' => [
                 function () {
                     return [
                         'fat',
                         array_merge($this->getValidFoodData(), ['fat' => 'not an integer']),
+                    ];
+                }
+            ],
+            'it fails if fat is not a non-negative integer' => [
+                function () {
+                    return [
+                        'fat', ['fat' => -1],
                     ];
                 }
             ],
@@ -624,6 +638,13 @@ class FoodControllerTest extends TestCase
                     ];
                 }
             ],
+            'it fails if protein is not a non-negative integer' => [
+                function () {
+                    return [
+                        'protein', ['protein' => -1],
+                    ];
+                }
+            ],
             'it fails if carbohydrate is not an integer' => [
                 function () {
                     return [
@@ -632,11 +653,40 @@ class FoodControllerTest extends TestCase
                     ];
                 }
             ],
+            'it fails if carbohydrate is not a non-negative integer' => [
+                function () {
+                    return [
+                        'carbohydrate', ['carbohydrate' => -1],
+                    ];
+                }
+            ],
             'it fails if potassium is not an integer' => [
                 function () {
                     return [
                         'potassium',
                         array_merge($this->getValidFoodData(), ['potassium' => 'not an integer']),
+                    ];
+                }
+            ],
+            'it fails if potassium is not a non-negative integer' => [
+                function () {
+                    return [
+                        'potassium', ['potassium' => -1],
+                    ];
+                }
+            ],
+            'it fails if quantity is not an integer' => [
+                function () {
+                    return [
+                        'quantity',
+                        array_merge($this->getValidFoodData(), ['quantity' => 'not an integer']),
+                    ];
+                }
+            ],
+            'it fails if quantity is not a non-negative integer' => [
+                function () {
+                    return [
+                        'quantity', ['quantity' => -1],
                     ];
                 }
             ],
@@ -707,10 +757,24 @@ class FoodControllerTest extends TestCase
                     ];
                 }
             ],
+            'it fails if kcal is not a non-negative integer' => [
+                function () {
+                    return [
+                        'kcal', ['kcal' => -1],
+                    ];
+                }
+            ],
             'it fails if fat is not an integer' => [
                 function () {
                     return [
                         'fat', ['fat' => 'not an integer'],
+                    ];
+                }
+            ],
+            'it fails if fat is not a non-negative integer' => [
+                function () {
+                    return [
+                        'fat', ['fat' => -1],
                     ];
                 }
             ],
@@ -721,6 +785,13 @@ class FoodControllerTest extends TestCase
                     ];
                 }
             ],
+            'it fails if protein is not a non-negative integer' => [
+                function () {
+                    return [
+                        'protein', ['protein' => -1],
+                    ];
+                }
+            ],
             'it fails if carbohydrate is not an integer' => [
                 function () {
                     return [
@@ -728,10 +799,39 @@ class FoodControllerTest extends TestCase
                     ];
                 }
             ],
+            'it fails if carbohydrate is not a non-negative integer' => [
+                function () {
+                    return [
+                        'carbohydrate', ['carbohydrate' => -1],
+                    ];
+                }
+            ],
             'it fails if potassium is not an integer' => [
                 function () {
                     return [
                         'potassium', ['potassium' => 'not an integer'],
+                    ];
+                }
+            ],
+            'it fails if potassium is not a non-negative integer' => [
+                function () {
+                    return [
+                        'potassium', ['potassium' => -1],
+                    ];
+                }
+            ],
+            'it fails if quantity is not an integer' => [
+                function () {
+                    return [
+                        'quantity',
+                        array_merge($this->getValidFoodData(), ['quantity' => 'not an integer']),
+                    ];
+                }
+            ],
+            'it fails if quantity is not a non-negative integer' => [
+                function () {
+                    return [
+                        'quantity', ['quantity' => -1],
                     ];
                 }
             ],
