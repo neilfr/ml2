@@ -2037,6 +2037,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Shared_MyTextInput__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Shared/MyTextInput */ "./resources/js/Shared/MyTextInput.vue");
 //
 //
 //
@@ -2073,26 +2074,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    MyTextInput: _Shared_MyTextInput__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   props: {
     errors: Object // page: Object
 
@@ -2472,6 +2458,25 @@ __webpack_require__.r(__webpack_exports__);
     user: Object
   }
 });
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Shared/MyTextInput.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Shared/MyTextInput.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
 
@@ -3692,290 +3697,291 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "form",
-      {
-        attrs: { method: "POST" },
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.submit($event)
+  return _c(
+    "div",
+    [
+      _c("my-text-input"),
+      _vm._v(" "),
+      _c(
+        "form",
+        {
+          attrs: { method: "POST" },
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.submit($event)
+            }
           }
-        }
-      },
-      [
-        _vm._m(0),
-        _vm._v(" "),
-        _c("div", { staticClass: "grid grid-cols-4" }, [
-          _c("div", { staticClass: "col-span-2" }, [_vm._v("1")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-span-2" }, [_vm._v("1")]),
-          _vm._v(" "),
-          _c("div", [_vm._v("1")]),
-          _vm._v(" "),
-          _c("div", [_vm._v("1")]),
-          _vm._v(" "),
-          _c("div", [_vm._v("1")]),
-          _vm._v(" "),
-          _c("div", [_vm._v("1")]),
-          _vm._v(" "),
-          _vm.errors.description
-            ? _c("p", [_vm._v(_vm._s(_vm.errors.description))])
-            : _vm._e(),
-          _vm._v(" "),
-          _c("label", { attrs: { for: "description" } }, [
-            _vm._v("Description:")
-          ]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.food.description,
-                expression: "food.description"
-              }
-            ],
-            attrs: { id: "description", type: "text" },
-            domProps: { value: _vm.food.description },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+        },
+        [
+          _c("div", { staticClass: "grid grid-cols-2 gap-2" }, [
+            _vm.errors.description
+              ? _c("p", { staticClass: "col-span-2" }, [
+                  _vm._v(_vm._s(_vm.errors.description))
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _c("label", { staticClass: "p-2", attrs: { for: "description" } }, [
+              _vm._v("Description:")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.food.description,
+                  expression: "food.description"
                 }
-                _vm.$set(_vm.food, "description", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("br"),
-          _vm._v(" "),
-          _vm.errors.alias
-            ? _c("p", [_vm._v(_vm._s(_vm.errors.alias))])
-            : _vm._e(),
-          _vm._v(" "),
-          _c("label", { attrs: { for: "alias" } }, [_vm._v("Alias:")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.food.alias,
-                expression: "food.alias"
-              }
-            ],
-            attrs: { id: "alias", type: "text" },
-            domProps: { value: _vm.food.alias },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+              ],
+              staticClass: "border rounded",
+              attrs: { id: "description", type: "text" },
+              domProps: { value: _vm.food.description },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.food, "description", $event.target.value)
                 }
-                _vm.$set(_vm.food, "alias", $event.target.value)
               }
-            }
-          }),
-          _vm._v(" "),
-          _c("br"),
-          _vm._v(" "),
-          _vm.errors.kcal
-            ? _c("p", [_vm._v(_vm._s(_vm.errors.kcal))])
-            : _vm._e(),
-          _vm._v(" "),
-          _c("label", { attrs: { for: "KCal" } }, [_vm._v("KCal:")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.food.kcal,
-                expression: "food.kcal"
-              }
-            ],
-            attrs: { id: "kcal", type: "number", min: "0" },
-            domProps: { value: _vm.food.kcal },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+            }),
+            _vm._v(" "),
+            _vm.errors.alias
+              ? _c("p", { staticClass: "col-span-2" }, [
+                  _vm._v(_vm._s(_vm.errors.alias))
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _c("label", { staticClass: "p-2", attrs: { for: "alias" } }, [
+              _vm._v("Alias:")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.food.alias,
+                  expression: "food.alias"
                 }
-                _vm.$set(_vm.food, "kcal", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("br"),
-          _vm._v(" "),
-          _vm.errors.protein
-            ? _c("p", [_vm._v(_vm._s(_vm.errors.protein))])
-            : _vm._e(),
-          _vm._v(" "),
-          _c("label", { attrs: { for: "Protein" } }, [_vm._v("Protein:")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.food.protein,
-                expression: "food.protein"
-              }
-            ],
-            attrs: { id: "protein", type: "number", min: "0" },
-            domProps: { value: _vm.food.protein },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+              ],
+              staticClass: "border rounded",
+              attrs: { id: "alias", type: "text" },
+              domProps: { value: _vm.food.alias },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.food, "alias", $event.target.value)
                 }
-                _vm.$set(_vm.food, "protein", $event.target.value)
               }
-            }
-          }),
-          _vm._v(" "),
-          _c("br"),
-          _vm._v(" "),
-          _vm.errors.fat ? _c("p", [_vm._v(_vm._s(_vm.errors.fat))]) : _vm._e(),
-          _vm._v(" "),
-          _c("label", { attrs: { for: "Fat" } }, [_vm._v("Fat:")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.food.fat,
-                expression: "food.fat"
-              }
-            ],
-            attrs: { id: "fat", type: "number", min: "0" },
-            domProps: { value: _vm.food.fat },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+            }),
+            _vm._v(" "),
+            _vm.errors.kcal
+              ? _c("p", { staticClass: "col-span-2" }, [
+                  _vm._v(_vm._s(_vm.errors.kcal))
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _c("label", { staticClass: "p-2", attrs: { for: "KCal" } }, [
+              _vm._v("KCal:")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.food.kcal,
+                  expression: "food.kcal"
                 }
-                _vm.$set(_vm.food, "fat", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("br"),
-          _vm._v(" "),
-          _vm.errors.carbohydrate
-            ? _c("p", [_vm._v(_vm._s(_vm.errors.carbohydrate))])
-            : _vm._e(),
-          _vm._v(" "),
-          _c("label", { attrs: { for: "Carbohydrate" } }, [
-            _vm._v("Carbohydrate:")
-          ]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.food.carbohydrate,
-                expression: "food.carbohydrate"
-              }
-            ],
-            attrs: { id: "carbohydrate", type: "number", min: "0" },
-            domProps: { value: _vm.food.carbohydrate },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+              ],
+              staticClass: "border rounded",
+              attrs: { id: "kcal", type: "number", min: "0" },
+              domProps: { value: _vm.food.kcal },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.food, "kcal", $event.target.value)
                 }
-                _vm.$set(_vm.food, "carbohydrate", $event.target.value)
               }
-            }
-          }),
-          _vm._v(" "),
-          _c("br"),
-          _vm._v(" "),
-          _vm.errors.potassium
-            ? _c("p", [_vm._v(_vm._s(_vm.errors.potassium))])
-            : _vm._e(),
-          _vm._v(" "),
-          _c("label", { attrs: { for: "Potassium" } }, [_vm._v("Potassium:")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.food.potassium,
-                expression: "food.potassium"
-              }
-            ],
-            attrs: { id: "potassium", type: "number", min: "0" },
-            domProps: { value: _vm.food.potassium },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+            }),
+            _vm._v(" "),
+            _vm.errors.protein
+              ? _c("p", { staticClass: "col-span-2" }, [
+                  _vm._v(_vm._s(_vm.errors.protein))
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _c("label", { staticClass: "p-2", attrs: { for: "Protein" } }, [
+              _vm._v("Protein:")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.food.protein,
+                  expression: "food.protein"
                 }
-                _vm.$set(_vm.food, "potassium", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("br"),
-          _vm._v(" "),
-          _vm.errors.quantity
-            ? _c("p", [_vm._v(_vm._s(_vm.errors.quantity))])
-            : _vm._e(),
-          _vm._v(" "),
-          _c("label", { attrs: { for: "Quantity" } }, [_vm._v("Quantity:")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.food.quantity,
-                expression: "food.quantity"
-              }
-            ],
-            attrs: { id: "quantity", type: "number", min: "0" },
-            domProps: { value: _vm.food.quantity },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+              ],
+              staticClass: "border rounded",
+              attrs: { id: "protein", type: "number", min: "0" },
+              domProps: { value: _vm.food.protein },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.food, "protein", $event.target.value)
                 }
-                _vm.$set(_vm.food, "quantity", $event.target.value)
               }
-            }
-          })
-        ])
-      ]
-    ),
-    _vm._v(" "),
-    _c("button", { on: { click: _vm.store } }, [_vm._v("Save")]),
-    _vm._v(" "),
-    _c("button", [_vm._v("Cancel")])
-  ])
+            }),
+            _vm._v(" "),
+            _vm.errors.fat
+              ? _c("p", { staticClass: "col-span-2" }, [
+                  _vm._v(_vm._s(_vm.errors.fat))
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _c("label", { staticClass: "p-2", attrs: { for: "Fat" } }, [
+              _vm._v("Fat:")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.food.fat,
+                  expression: "food.fat"
+                }
+              ],
+              staticClass: "border rounded",
+              attrs: { id: "fat", type: "number", min: "0" },
+              domProps: { value: _vm.food.fat },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.food, "fat", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm.errors.carbohydrate
+              ? _c("p", { staticClass: "col-span-2" }, [
+                  _vm._v(_vm._s(_vm.errors.carbohydrate))
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _c(
+              "label",
+              { staticClass: "p-2", attrs: { for: "Carbohydrate" } },
+              [_vm._v("Carbohydrate:")]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.food.carbohydrate,
+                  expression: "food.carbohydrate"
+                }
+              ],
+              staticClass: "border rounded",
+              attrs: { id: "carbohydrate", type: "number", min: "0" },
+              domProps: { value: _vm.food.carbohydrate },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.food, "carbohydrate", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm.errors.potassium
+              ? _c("p", { staticClass: "col-span-2" }, [
+                  _vm._v(_vm._s(_vm.errors.potassium))
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _c("label", { staticClass: "p-2", attrs: { for: "Potassium" } }, [
+              _vm._v("Potassium:")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.food.potassium,
+                  expression: "food.potassium"
+                }
+              ],
+              staticClass: "border rounded",
+              attrs: { id: "potassium", type: "number", min: "0" },
+              domProps: { value: _vm.food.potassium },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.food, "potassium", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm.errors.quantity
+              ? _c("p", [_vm._v(_vm._s(_vm.errors.quantity))])
+              : _vm._e(),
+            _vm._v(" "),
+            _c("label", { staticClass: "p-2", attrs: { for: "Quantity" } }, [
+              _vm._v("Quantity:")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.food.quantity,
+                  expression: "food.quantity"
+                }
+              ],
+              staticClass: "border rounded",
+              attrs: { id: "quantity", type: "number", min: "0" },
+              domProps: { value: _vm.food.quantity },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.food, "quantity", $event.target.value)
+                }
+              }
+            })
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c("button", { on: { click: _vm.store } }, [_vm._v("Save")]),
+      _vm._v(" "),
+      _c("button", [_vm._v("Cancel")])
+    ],
+    1
+  )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "bg-red-400 grid grid-cols-2" }, [
-      _c("div", [_vm._v("1")]),
-      _vm._v(" "),
-      _c("div", [_vm._v("2")]),
-      _vm._v(" "),
-      _c("div", [_vm._v("3")]),
-      _vm._v(" "),
-      _c("div", [_vm._v("4")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -4474,6 +4480,30 @@ var render = function() {
       )
     ])
   ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Shared/MyTextInput.vue?vue&type=template&id=14ff21b6&":
+/*!**********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Shared/MyTextInput.vue?vue&type=template&id=14ff21b6& ***!
+  \**********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [_vm._v("\n    hello!\n")])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -13738,6 +13768,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Testing_vue_vue_type_template_id_3e5bfb12___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Testing_vue_vue_type_template_id_3e5bfb12___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/Shared/MyTextInput.vue":
+/*!*********************************************!*\
+  !*** ./resources/js/Shared/MyTextInput.vue ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _MyTextInput_vue_vue_type_template_id_14ff21b6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MyTextInput.vue?vue&type=template&id=14ff21b6& */ "./resources/js/Shared/MyTextInput.vue?vue&type=template&id=14ff21b6&");
+/* harmony import */ var _MyTextInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MyTextInput.vue?vue&type=script&lang=js& */ "./resources/js/Shared/MyTextInput.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _MyTextInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _MyTextInput_vue_vue_type_template_id_14ff21b6___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _MyTextInput_vue_vue_type_template_id_14ff21b6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/Shared/MyTextInput.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/Shared/MyTextInput.vue?vue&type=script&lang=js&":
+/*!**********************************************************************!*\
+  !*** ./resources/js/Shared/MyTextInput.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MyTextInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./MyTextInput.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Shared/MyTextInput.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MyTextInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/Shared/MyTextInput.vue?vue&type=template&id=14ff21b6&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/Shared/MyTextInput.vue?vue&type=template&id=14ff21b6& ***!
+  \****************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MyTextInput_vue_vue_type_template_id_14ff21b6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./MyTextInput.vue?vue&type=template&id=14ff21b6& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Shared/MyTextInput.vue?vue&type=template&id=14ff21b6&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MyTextInput_vue_vue_type_template_id_14ff21b6___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MyTextInput_vue_vue_type_template_id_14ff21b6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

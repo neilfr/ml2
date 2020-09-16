@@ -1,51 +1,32 @@
 <template>
   <div>
+      <my-text-input/>
         <form method="POST" @submit.prevent="submit">
-            <div class="bg-red-400 grid grid-cols-2">
-                <div>1</div>
-                <div>2</div>
-                <div>3</div>
-                <div>4</div>
-            </div>
-
-            <div class="grid grid-cols-4">
-                <div class="col-span-2">1</div>
-                <div class="col-span-2">1</div>
-                <div>1</div>
-                <div>1</div>
-                <div>1</div>
-                <div>1</div>
-                <p v-if="errors.description">{{errors.description}}</p>
-                <label for="description">Description:</label>
-                <input id="description" type="text" v-model="food.description">
-                <br/>
-                <p v-if="errors.alias">{{errors.alias}}</p>
-                <label for="alias">Alias:</label>
-                <input id="alias" type="text" v-model="food.alias"/>
-                <br/>
-                <p v-if="errors.kcal">{{errors.kcal}}</p>
-                <label for="KCal">KCal:</label>
-                <input id="kcal" type="number" v-model="food.kcal" min="0"/>
-                <br/>
-                <p v-if="errors.protein">{{errors.protein}}</p>
-                <label for="Protein">Protein:</label>
-                <input id="protein" type="number" v-model="food.protein" min="0"/>
-                <br/>
-                <p v-if="errors.fat">{{errors.fat}}</p>
-                <label for="Fat">Fat:</label>
-                <input id="fat" type="number" v-model="food.fat" min="0"/>
-                <br/>
-                <p v-if="errors.carbohydrate">{{errors.carbohydrate}}</p>
-                <label for="Carbohydrate">Carbohydrate:</label>
-                <input id="carbohydrate" type="number" v-model="food.carbohydrate" min="0"/>
-                <br/>
-                <p v-if="errors.potassium">{{errors.potassium}}</p>
-                <label for="Potassium">Potassium:</label>
-                <input id="potassium" type="number" v-model="food.potassium" min="0"/>
-                <br/>
+            <div class="grid grid-cols-2 gap-2">
+                <p class="col-span-2" v-if="errors.description">{{errors.description}}</p>
+                <label class="p-2" for="description">Description:</label>
+                <input class="border rounded" id="description" type="text" v-model="food.description">
+                <p class="col-span-2" v-if="errors.alias">{{errors.alias}}</p>
+                <label class="p-2" for="alias">Alias:</label>
+                <input class="border rounded" id="alias" type="text" v-model="food.alias"/>
+                <p class="col-span-2" v-if="errors.kcal">{{errors.kcal}}</p>
+                <label class="p-2" for="KCal">KCal:</label>
+                <input class="border rounded" id="kcal" type="number" v-model="food.kcal" min="0"/>
+                <p class="col-span-2" v-if="errors.protein">{{errors.protein}}</p>
+                <label class="p-2" for="Protein">Protein:</label>
+                <input class="border rounded" id="protein" type="number" v-model="food.protein" min="0"/>
+                <p class="col-span-2" v-if="errors.fat">{{errors.fat}}</p>
+                <label class="p-2" for="Fat">Fat:</label>
+                <input class="border rounded" id="fat" type="number" v-model="food.fat" min="0"/>
+                <p class="col-span-2" v-if="errors.carbohydrate">{{errors.carbohydrate}}</p>
+                <label class="p-2" for="Carbohydrate">Carbohydrate:</label>
+                <input class="border rounded" id="carbohydrate" type="number" v-model="food.carbohydrate" min="0"/>
+                <p class="col-span-2" v-if="errors.potassium">{{errors.potassium}}</p>
+                <label class="p-2" for="Potassium">Potassium:</label>
+                <input class="border rounded" id="potassium" type="number" v-model="food.potassium" min="0"/>
                 <p v-if="errors.quantity">{{errors.quantity}}</p>
-                <label for="Quantity">Quantity:</label>
-                <input id="quantity" type="number" v-model="food.quantity" min="0"/>
+                <label class="p-2" for="Quantity">Quantity:</label>
+                <input class="border rounded" id="quantity" type="number" v-model="food.quantity" min="0"/>
             </div>
         </form>
         <button @click="store">Save</button>
@@ -54,7 +35,12 @@
 </template>
 
 <script>
+import MyTextInput from "@/Shared/MyTextInput";
+
 export default {
+    components:{
+        MyTextInput
+    },
     props:{
         errors: Object
         // page: Object
