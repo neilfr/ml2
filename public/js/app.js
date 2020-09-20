@@ -2293,16 +2293,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    food: Object
+    food: Object,
+    errors: Object
   },
   methods: {
-    close: function close() {
-      console.log("closing!");
+    cancel: function cancel() {
+      console.log("cancelling!");
     },
-    save: function save() {
-      console.log("saving!");
+    update: function update() {
+      var _this = this;
+
+      console.log("updating!");
+      this.$inertia.patch(this.$route("foods.update", {
+        'food': this.food.data.id
+      }), this.food.data).then(function () {
+        console.log("respond!");
+        console.log("errors", _this.errors.description);
+      });
     }
   }
 });
@@ -4233,103 +4243,265 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", [
-      _c("label", { attrs: { for: "description" } }, [_vm._v("Description:")]),
+    _c("div", { staticClass: "grid grid-cols-2 gap-2" }, [
+      _vm.errors.description
+        ? _c("p", { staticClass: "col-span-2" }, [
+            _vm._v(_vm._s(_vm.errors.description))
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c("label", { staticClass: "p-2", attrs: { for: "description" } }, [
+        _vm._v("Description:")
+      ]),
       _vm._v(" "),
       _c("input", {
-        attrs: {
-          id: "description",
-          type: "text",
-          readonly: !_vm.food.data.editable
-        },
-        domProps: { value: _vm.food.data.description }
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.food.data.description,
+            expression: "food.data.description"
+          }
+        ],
+        staticClass: "border rounded",
+        attrs: { id: "description", type: "text" },
+        domProps: { value: _vm.food.data.description },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.food.data, "description", $event.target.value)
+          }
+        }
       }),
       _vm._v(" "),
-      _c("br"),
+      _vm.errors.alias
+        ? _c("p", { staticClass: "col-span-2" }, [
+            _vm._v(_vm._s(_vm.errors.alias))
+          ])
+        : _vm._e(),
       _vm._v(" "),
-      _c("label", { attrs: { for: "alias" } }, [_vm._v("Alias:")]),
+      _c("label", { staticClass: "p-2", attrs: { for: "alias" } }, [
+        _vm._v("Alias:")
+      ]),
       _vm._v(" "),
       _c("input", {
-        attrs: { id: "alias", type: "text", readonly: !_vm.food.data.editable },
-        domProps: { value: _vm.food.data.alias }
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.food.data.alias,
+            expression: "food.data.alias"
+          }
+        ],
+        staticClass: "border rounded",
+        attrs: { id: "alias", type: "text" },
+        domProps: { value: _vm.food.data.alias },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.food.data, "alias", $event.target.value)
+          }
+        }
       }),
       _vm._v(" "),
-      _c("br"),
+      _vm.errors.kcal
+        ? _c("p", { staticClass: "col-span-2" }, [
+            _vm._v(_vm._s(_vm.errors.kcal))
+          ])
+        : _vm._e(),
       _vm._v(" "),
-      _c("label", { attrs: { for: "KCal" } }, [_vm._v("KCal:")]),
+      _c("label", { staticClass: "p-2", attrs: { for: "KCal" } }, [
+        _vm._v("KCal:")
+      ]),
       _vm._v(" "),
       _c("input", {
-        attrs: { id: "kcal", type: "text", readonly: !_vm.food.data.editable },
-        domProps: { value: _vm.food.data.kcal }
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.food.data.kcal,
+            expression: "food.data.kcal"
+          }
+        ],
+        staticClass: "border rounded",
+        attrs: { id: "kcal", type: "number", min: "0" },
+        domProps: { value: _vm.food.data.kcal },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.food.data, "kcal", $event.target.value)
+          }
+        }
       }),
       _vm._v(" "),
-      _c("br"),
+      _vm.errors.protein
+        ? _c("p", { staticClass: "col-span-2" }, [
+            _vm._v(_vm._s(_vm.errors.protein))
+          ])
+        : _vm._e(),
       _vm._v(" "),
-      _c("label", { attrs: { for: "Protein" } }, [_vm._v("Protein:")]),
+      _c("label", { staticClass: "p-2", attrs: { for: "Protein" } }, [
+        _vm._v("Protein:")
+      ]),
       _vm._v(" "),
       _c("input", {
-        attrs: {
-          id: "protein",
-          type: "text",
-          readonly: !_vm.food.data.editable
-        },
-        domProps: { value: _vm.food.data.protein }
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.food.data.protein,
+            expression: "food.data.protein"
+          }
+        ],
+        staticClass: "border rounded",
+        attrs: { id: "protein", type: "number", min: "0" },
+        domProps: { value: _vm.food.data.protein },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.food.data, "protein", $event.target.value)
+          }
+        }
       }),
       _vm._v(" "),
-      _c("br"),
+      _vm.errors.fat
+        ? _c("p", { staticClass: "col-span-2" }, [
+            _vm._v(_vm._s(_vm.errors.fat))
+          ])
+        : _vm._e(),
       _vm._v(" "),
-      _c("label", { attrs: { for: "Fat" } }, [_vm._v("Fat:")]),
+      _c("label", { staticClass: "p-2", attrs: { for: "Fat" } }, [
+        _vm._v("Fat:")
+      ]),
       _vm._v(" "),
       _c("input", {
-        attrs: { id: "fat", type: "text", readonly: !_vm.food.data.editable },
-        domProps: { value: _vm.food.data.fat }
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.food.data.fat,
+            expression: "food.data.fat"
+          }
+        ],
+        staticClass: "border rounded",
+        attrs: { id: "fat", type: "number", min: "0" },
+        domProps: { value: _vm.food.data.fat },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.food.data, "fat", $event.target.value)
+          }
+        }
       }),
       _vm._v(" "),
-      _c("br"),
+      _vm.errors.carbohydrate
+        ? _c("p", { staticClass: "col-span-2" }, [
+            _vm._v(_vm._s(_vm.errors.carbohydrate))
+          ])
+        : _vm._e(),
       _vm._v(" "),
-      _c("label", { attrs: { for: "Carbohydrate" } }, [
+      _c("label", { staticClass: "p-2", attrs: { for: "Carbohydrate" } }, [
         _vm._v("Carbohydrate:")
       ]),
       _vm._v(" "),
       _c("input", {
-        attrs: {
-          id: "carbohydrate",
-          type: "text",
-          readonly: !_vm.food.data.editable
-        },
-        domProps: { value: _vm.food.data.carbohydrate }
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.food.data.carbohydrate,
+            expression: "food.data.carbohydrate"
+          }
+        ],
+        staticClass: "border rounded",
+        attrs: { id: "carbohydrate", type: "number", min: "0" },
+        domProps: { value: _vm.food.data.carbohydrate },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.food.data, "carbohydrate", $event.target.value)
+          }
+        }
       }),
       _vm._v(" "),
-      _c("br"),
+      _vm.errors.potassium
+        ? _c("p", { staticClass: "col-span-2" }, [
+            _vm._v(_vm._s(_vm.errors.potassium))
+          ])
+        : _vm._e(),
       _vm._v(" "),
-      _c("label", { attrs: { for: "Potassium" } }, [_vm._v("Potassium:")]),
+      _c("label", { staticClass: "p-2", attrs: { for: "Potassium" } }, [
+        _vm._v("Potassium:")
+      ]),
       _vm._v(" "),
       _c("input", {
-        attrs: {
-          id: "potassium",
-          type: "text",
-          readonly: !_vm.food.data.editable
-        },
-        domProps: { value: _vm.food.data.potassium }
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.food.data.potassium,
+            expression: "food.data.potassium"
+          }
+        ],
+        staticClass: "border rounded",
+        attrs: { id: "potassium", type: "number", min: "0" },
+        domProps: { value: _vm.food.data.potassium },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.food.data, "potassium", $event.target.value)
+          }
+        }
       }),
       _vm._v(" "),
-      _c("br"),
+      _vm.errors.quantity
+        ? _c("p", [_vm._v(_vm._s(_vm.errors.quantity))])
+        : _vm._e(),
       _vm._v(" "),
-      _c("label", { attrs: { for: "Quantity" } }, [_vm._v("Quantity:")]),
+      _c("label", { staticClass: "p-2", attrs: { for: "Quantity" } }, [
+        _vm._v("Quantity:")
+      ]),
       _vm._v(" "),
       _c("input", {
-        attrs: {
-          id: "quantity",
-          type: "text",
-          readonly: !_vm.food.data.editable
-        },
-        domProps: { value: _vm.food.data.quantity }
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.food.data.quantity,
+            expression: "food.data.quantity"
+          }
+        ],
+        staticClass: "border rounded",
+        attrs: { id: "quantity", type: "number", min: "0" },
+        domProps: { value: _vm.food.data.quantity },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.food.data, "quantity", $event.target.value)
+          }
+        }
       })
     ]),
     _vm._v(" "),
-    _c("button", { on: { click: _vm.save } }, [_vm._v("Save")]),
+    _c("button", { on: { click: _vm.update } }, [_vm._v("Update")]),
     _vm._v(" "),
-    _c("button", { on: { click: _vm.close } }, [_vm._v("Cancel")])
+    _c("button", { on: { click: _vm.cancel } }, [_vm._v("Cancel")])
   ])
 }
 var staticRenderFns = []

@@ -1,46 +1,56 @@
 <template>
   <div>
-      <div>
-      <label for="description">Description:</label>
-      <input id="description" type="text" :value="food.data.description" :readonly="!(food.data.editable)"/>
-      <br/>
-      <label for="alias">Alias:</label>
-      <input id="alias" type="text" :value="food.data.alias" :readonly="!(food.data.editable)"/>
-      <br/>
-      <label for="KCal">KCal:</label>
-      <input id="kcal" type="text" :value="food.data.kcal" :readonly="!(food.data.editable)"/>
-      <br/>
-      <label for="Protein">Protein:</label>
-      <input id="protein" type="text" :value="food.data.protein" :readonly="!(food.data.editable)"/>
-      <br/>
-      <label for="Fat">Fat:</label>
-      <input id="fat" type="text" :value="food.data.fat" :readonly="!(food.data.editable)"/>
-      <br/>
-      <label for="Carbohydrate">Carbohydrate:</label>
-      <input id="carbohydrate" type="text" :value="food.data.carbohydrate" :readonly="!(food.data.editable)"/>
-      <br/>
-      <label for="Potassium">Potassium:</label>
-      <input id="potassium" type="text" :value="food.data.potassium" :readonly="!(food.data.editable)"/>
-      <br/>
-      <label for="Quantity">Quantity:</label>
-      <input id="quantity" type="text" :value="food.data.quantity" :readonly="!(food.data.editable)"/>
-      </div>
-      <button @click="save">Save</button>
-      <button @click="close">Cancel</button>
+            <div class="grid grid-cols-2 gap-2">
+                <p class="col-span-2" v-if="errors.description">{{errors.description}}</p>
+                <label class="p-2" for="description">Description:</label>
+                <input class="border rounded" id="description" type="text" v-model="food.data.description">
+                <p class="col-span-2" v-if="errors.alias">{{errors.alias}}</p>
+                <label class="p-2" for="alias">Alias:</label>
+                <input class="border rounded" id="alias" type="text" v-model="food.data.alias"/>
+                <p class="col-span-2" v-if="errors.kcal">{{errors.kcal}}</p>
+                <label class="p-2" for="KCal">KCal:</label>
+                <input class="border rounded" id="kcal" type="number" v-model="food.data.kcal" min="0"/>
+                <p class="col-span-2" v-if="errors.protein">{{errors.protein}}</p>
+                <label class="p-2" for="Protein">Protein:</label>
+                <input class="border rounded" id="protein" type="number" v-model="food.data.protein" min="0"/>
+                <p class="col-span-2" v-if="errors.fat">{{errors.fat}}</p>
+                <label class="p-2" for="Fat">Fat:</label>
+                <input class="border rounded" id="fat" type="number" v-model="food.data.fat" min="0"/>
+                <p class="col-span-2" v-if="errors.carbohydrate">{{errors.carbohydrate}}</p>
+                <label class="p-2" for="Carbohydrate">Carbohydrate:</label>
+                <input class="border rounded" id="carbohydrate" type="number" v-model="food.data.carbohydrate" min="0"/>
+                <p class="col-span-2" v-if="errors.potassium">{{errors.potassium}}</p>
+                <label class="p-2" for="Potassium">Potassium:</label>
+                <input class="border rounded" id="potassium" type="number" v-model="food.data.potassium" min="0"/>
+                <p v-if="errors.quantity">{{errors.quantity}}</p>
+                <label class="p-2" for="Quantity">Quantity:</label>
+                <input class="border rounded" id="quantity" type="number" v-model="food.data.quantity" min="0"/>
+            </div>
+            <button @click="update">Update</button>
+            <button @click="cancel">Cancel</button>
   </div>
 </template>
 
 <script>
 export default {
     props:{
-        food: Object
+        food: Object,
+        errors: Object
     },
     methods:{
-        close () {
-            console.log("closing!");
+        cancel () {
+            console.log("cancelling!");
         },
-        save () {
-            console.log("saving!");
+        update () {
+            console.log("updating!");
+            this.$inertia.patch(
+                this.$route("foods.update", {
+                    'food': this.food.data.id
+                }), this.food.data
+            ).then(()=>{
+                console.log("respond!");
+                console.log("errors", this.errors.description);
+            });
         }
     }
 }
