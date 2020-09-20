@@ -4264,7 +4264,11 @@ var render = function() {
           }
         ],
         staticClass: "border rounded",
-        attrs: { id: "description", type: "text" },
+        attrs: {
+          id: "description",
+          type: "text",
+          readonly: !_vm.food.data.editable
+        },
         domProps: { value: _vm.food.data.description },
         on: {
           input: function($event) {
@@ -4296,7 +4300,7 @@ var render = function() {
           }
         ],
         staticClass: "border rounded",
-        attrs: { id: "alias", type: "text" },
+        attrs: { id: "alias", type: "text", readonly: !_vm.food.data.editable },
         domProps: { value: _vm.food.data.alias },
         on: {
           input: function($event) {
@@ -4328,7 +4332,12 @@ var render = function() {
           }
         ],
         staticClass: "border rounded",
-        attrs: { id: "kcal", type: "number", min: "0" },
+        attrs: {
+          id: "kcal",
+          type: "number",
+          readonly: !_vm.food.data.editable,
+          min: "0"
+        },
         domProps: { value: _vm.food.data.kcal },
         on: {
           input: function($event) {
@@ -4360,7 +4369,12 @@ var render = function() {
           }
         ],
         staticClass: "border rounded",
-        attrs: { id: "protein", type: "number", min: "0" },
+        attrs: {
+          id: "protein",
+          type: "number",
+          readonly: !_vm.food.data.editable,
+          min: "0"
+        },
         domProps: { value: _vm.food.data.protein },
         on: {
           input: function($event) {
@@ -4392,7 +4406,12 @@ var render = function() {
           }
         ],
         staticClass: "border rounded",
-        attrs: { id: "fat", type: "number", min: "0" },
+        attrs: {
+          id: "fat",
+          type: "number",
+          readonly: !_vm.food.data.editable,
+          min: "0"
+        },
         domProps: { value: _vm.food.data.fat },
         on: {
           input: function($event) {
@@ -4424,7 +4443,12 @@ var render = function() {
           }
         ],
         staticClass: "border rounded",
-        attrs: { id: "carbohydrate", type: "number", min: "0" },
+        attrs: {
+          id: "carbohydrate",
+          type: "number",
+          readonly: !_vm.food.data.editable,
+          min: "0"
+        },
         domProps: { value: _vm.food.data.carbohydrate },
         on: {
           input: function($event) {
@@ -4456,7 +4480,12 @@ var render = function() {
           }
         ],
         staticClass: "border rounded",
-        attrs: { id: "potassium", type: "number", min: "0" },
+        attrs: {
+          id: "potassium",
+          type: "number",
+          readonly: !_vm.food.data.editable,
+          min: "0"
+        },
         domProps: { value: _vm.food.data.potassium },
         on: {
           input: function($event) {
@@ -4486,7 +4515,12 @@ var render = function() {
           }
         ],
         staticClass: "border rounded",
-        attrs: { id: "quantity", type: "number", min: "0" },
+        attrs: {
+          id: "quantity",
+          type: "number",
+          readonly: !_vm.food.data.editable,
+          min: "0"
+        },
         domProps: { value: _vm.food.data.quantity },
         on: {
           input: function($event) {

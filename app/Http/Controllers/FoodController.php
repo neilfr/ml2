@@ -61,7 +61,7 @@ class FoodController extends Controller
     public function update(UpdateFoodRequest $request, Food $food)
     {
         if ($food->user_id === auth()->user()->id) {
-            $food->update($request->input());
+            $food->update($request->validated());
         }
         return  redirect(route('foods.index'));
     }
