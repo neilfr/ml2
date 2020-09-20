@@ -31,13 +31,19 @@ class UpdateFoodRequest extends FormRequest
                 'string',
                 'nullable',
                 Rule::unique('foods', 'alias')->where(function ($query) {
-                    return $query->where('user_id', Auth::User()->id);
+                    return $query->where([
+                        ['user_id', '=', Auth::User()->id],
+                        ['id', '<>', $this->food->id],
+                    ]);
                 }),
             ],
             'description' => [
                 'string',
                 Rule::unique('foods', 'description')->where(function ($query) {
-                    return $query->where('user_id', Auth::User()->id);
+                    return $query->where([
+                        ['user_id', '=', Auth::User()->id],
+                        ['id', '<>', $this->food->id],
+                    ]);
                 }),
             ],
             'kcal' => 'integer|min:0',

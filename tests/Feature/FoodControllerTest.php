@@ -510,6 +510,52 @@ class FoodControllerTest extends TestCase
     }
 
     /** @test */
+    public function it_can_update_a_foods_description_while_alias_is_unchanged()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $food = factory(Food::class)->create([
+            'user_id' => $user->id,
+            'alias' => 'original alias',
+            'description' => 'original description',
+        ]);
+
+        $payload = [
+            'alias' => 'original alias',
+            'description' => 'new description',
+        ];
+
+        $response = $this->patch(route('foods.update', $food->id), $payload);
+
+        $response->assertRedirect(route('foods.index'));
+        $this->assertDatabaseHas('foods', $payload);
+    }
+
+    /** @test */
+    public function it_can_update_a_foods_alias_while_description_is_unchanged()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $food = factory(Food::class)->create([
+            'user_id' => $user->id,
+            'alias' => 'original alias',
+            'description' => 'original description',
+        ]);
+
+        $payload = [
+            'alias' => 'new alias',
+            'description' => 'original description',
+        ];
+
+        $response = $this->patch(route('foods.update', $food->id), $payload);
+
+        $response->assertRedirect(route('foods.index'));
+        $this->assertDatabaseHas('foods', $payload);
+    }
+
+    /** @test */
     public function it_cannot_update_another_users_food()
     {
         $user = factory(User::class)->create();
