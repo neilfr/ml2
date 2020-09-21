@@ -53,6 +53,7 @@ class FoodController extends Controller
         if (($food->user_id === auth()->user()->id) || ($food->foodsource->sharable === true)){
             return Inertia::render('Foods/Show', [
                 'food' => new FoodResource($food),
+                'ingredients' => FoodResource::collection($food->ingredients),
             ]);
         }
         return redirect()->route('foods.index');

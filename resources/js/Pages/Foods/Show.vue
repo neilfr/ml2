@@ -35,6 +35,7 @@
 export default {
     props:{
         food: Object,
+        ingredients: Array,
         errors: Object
     },
     methods:{

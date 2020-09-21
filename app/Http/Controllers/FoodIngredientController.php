@@ -13,7 +13,6 @@ class FoodIngredientController extends Controller
 {
     public function index(Food $food)
     {
-        // dd('hello', auth()->user()->foods()->$food);
         if ($food->user_id === auth()->user()->id) {
             $ingredients = $food->ingredients;
             return Inertia::render('Ingredients/Index', [
