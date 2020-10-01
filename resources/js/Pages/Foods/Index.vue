@@ -45,7 +45,7 @@
                 <td>{{food.fat}}</td>
                 <td>{{food.carbohydrate}}</td>
                 <td>{{food.potassium}}</td>
-                <td>{{food.quantity}}</td>
+                <td>{{food.base_quantity}}</td>
             </tr>
         </table>
         <div>

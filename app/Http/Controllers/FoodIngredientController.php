@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Food;
-use App\Http\Requests\CreateIngredientRequest;
-use App\Http\Requests\UpdateIngredientRequest;
+use App\Ingredient;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Resources\FoodResource;
+use App\Http\Resources\IngredientResource;
+use App\Http\Requests\CreateIngredientRequest;
+use App\Http\Requests\UpdateIngredientRequest;
 
 class FoodIngredientController extends Controller
 {
@@ -16,7 +18,7 @@ class FoodIngredientController extends Controller
         if ($food->user_id === auth()->user()->id) {
             $ingredients = $food->ingredients;
             return Inertia::render('Ingredients/Index', [
-                'ingredients' => FoodResource::collection($ingredients),
+                'ingredients' => IngredientResource::collection($ingredients),
             ]);
         }
         return redirect()->route('foods.index');
@@ -33,7 +35,7 @@ class FoodIngredientController extends Controller
         return redirect()->route('foods.index');
     }
 
-    public function update(UpdateIngredientRequest $request, Food $food, Food $ingredient)
+    public function update(UpdateIngredientRequest $request, Food $food, Ingredient $ingredient)
     {
         if ($food->user_id === auth()->user()->id) {
             $payload = $request->input();
@@ -43,7 +45,7 @@ class FoodIngredientController extends Controller
         return redirect()->route('foods.index');
     }
 
-    public function destroy(Request $request, Food $food, Food $ingredient)
+    public function destroy(Request $request, Food $food, Ingredient $ingredient)
     {
         if ($food->user_id === auth()->user()->id) {
             $food->ingredients()->detach($ingredient);

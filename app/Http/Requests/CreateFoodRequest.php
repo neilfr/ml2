@@ -45,7 +45,7 @@ class CreateFoodRequest extends FormRequest
             'protein' => 'required|integer|min:0',
             'carbohydrate' => 'required|integer|min:0',
             'potassium' => 'required|integer|min:0',
-            'quantity' => 'required|integer|min:0',
+            'base_quantity' => 'required|integer|min:0',
             'favourite' => 'required|boolean',
             'foodgroup_id' => 'required|exists:App\Foodgroup,id',
             'foodsource_id' => 'required|exists:App\Foodsource,id',

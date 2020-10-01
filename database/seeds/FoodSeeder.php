@@ -13,7 +13,7 @@ class FoodSeeder extends Seeder
     public function run()
     {
         DB::insert("
-INSERT INTO `foods` (`id`, `alias`, `description`, `potassium`, `kcal`, `protein`, `carbohydrate`, `fat`, `foodgroup_id`, `foodsource_id`, `user_id`, `favourite`, `quantity`)
+INSERT INTO `foods` (`id`, `alias`, `description`, `potassium`, `kcal`, `protein`, `carbohydrate`, `fat`, `foodgroup_id`, `foodsource_id`, `user_id`, `favourite`, `base_quantity`)
 VALUES
 	(2,'2','Cheese souffle',119,204,'9.54','5.91','15.7',22,1,1,0,100),
 	(4,'4','Chop suey, with meat, canned',164,60,'4.07','5.29','2.8',22,1,1,0,100),

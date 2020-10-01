@@ -23,7 +23,7 @@ class CreateFoodsTable extends Migration
             $table->integer('carbohydrate');
             $table->integer('potassium');
             $table->boolean('favourite');
-            $table->integer('quantity');
+            $table->integer('base_quantity');
             $table->unsignedBigInteger('foodsource_id');
             $table->unsignedBigInteger('foodgroup_id');
             $table->unsignedBigInteger('user_id');

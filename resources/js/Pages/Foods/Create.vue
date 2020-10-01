@@ -24,9 +24,9 @@
                 <p class="col-span-2" v-if="errors.potassium">{{errors.potassium}}</p>
                 <label class="p-2" for="Potassium">Potassium:</label>
                 <input class="border rounded" id="potassium" type="number" v-model="food.potassium" min="0"/>
-                <p v-if="errors.quantity">{{errors.quantity}}</p>
+                <p v-if="errors.base_quantity">{{errors.base_quantity}}</p>
                 <label class="p-2" for="Quantity">Quantity:</label>
-                <input class="border rounded" id="quantity" type="number" v-model="food.quantity" min="0"/>
+                <input class="border rounded" id="base_quantity" type="number" v-model="food.base_quantity" min="0"/>
             </div>
         </form>
         <button @click="store">Save</button>
@@ -56,7 +56,7 @@ export default {
                 carbohydrate: 0,
                 potassium: 0,
                 favourite: true,
-                quantity: 0,
+                base_quantity: 0,
                 foodsource_id: 2,
                 foodgroup_id: 26,
                 user_id: this.$page.auth.user.id

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Config;
 use App\Http\Requests\CreateFoodRequest;
 use App\Http\Requests\UpdateFoodRequest;
 use App\Http\Resources\FoodgroupResource;
+use App\Http\Resources\IngredientResource;
 use phpDocumentor\Reflection\Types\Integer;
 
 class FoodController extends Controller
@@ -50,10 +51,12 @@ class FoodController extends Controller
 
     public function show(Food $food)
     {
+
+        // dd(IngredientResource::collection($food->ingredients));
         if (($food->user_id === auth()->user()->id) || ($food->foodsource->sharable === true)){
             return Inertia::render('Foods/Show', [
                 'food' => new FoodResource($food),
-                'ingredients' => FoodResource::collection($food->ingredients),
+                'ingredients' => IngredientResource::collection($food->ingredients),
             ]);
         }
         return redirect()->route('foods.index');

@@ -6,8 +6,10 @@ use App\Food;
 use App\User;
 use App\Foodgroup;
 use App\Foodsource;
+use App\Ingredient;
 use Tests\TestCase;
 use Illuminate\Http\Response;
+use App\Http\Resources\IngredientResource;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class FoodControllerTest extends TestCase
@@ -74,18 +76,20 @@ class FoodControllerTest extends TestCase
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
-        $ingredients = factory(Food::class, 2)->create();
+        $ingredients = factory(Ingredient::class, 2)->create();
 
         $parentfood = factory(Food::class)->create([
             'description' => 'parentfood',
         ]);
 
         foreach ($ingredients as $ingredient) {
-            $parentfood->ingredients()->attach($ingredient->id, ['quantity' => 100]);
+            $parentfood->ingredients()->attach($ingredient->id, ['quantity' => 555]);
         }
+        $ingredientsCollection=IngredientResource::collection($parentfood->ingredients);
 
-        foreach ($ingredients as $food) {
-            $this->assertEquals($food->description, $parentfood->ingredients()->find($food->id)->description);
+        foreach ($ingredientsCollection as $ingredient) {
+            $this->assertEquals($ingredient->description, $parentfood->ingredients()->find($ingredient->id)->description);
+            $this->assertEquals($ingredient->pivot->quantity, 555);
         }
     }
 
@@ -173,6 +177,41 @@ class FoodControllerTest extends TestCase
         $response->assertStatus(Response::HTTP_OK)
             ->assertPropValue('food', function ($returnedFood) use ($foods) {
                 $this->assertEquals($foods[0]['description'],$returnedFood['data']['description']);
+            });
+    }
+
+
+    /** @test */
+    public function it_can_return_a_specific_user_owned_food_with_ingredients_and_quantities()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $foods = factory(Food::class, 2)->create([
+            'user_id' => $user->id,
+            'favourite' => true,
+        ]);
+
+        $ingredients = factory(Ingredient::class,2)->create([
+            'user_id' => $user->id,
+        ]);
+
+        foreach ($ingredients as $ingredient) {
+            $foods[0]->ingredients()->attach($ingredient->id, ['quantity' => 555]);
+        }
+
+        $response = $this->get(route('foods.show', $foods[0]));
+
+        $response->assertStatus(Response::HTTP_OK)
+            ->assertPropValue('food', function ($returnedFood) use ($foods) {
+                $this->assertEquals($foods[0]['description'], $returnedFood['data']['description']);
+                $items = $foods[0]->ingredients()->get();
+                foreach($items as $item) {
+                    // dd($item->toArray());
+                    $this->assertEquals($item->toArray()['pivot']['quantity'], 555);
+                    // dd($item->ingredients);
+
+                }
             });
     }
 
@@ -279,7 +318,7 @@ class FoodControllerTest extends TestCase
             'carbohydrate' => 135,
             'potassium' => 456,
             'favourite' => true,
-            'quantity' => 200,
+            'base_quantity' => 200,
             'foodgroup_id' => factory(Foodgroup::class)->create()->id,
             'foodsource_id' => factory(Foodsource::class)->create()->id,
             'user_id' => auth()->user()->id,
@@ -313,7 +352,7 @@ class FoodControllerTest extends TestCase
             'carbohydrate' => 135,
             'potassium' => 456,
             'favourite' => true,
-            'quantity' => 200,
+            'base_quantity' => 200,
             'foodgroup_id' => factory(Foodgroup::class)->create()->id,
             'foodsource_id' => factory(Foodsource::class)->create()->id,
             'user_id' => auth()->user()->id,
@@ -352,7 +391,7 @@ class FoodControllerTest extends TestCase
             'carbohydrate' => 135,
             'potassium' => 456,
             'favourite' => true,
-            'quantity' => 200,
+            'base_quantity' => 200,
             'foodgroup_id' => factory(Foodgroup::class)->create()->id,
             'foodsource_id' => factory(Foodsource::class)->create()->id,
             'user_id' => auth()->user()->id,
@@ -391,7 +430,7 @@ class FoodControllerTest extends TestCase
             'carbohydrate' => 135,
             'potassium' => 456,
             'favourite' => true,
-            'quantity' => 200,
+            'base_quantity' => 200,
             'foodgroup_id' => factory(Foodgroup::class)->create()->id,
             'foodsource_id' => factory(Foodsource::class)->create()->id,
             'user_id' => auth()->user()->id,
@@ -422,7 +461,7 @@ class FoodControllerTest extends TestCase
             'carbohydrate' => 135,
             'potassium' => 456,
             'favourite' => true,
-            'quantity' => 200,
+            'base_quantity' => 200,
             'foodgroup_id' => factory(Foodgroup::class)->create()->id,
             'foodsource_id' => factory(Foodsource::class)->create()->id,
             'user_id' => auth()->user()->id,
@@ -721,18 +760,18 @@ class FoodControllerTest extends TestCase
                     ];
                 }
             ],
-            'it fails if quantity is not an integer' => [
+            'it fails if base_quantity is not an integer' => [
                 function () {
                     return [
-                        'quantity',
-                        array_merge($this->getValidFoodData(), ['quantity' => 'not an integer']),
+                        'base_quantity',
+                        array_merge($this->getValidFoodData(), ['base_quantity' => 'not an integer']),
                     ];
                 }
             ],
-            'it fails if quantity is not a non-negative integer' => [
+            'it fails if base_quantity is not a non-negative integer' => [
                 function () {
                     return [
-                        'quantity', ['quantity' => -1],
+                        'base_quantity', ['base_quantity' => -1],
                     ];
                 }
             ],
@@ -866,18 +905,18 @@ class FoodControllerTest extends TestCase
                     ];
                 }
             ],
-            'it fails if quantity is not an integer' => [
+            'it fails if base_quantity is not an integer' => [
                 function () {
                     return [
-                        'quantity',
-                        array_merge($this->getValidFoodData(), ['quantity' => 'not an integer']),
+                        'base_quantity',
+                        array_merge($this->getValidFoodData(), ['base_quantity' => 'not an integer']),
                     ];
                 }
             ],
-            'it fails if quantity is not a non-negative integer' => [
+            'it fails if base_quantity is not a non-negative integer' => [
                 function () {
                     return [
-                        'quantity', ['quantity' => -1],
+                        'base_quantity', ['base_quantity' => -1],
                     ];
                 }
             ],
@@ -916,7 +955,7 @@ class FoodControllerTest extends TestCase
             'carbohydrate' => 135,
             'potassium' => 456,
             'favourite' => true,
-            'quantity' => 200,
+            'base_quantity' => 200,
             'foodgroup_id' => factory(Foodgroup::class)->create()->id,
             'foodsource_id' => factory(Foodsource::class)->create()->id,
             'user_id' => auth()->user()->id,

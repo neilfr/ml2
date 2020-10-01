@@ -1959,7 +1959,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      email: 'admin@example.com',
+      email: 'tester@example.com',
       password: 'tester',
       remember: null
     };
@@ -2094,7 +2094,7 @@ __webpack_require__.r(__webpack_exports__);
         carbohydrate: 0,
         potassium: 0,
         favourite: true,
-        quantity: 0,
+        base_quantity: 0,
         foodsource_id: 2,
         foodgroup_id: 26,
         user_id: this.$page.auth.user.id
@@ -2294,11 +2294,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     food: Object,
-    ingredients: Array,
+    ingredients: Object,
     errors: Object
+  },
+  mounted: function mounted() {
+    console.log(this.ingredients);
   },
   methods: {
     cancel: function cancel() {
@@ -3952,8 +3979,8 @@ var render = function() {
               }
             }),
             _vm._v(" "),
-            _vm.errors.quantity
-              ? _c("p", [_vm._v(_vm._s(_vm.errors.quantity))])
+            _vm.errors.base_quantity
+              ? _c("p", [_vm._v(_vm._s(_vm.errors.base_quantity))])
               : _vm._e(),
             _vm._v(" "),
             _c("label", { staticClass: "p-2", attrs: { for: "Quantity" } }, [
@@ -3965,19 +3992,19 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.food.quantity,
-                  expression: "food.quantity"
+                  value: _vm.food.base_quantity,
+                  expression: "food.base_quantity"
                 }
               ],
               staticClass: "border rounded",
-              attrs: { id: "quantity", type: "number", min: "0" },
-              domProps: { value: _vm.food.quantity },
+              attrs: { id: "base_quantity", type: "number", min: "0" },
+              domProps: { value: _vm.food.base_quantity },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.food, "quantity", $event.target.value)
+                  _vm.$set(_vm.food, "base_quantity", $event.target.value)
                 }
               }
             })
@@ -4167,7 +4194,7 @@ var render = function() {
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(food.potassium))]),
             _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(food.quantity))])
+            _c("td", [_vm._v(_vm._s(food.base_quantity))])
           ])
         })
       ],
@@ -4498,8 +4525,8 @@ var render = function() {
         }
       }),
       _vm._v(" "),
-      _vm.errors.quantity
-        ? _c("p", [_vm._v(_vm._s(_vm.errors.quantity))])
+      _vm.errors.base_quantity
+        ? _c("p", [_vm._v(_vm._s(_vm.errors.base_quantity))])
         : _vm._e(),
       _vm._v(" "),
       _c("label", { staticClass: "p-2", attrs: { for: "Quantity" } }, [
@@ -4511,35 +4538,90 @@ var render = function() {
           {
             name: "model",
             rawName: "v-model",
-            value: _vm.food.data.quantity,
-            expression: "food.data.quantity"
+            value: _vm.food.data.base_quantity,
+            expression: "food.data.base_quantity"
           }
         ],
         staticClass: "border rounded",
         attrs: {
-          id: "quantity",
+          id: "base_quantity",
           type: "number",
           readonly: !_vm.food.data.editable,
           min: "0"
         },
-        domProps: { value: _vm.food.data.quantity },
+        domProps: { value: _vm.food.data.base_quantity },
         on: {
           input: function($event) {
             if ($event.target.composing) {
               return
             }
-            _vm.$set(_vm.food.data, "quantity", $event.target.value)
+            _vm.$set(_vm.food.data, "base_quantity", $event.target.value)
           }
         }
       })
     ]),
+    _vm._v(" "),
+    _c(
+      "table",
+      [
+        _vm._m(0),
+        _vm._v(" "),
+        _vm._l(_vm.ingredients.data, function(ingredient) {
+          return _c("tr", { key: ingredient.id }, [
+            _c("td", [_vm._v(_vm._s(ingredient.alias))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(ingredient.description))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(ingredient.kcal))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(ingredient.protein))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(ingredient.fat))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(ingredient.carbohydrate))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(ingredient.potassium))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(ingredient.base_quantity))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(ingredient.quantity))])
+          ])
+        })
+      ],
+      2
+    ),
     _vm._v(" "),
     _c("button", { on: { click: _vm.update } }, [_vm._v("Update")]),
     _vm._v(" "),
     _c("button", { on: { click: _vm.cancel } }, [_vm._v("Cancel")])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_vm._v("Alias")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Description")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("KCal")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Protein")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Fat")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Carbohydrate")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Potassium")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Base Quantity")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Quantity")])
+    ])
+  }
+]
 render._withStripped = true
 
 
