@@ -3,13 +3,17 @@
         <div v-if="show">
             Modal
         </div>
+        <button @click="close">close</button>
     </div>
 </template>
 
 <script>
 export default {
     props:{
-        show: Boolean
+        show: {
+            type:Boolean,
+            default:false
+        }
     },
     data () {
         return {
@@ -17,7 +21,10 @@ export default {
         }
     },
     methods:{
-
+        close () {
+            this.show='false';
+            console.log("show is", this.show);
+        }
     }
 }
 </script>
