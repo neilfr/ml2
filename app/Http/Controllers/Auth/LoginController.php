@@ -50,12 +50,12 @@ class LoginController extends Controller
 
     }
 
-    // protected function authenticated(Request $request, $user)
-    // {
-    //     flash("Welcome back {$user->name}!");
+    protected function authenticated(Request $request, $user)
+    {
+        // flash("Welcome back {$user->name}!");
 
-    //     return redirect()->route('home');
-    // }
+        return redirect()->route('home');
+    }
 
     public function login(Request $request)
     {

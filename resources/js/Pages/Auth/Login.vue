@@ -25,7 +25,7 @@ export default {
   },
   data() {
     return {
-        email: 'admin@example.com',
+        email: 'tester@example.com',
         password: 'tester',
         remember: null,
     }

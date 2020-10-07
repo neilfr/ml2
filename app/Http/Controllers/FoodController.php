@@ -14,13 +14,13 @@ use Illuminate\Support\Facades\Config;
 use App\Http\Requests\CreateFoodRequest;
 use App\Http\Requests\UpdateFoodRequest;
 use App\Http\Resources\FoodgroupResource;
+use App\Http\Resources\IngredientResource;
 use phpDocumentor\Reflection\Types\Integer;
 
 class FoodController extends Controller
 {
     public function index(Request $request)
     {
-        // dump($request->input());
         $foods = Food::userFoods()
         ->sharedFoods()
         ->foodgroupSearch($request->query('foodgroupSearch'))
@@ -37,6 +37,11 @@ class FoodController extends Controller
         ]);
     }
 
+    public function create()
+    {
+        return Inertia::render('Foods/Create');
+    }
+
     public function store(CreateFoodRequest $request)
     {
         Food::create($request->validated());
@@ -46,21 +51,23 @@ class FoodController extends Controller
 
     public function show(Food $food)
     {
-        if (($food->user_id === auth()->user()->id) || ($food->foodsource->sharable === true)) {
+
+        // dd(IngredientResource::collection($food->ingredients));
+        if (($food->user_id === auth()->user()->id) || ($food->foodsource->sharable === true)){
             return Inertia::render('Foods/Show', [
                 'food' => new FoodResource($food),
+                'ingredients' => IngredientResource::collection($food->ingredients),
             ]);
-        } else {
-            return redirect()->route('foods.index');
         }
+        return redirect()->route('foods.index');
     }
 
     public function update(UpdateFoodRequest $request, Food $food)
     {
         if ($food->user_id === auth()->user()->id) {
-            $food->update($request->input());
+            $food->update($request->validated());
         }
-        return  redirect()->back();
+        return  redirect(route('foods.index'));
     }
 
     public function destroy(Food $food)

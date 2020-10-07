@@ -18,6 +18,7 @@ class Food extends Model
         'carbohydrate',
         'potassium',
         'favourite',
+        'base_quantity',
         'foodgroup_id',
         'foodsource_id',
         'user_id',
@@ -32,7 +33,7 @@ class Food extends Model
         'protein' => 'integer',
         'carbohydrate' => 'integer',
         'potassium' => 'integer',
-        'quantity' => 'integer',
+        'base_quantity' => 'integer',
     ];
 
     public function scopeUserFoods(Builder $query)
@@ -95,7 +96,8 @@ class Food extends Model
 
     public function ingredients()
     {
-        return $this->belongsToMany(Food::class, 'ingredients', 'parent_food_id', 'ingredient_id')
+        return $this->belongsToMany(Ingredient::class, 'ingredients', 'parent_food_id', 'ingredient_id')
+            // ->as('ingredients')
             ->withPivot('id', 'quantity');
     }
 }

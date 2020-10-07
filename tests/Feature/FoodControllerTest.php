@@ -6,8 +6,10 @@ use App\Food;
 use App\User;
 use App\Foodgroup;
 use App\Foodsource;
+use App\Ingredient;
 use Tests\TestCase;
 use Illuminate\Http\Response;
+use App\Http\Resources\IngredientResource;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class FoodControllerTest extends TestCase
@@ -74,18 +76,20 @@ class FoodControllerTest extends TestCase
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
-        $ingredients = factory(Food::class, 2)->create();
+        $ingredients = factory(Ingredient::class, 2)->create();
 
         $parentfood = factory(Food::class)->create([
             'description' => 'parentfood',
         ]);
 
         foreach ($ingredients as $ingredient) {
-            $parentfood->ingredients()->attach($ingredient->id, ['quantity' => 100]);
+            $parentfood->ingredients()->attach($ingredient->id, ['quantity' => 555]);
         }
+        $ingredientsCollection=IngredientResource::collection($parentfood->ingredients);
 
-        foreach ($ingredients as $food) {
-            $this->assertEquals($food->description, $parentfood->ingredients()->find($food->id)->description);
+        foreach ($ingredientsCollection as $ingredient) {
+            $this->assertEquals($ingredient->description, $parentfood->ingredients()->find($ingredient->id)->description);
+            $this->assertEquals($ingredient->pivot->quantity, 555);
         }
     }
 
@@ -103,8 +107,9 @@ class FoodControllerTest extends TestCase
             ->assertStatus(Response::HTTP_OK);
 
         $response->assertPropValue('foods', function ($returnedFoods) use ($foods) {
-            $this->assertCount(2, $returnedFoods['data']);
-            $this->assertEquals($returnedFoods['data'], $foods->toArray());
+            foreach ($returnedFoods['data'] as $index => $food) {
+                $this->assertEquals($food['description'], $foods->toArray()[$index]['description']);
+            }
         });
     }
 
@@ -128,8 +133,9 @@ class FoodControllerTest extends TestCase
             ->assertStatus(Response::HTTP_OK);
 
         $response->assertPropValue('foods', function ($returnedFoods) use ($foods) {
-            $this->assertCount(2, $returnedFoods['data']);
-            $this->assertEquals($returnedFoods['data'], $foods->toArray());
+            foreach ($returnedFoods['data'] as $index => $food) {
+                $this->assertEquals($food['description'], $foods->toArray()[$index]['description']);
+            }
         });
     }
 
@@ -170,8 +176,42 @@ class FoodControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK)
             ->assertPropValue('food', function ($returnedFood) use ($foods) {
-                $this->assertCount(14, $returnedFood['data']);
-                $this->assertEquals($returnedFood['data'], $foods[0]->toArray());
+                $this->assertEquals($foods[0]['description'],$returnedFood['data']['description']);
+            });
+    }
+
+
+    /** @test */
+    public function it_can_return_a_specific_user_owned_food_with_ingredients_and_quantities()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $foods = factory(Food::class, 2)->create([
+            'user_id' => $user->id,
+            'favourite' => true,
+        ]);
+
+        $ingredients = factory(Ingredient::class,2)->create([
+            'user_id' => $user->id,
+        ]);
+
+        foreach ($ingredients as $ingredient) {
+            $foods[0]->ingredients()->attach($ingredient->id, ['quantity' => 555]);
+        }
+
+        $response = $this->get(route('foods.show', $foods[0]));
+
+        $response->assertStatus(Response::HTTP_OK)
+            ->assertPropValue('food', function ($returnedFood) use ($foods) {
+                $this->assertEquals($foods[0]['description'], $returnedFood['data']['description']);
+                $items = $foods[0]->ingredients()->get();
+                foreach($items as $item) {
+                    // dd($item->toArray());
+                    $this->assertEquals($item->toArray()['pivot']['quantity'], 555);
+                    // dd($item->ingredients);
+
+                }
             });
     }
 
@@ -195,8 +235,7 @@ class FoodControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK)
             ->assertPropValue('food', function ($returnedFood) use ($food) {
-                $this->assertCount(14, $returnedFood['data']);
-                $this->assertEquals($returnedFood['data'], $food->toArray());
+                $this->assertEquals($returnedFood['data']['description'], $food['description']);
             });
     }
 
@@ -224,6 +263,7 @@ class FoodControllerTest extends TestCase
     /** @test */
     public function it_can_store_a_food()
     {
+        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
@@ -243,11 +283,223 @@ class FoodControllerTest extends TestCase
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
+        factory(Food::class)->create([
+            'description' => 'existing description',
+            'alias' => 'existing alias',
+        ]);
+
         [$ruleName, $payload] = $getData();
 
         $response = $this->post(route('foods.store'), $payload);
 
         $response->assertSessionHasErrors($ruleName);
+    }
+
+    /** @test */
+    public function it_can_store_food_if_food_description_is_duplicate_of_another_users_food_description()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $anotherUser = factory(User::class)->create();
+
+        factory(Food::class)->create([
+            'description' => 'other users existing description',
+            'alias' => 'existing alias',
+            'user_id' => $anotherUser->id,
+        ]);
+
+        $payload = [
+            'alias' => 'alias',
+            'description' => 'other users existing description',
+            'kcal' => 123,
+            'fat' => 789,
+            'protein' => 246,
+            'carbohydrate' => 135,
+            'potassium' => 456,
+            'favourite' => true,
+            'base_quantity' => 200,
+            'foodgroup_id' => factory(Foodgroup::class)->create()->id,
+            'foodsource_id' => factory(Foodsource::class)->create()->id,
+            'user_id' => auth()->user()->id,
+        ];
+
+        $response = $this->post(route('foods.store'), $payload);
+
+        $response->assertSessionDoesntHaveErrors('description');
+    }
+
+    /** @test */
+    public function it_can_store_food_if_food_alias_is_duplicate_of_another_users_food_alias()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $anotherUser = factory(User::class)->create();
+
+        factory(Food::class)->create([
+            'description' => 'other users existing description',
+            'alias' => 'existing alias',
+            'user_id' => $anotherUser->id,
+        ]);
+
+        $payload = [
+            'alias' => 'existing alias',
+            'description' => 'description',
+            'kcal' => 123,
+            'fat' => 789,
+            'protein' => 246,
+            'carbohydrate' => 135,
+            'potassium' => 456,
+            'favourite' => true,
+            'base_quantity' => 200,
+            'foodgroup_id' => factory(Foodgroup::class)->create()->id,
+            'foodsource_id' => factory(Foodsource::class)->create()->id,
+            'user_id' => auth()->user()->id,
+        ];
+
+        $response = $this->post(route('foods.store'), $payload);
+
+        $response->assertSessionDoesntHaveErrors('description');
+    }
+
+    /** @test */
+    public function it_can_update_food_if_food_description_is_duplicate_of_another_users_food_description()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $anotherUser = factory(User::class)->create();
+
+        $usersFood = factory(Food::class)->create([
+            'description' => 'original description',
+            'alias' => 'original alias',
+        ]);
+
+        $anotherUsersFood = factory(Food::class)->create([
+            'description' => 'other users existing description',
+            'alias' => 'other users existing alias',
+            'user_id' => $anotherUser->id,
+        ]);
+
+        $payload = [
+            'alias' => 'alias',
+            'description' => 'other users existing description',
+            'kcal' => 123,
+            'fat' => 789,
+            'protein' => 246,
+            'carbohydrate' => 135,
+            'potassium' => 456,
+            'favourite' => true,
+            'base_quantity' => 200,
+            'foodgroup_id' => factory(Foodgroup::class)->create()->id,
+            'foodsource_id' => factory(Foodsource::class)->create()->id,
+            'user_id' => auth()->user()->id,
+        ];
+
+        $response = $this->patch(route('foods.update', $usersFood->id), $payload);
+
+        $response->assertSessionDoesntHaveErrors('description');
+    }
+
+    /** @test */
+    public function it_can_update_food_if_food_alias_is_duplicate_of_another_users_food_alias()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $anotherUser = factory(User::class)->create();
+
+        $usersFood = factory(Food::class)->create([
+            'description' => 'original description',
+            'alias' => 'original alias',
+        ]);
+
+        $anotherUsersFood = factory(Food::class)->create([
+            'description' => 'other users existing description',
+            'alias' => 'other users existing alias',
+            'user_id' => $anotherUser->id,
+        ]);
+
+        $payload = [
+            'alias' => 'other users existing alias',
+            'description' => 'description',
+            'kcal' => 123,
+            'fat' => 789,
+            'protein' => 246,
+            'carbohydrate' => 135,
+            'potassium' => 456,
+            'favourite' => true,
+            'base_quantity' => 200,
+            'foodgroup_id' => factory(Foodgroup::class)->create()->id,
+            'foodsource_id' => factory(Foodsource::class)->create()->id,
+            'user_id' => auth()->user()->id,
+        ];
+
+        $response = $this->patch(route('foods.update', $usersFood->id), $payload);
+
+        $response->assertSessionDoesntHaveErrors('alias');
+    }
+
+    /** @test */
+    public function it_can_store_a_food_if_food_alias_is_null_and_not_unique()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        factory(Food::class)->create([
+            'description' => 'existing description',
+            'alias' => null,
+        ]);
+
+        $payload = [
+            'alias' => null,
+            'description' => 'my food',
+            'kcal' => 123,
+            'fat' => 789,
+            'protein' => 246,
+            'carbohydrate' => 135,
+            'potassium' => 456,
+            'favourite' => true,
+            'base_quantity' => 200,
+            'foodgroup_id' => factory(Foodgroup::class)->create()->id,
+            'foodsource_id' => factory(Foodsource::class)->create()->id,
+            'user_id' => auth()->user()->id,
+        ];
+
+        $response = $this->post(route('foods.store'), $payload)
+            ->assertRedirect();
+
+        $response->assertSessionDoesntHaveErrors('alias');
+    }
+
+
+    /** @test */
+    public function it_can_update_a_food_if_food_alias_is_null_and_not_unique()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $food = factory(Food::class)->create([
+            'user_id' => $user->id,
+            'description' => 'existing description',
+            'alias' => 'some alias',
+        ]);
+
+        $anotherFood = factory(Food::class)->create([
+            'user_id' => $user->id,
+            'description' => 'some description',
+            'alias' => null,
+        ]);
+
+        $payload = [
+            'alias' => null,
+        ];
+
+        $response = $this->patch(route('foods.update', $food->id), $payload)
+            ->assertRedirect();
+
+        $response->assertSessionDoesntHaveErrors('alias');
     }
 
     /**
@@ -261,6 +513,12 @@ class FoodControllerTest extends TestCase
 
         $food = factory(Food::class)->create([
             'user_id' => $user->id,
+        ]);
+
+        $anotherFood = factory(Food::class)->create([
+            'user_id' => $user->id,
+            'alias' => 'another foods alias',
+            'description' => 'another foods description',
         ]);
 
         [$ruleName, $payload] = $getData();
@@ -282,6 +540,52 @@ class FoodControllerTest extends TestCase
 
         $payload = [
             'description' => 'new description',
+        ];
+
+        $response = $this->patch(route('foods.update', $food->id), $payload);
+
+        $response->assertRedirect(route('foods.index'));
+        $this->assertDatabaseHas('foods', $payload);
+    }
+
+    /** @test */
+    public function it_can_update_a_foods_description_while_alias_is_unchanged()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $food = factory(Food::class)->create([
+            'user_id' => $user->id,
+            'alias' => 'original alias',
+            'description' => 'original description',
+        ]);
+
+        $payload = [
+            'alias' => 'original alias',
+            'description' => 'new description',
+        ];
+
+        $response = $this->patch(route('foods.update', $food->id), $payload);
+
+        $response->assertRedirect(route('foods.index'));
+        $this->assertDatabaseHas('foods', $payload);
+    }
+
+    /** @test */
+    public function it_can_update_a_foods_alias_while_description_is_unchanged()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $food = factory(Food::class)->create([
+            'user_id' => $user->id,
+            'alias' => 'original alias',
+            'description' => 'original description',
+        ]);
+
+        $payload = [
+            'alias' => 'new alias',
+            'description' => 'original description',
         ];
 
         $response = $this->patch(route('foods.update', $food->id), $payload);
@@ -357,6 +661,22 @@ class FoodControllerTest extends TestCase
                     ];
                 }
             ],
+            'it fails if alias is not unique' => [
+                function () {
+                    return [
+                        'alias',
+                        array_merge($this->getValidFoodData(), ['alias' => 'existing alias']),
+                    ];
+                }
+            ],
+            'it fails if description is not unique' => [
+                function () {
+                    return [
+                        'description',
+                        array_merge($this->getValidFoodData(), ['description' => 'existing description']),
+                    ];
+                }
+            ],
             'it fails if description is not a non-empty string' => [
                 function () {
                     return [
@@ -373,11 +693,25 @@ class FoodControllerTest extends TestCase
                     ];
                 }
             ],
+            'it fails if kcal is not a non-negative integer' => [
+                function () {
+                    return [
+                        'kcal', ['kcal' => -1],
+                    ];
+                }
+            ],
             'it fails if fat is not an integer' => [
                 function () {
                     return [
                         'fat',
                         array_merge($this->getValidFoodData(), ['fat' => 'not an integer']),
+                    ];
+                }
+            ],
+            'it fails if fat is not a non-negative integer' => [
+                function () {
+                    return [
+                        'fat', ['fat' => -1],
                     ];
                 }
             ],
@@ -389,6 +723,13 @@ class FoodControllerTest extends TestCase
                     ];
                 }
             ],
+            'it fails if protein is not a non-negative integer' => [
+                function () {
+                    return [
+                        'protein', ['protein' => -1],
+                    ];
+                }
+            ],
             'it fails if carbohydrate is not an integer' => [
                 function () {
                     return [
@@ -397,11 +738,40 @@ class FoodControllerTest extends TestCase
                     ];
                 }
             ],
+            'it fails if carbohydrate is not a non-negative integer' => [
+                function () {
+                    return [
+                        'carbohydrate', ['carbohydrate' => -1],
+                    ];
+                }
+            ],
             'it fails if potassium is not an integer' => [
                 function () {
                     return [
                         'potassium',
                         array_merge($this->getValidFoodData(), ['potassium' => 'not an integer']),
+                    ];
+                }
+            ],
+            'it fails if potassium is not a non-negative integer' => [
+                function () {
+                    return [
+                        'potassium', ['potassium' => -1],
+                    ];
+                }
+            ],
+            'it fails if base_quantity is not an integer' => [
+                function () {
+                    return [
+                        'base_quantity',
+                        array_merge($this->getValidFoodData(), ['base_quantity' => 'not an integer']),
+                    ];
+                }
+            ],
+            'it fails if base_quantity is not a non-negative integer' => [
+                function () {
+                    return [
+                        'base_quantity', ['base_quantity' => -1],
                     ];
                 }
             ],
@@ -442,10 +812,26 @@ class FoodControllerTest extends TestCase
                     ];
                 }
             ],
+            'it fails if alias is not unique' => [
+                function () {
+                    return [
+                        'alias',
+                        array_merge($this->getValidFoodData(), ['alias' => 'another foods alias']),
+                    ];
+                }
+            ],
             'it fails if description is not a non-empty string' => [
                 function () {
                     return [
                         'description', ['description' => ''],
+                    ];
+                }
+            ],
+            'it fails if description is not unique' => [
+                function () {
+                    return [
+                        'description',
+                        array_merge($this->getValidFoodData(), ['description' => 'another foods description']),
                     ];
                 }
             ],
@@ -456,10 +842,24 @@ class FoodControllerTest extends TestCase
                     ];
                 }
             ],
+            'it fails if kcal is not a non-negative integer' => [
+                function () {
+                    return [
+                        'kcal', ['kcal' => -1],
+                    ];
+                }
+            ],
             'it fails if fat is not an integer' => [
                 function () {
                     return [
                         'fat', ['fat' => 'not an integer'],
+                    ];
+                }
+            ],
+            'it fails if fat is not a non-negative integer' => [
+                function () {
+                    return [
+                        'fat', ['fat' => -1],
                     ];
                 }
             ],
@@ -470,6 +870,13 @@ class FoodControllerTest extends TestCase
                     ];
                 }
             ],
+            'it fails if protein is not a non-negative integer' => [
+                function () {
+                    return [
+                        'protein', ['protein' => -1],
+                    ];
+                }
+            ],
             'it fails if carbohydrate is not an integer' => [
                 function () {
                     return [
@@ -477,10 +884,39 @@ class FoodControllerTest extends TestCase
                     ];
                 }
             ],
+            'it fails if carbohydrate is not a non-negative integer' => [
+                function () {
+                    return [
+                        'carbohydrate', ['carbohydrate' => -1],
+                    ];
+                }
+            ],
             'it fails if potassium is not an integer' => [
                 function () {
                     return [
                         'potassium', ['potassium' => 'not an integer'],
+                    ];
+                }
+            ],
+            'it fails if potassium is not a non-negative integer' => [
+                function () {
+                    return [
+                        'potassium', ['potassium' => -1],
+                    ];
+                }
+            ],
+            'it fails if base_quantity is not an integer' => [
+                function () {
+                    return [
+                        'base_quantity',
+                        array_merge($this->getValidFoodData(), ['base_quantity' => 'not an integer']),
+                    ];
+                }
+            ],
+            'it fails if base_quantity is not a non-negative integer' => [
+                function () {
+                    return [
+                        'base_quantity', ['base_quantity' => -1],
                     ];
                 }
             ],
@@ -519,6 +955,7 @@ class FoodControllerTest extends TestCase
             'carbohydrate' => 135,
             'potassium' => 456,
             'favourite' => true,
+            'base_quantity' => 200,
             'foodgroup_id' => factory(Foodgroup::class)->create()->id,
             'foodsource_id' => factory(Foodsource::class)->create()->id,
             'user_id' => auth()->user()->id,

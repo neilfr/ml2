@@ -40,13 +40,13 @@ class AppServiceProvider extends ServiceProvider
                     ] : null,
                 ];
             },
-            'flash' => function () {
-                if (Session::get('errors')) {
-                    flash('The given input data was invalid, please check the errors and try again.', true);
-                }
+            // 'flash' => function () {
+            //     if (Session::get('errors')) {
+            //         flash('The given input data was invalid, please check the errors and try again.', true);
+            //     }
 
-                return Session::has('flash') ? Session::pull('flash') : null;
-            },
+            //     return Session::has('flash') ? Session::pull('flash') : null;
+            // },
             'errors' => function () {
                 return Session::get('errors')
                     ? Session::get('errors')->getBag('default')->getMessages()

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateFoodRequest extends FormRequest
 {
@@ -24,17 +26,30 @@ class CreateFoodRequest extends FormRequest
     public function rules()
     {
         return [
-            'alias' => 'string|nullable',
-            'description' => 'string',
-            'kcal' => 'integer',
-            'fat' => 'integer',
-            'protein' => 'integer',
-            'carbohydrate' => 'integer',
-            'potassium' => 'integer',
-            'favourite' => 'boolean',
-            'foodgroup_id' => 'exists:App\Foodgroup,id',
-            'foodsource_id' => 'exists:App\Foodsource,id',
-            'user_id' => 'exists:App\User,id',
+            'alias' => [
+              'string',
+              'nullable',
+                Rule::unique('foods', 'alias')->where(function ($query) {
+                    return $query->where('user_id', Auth::User()->id);
+                }),
+            ],
+            'description' => [
+                'required',
+                'string',
+                Rule::unique('foods', 'description')->where(function ($query){
+                    return $query->where('user_id', Auth::User()->id);
+                }),
+            ],
+            'kcal' => 'required|integer|min:0',
+            'fat' => 'required|integer|min:0',
+            'protein' => 'required|integer|min:0',
+            'carbohydrate' => 'required|integer|min:0',
+            'potassium' => 'required|integer|min:0',
+            'base_quantity' => 'required|integer|min:0',
+            'favourite' => 'required|boolean',
+            'foodgroup_id' => 'required|exists:App\Foodgroup,id',
+            'foodsource_id' => 'required|exists:App\Foodsource,id',
+            'user_id' => 'required|exists:App\User,id',
         ];
     }
 }

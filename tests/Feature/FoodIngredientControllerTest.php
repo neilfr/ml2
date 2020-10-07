@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Food;
+use App\Ingredient;
 use App\User;
 use Tests\TestCase;
 use Illuminate\Http\Response;
@@ -50,8 +51,6 @@ class FoodIngredientControllerTest extends TestCase
 
         $parentfood->ingredients()->attach($ingredient->id, ['quantity' => 555]);
 
-        // dd($parentfood->ingredients()->first()->pivot->quantity);
-
         $this->assertDatabaseHas('ingredients', [
             'parent_food_id' => $parentfood->id,
             'ingredient_id' => $ingredient->id,
@@ -61,19 +60,21 @@ class FoodIngredientControllerTest extends TestCase
 
 
     /** @test */
-    public function it_can_return_a_list_of_ingredients_for_a_user_owned_food()
+    public function it_can_return_a_list_of_ingredients_with_quantities_for_a_user_owned_food()
     {
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
-        $ingredients = factory(Food::class, 2)->create();
+        $ingredients = factory(Ingredient::class, 2)->create([
+            'base_quantity' => 333,
+        ]);
 
         $food = factory(Food::class)->create([
             'user_id' => $user->id,
         ]);
 
         foreach ($ingredients as $ingredient) {
-            $food->ingredients()->attach($ingredient->id, ['quantity' => 100]);
+            $food->ingredients()->attach($ingredient->id, ['quantity' => 555]);
         }
 
         $response = $this->get(route('food.ingredient.index', $food));
@@ -81,7 +82,11 @@ class FoodIngredientControllerTest extends TestCase
         $response->assertStatus(Response::HTTP_OK);
         $response->assertPropValue('ingredients', function ($returnedIngredients) use ($ingredients) {
             $this->assertCount(2, $returnedIngredients['data']);
-            $this->assertEquals($returnedIngredients['data'], $ingredients->toArray());
+            foreach($returnedIngredients['data'] as $index => $returnedIngredient){
+                $this->assertEquals($returnedIngredient['description'], $ingredients->toArray()[$index]['description']);
+                $this->assertEquals($returnedIngredient['base_quantity'], $ingredients->toArray()[$index]['base_quantity']);
+                $this->assertEquals($returnedIngredient['quantity'], 555);
+            }
         });
     }
 

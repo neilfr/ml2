@@ -1,6 +1,8 @@
 <template>
     <div class="container">
         <h1>Foods</h1>
+        <button @click="add">Add</button>
+        <br/>
         <label for="foodgroups">Food Group:</label>
         <select name="foodgroups" id="foodgroups" v-model="foodgroupFilter" @change="goToPageOne">
             <option value="">All</option>
@@ -36,14 +38,14 @@
                         @change="setFavourite"
                     />
                 </td>
-                <td>{{food.alias}}</td>
-                <td>{{food.description}}</td>
+                <td @click="show" :id="food.id">{{food.alias}}</td>
+                <td @click="show" :id="food.id">{{food.description}}</td>
                 <td>{{food.kcal}}</td>
                 <td>{{food.protein}}</td>
                 <td>{{food.fat}}</td>
                 <td>{{food.carbohydrate}}</td>
                 <td>{{food.potassium}}</td>
-                <td>{{food.quantity}}</td>
+                <td>{{food.base_quantity}}</td>
             </tr>
         </table>
         <div>
@@ -59,7 +61,11 @@
 </template>
 
 <script>
+
     export default {
+        components:{
+            // Modal
+        },
         props:{
             foods: Object,
             foodgroups: Object,
@@ -107,6 +113,15 @@
                     preserveState: true,
                     preserveScroll: true,
                 });
+            },
+            show(e){
+                let url = `${this.$route("foods.show", e.target.id)}`;
+                this.$inertia.visit(url);
+            },
+            add(){
+                console.log("create!");
+                let url = `${this.$route("foods.create")}`;
+                this.$inertia.visit(url);
             }
         }
     };
