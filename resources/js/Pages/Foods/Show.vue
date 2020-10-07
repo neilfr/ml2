@@ -27,6 +27,7 @@
         <input class="border rounded" id="base_quantity" type="number" :readonly="!food.data.editable" v-model="food.data.base_quantity" min="0"/>
     </div>
     <ingredients-list
+        :foodId=food.data.id
         :ingredients="ingredients.data"/>
     <button @click="update">Update</button>
     <button @click="cancel">Cancel</button>
@@ -34,7 +35,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import IngredientsList from "@/Shared/IngredientsList";
 
 export default {
