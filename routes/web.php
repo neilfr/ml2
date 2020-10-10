@@ -44,8 +44,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/foodsApi', 'Foods\FoodApiController@index');
 
     Route::namespace('Api')->prefix('api')->group(function () {
-        Route::namespace('Foods')->prefix('food/{food}')->group(function () {
-            Route::patch('ingredients', 'IngredientController@update')->name('api.foods.ingredients.update');
+        Route::namespace('Foods')->prefix('foods/{food}')->group(function () {
+            Route::patch('ingredients/{ingredient}', 'IngredientController@update')->name('api.foods.ingredients.update');
         });
     });
 });

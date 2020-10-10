@@ -39,7 +39,7 @@ class UpdateFoodIngredientControllerTest extends TestCase
             'food' => $food,
             'ingredient' => $ingredient,
         ]), $payload);
-
+// dd('stop');
         $this->assertDatabaseHas('ingredients', [
             'parent_food_id' => $food->id,
             'ingredient_id' => $ingredient->id,

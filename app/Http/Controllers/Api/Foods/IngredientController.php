@@ -11,14 +11,13 @@ use Illuminate\Http\Response;
 
 class IngredientController extends Controller
 {
-    public function update(UpdateIngredientRequest $request, Food $food, Food $ingredient)
+    public function update(Request $request, Food $food, Ingredient $ingredient)
     {
-        dd($food->id, $ingredient->id, $request->query());
-        if ($food->user_id === auth()->user()->id) {
-            $payload = $request->input();
-            $food->ingredients()->updateExistingPivot($ingredient->id, ['quantity' => $payload['quantity']]);
-            return Response::HTTP_OK;
+        if ($food->user_id !== auth()->user()->id){
+            return Response::HTTP_FORBIDDEN;
         }
+        $payload = $request->input();
+        $food->ingredients()->updateExistingPivot($ingredient->id, ['quantity' => $payload['quantity']]);
         return Response::HTTP_OK;
     }
 }

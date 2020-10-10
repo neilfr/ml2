@@ -2526,8 +2526,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2541,7 +2539,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       show: false,
       selectedIngredient: null,
-      url: null
+      url: null,
+      params: null
     };
   },
   methods: {
@@ -2550,12 +2549,23 @@ __webpack_require__.r(__webpack_exports__);
     },
     open: function open(ingredient) {
       this.selectedIngredient = ingredient;
-      console.log("Food id", this.foodId);
-      this.url = this.$route("food.ingredient.update", {
+      this.show = true;
+    },
+    update: function update(value) {
+      var _this = this;
+
+      this.$inertia.patch(this.$route("food.ingredient.update", {
         food: this.foodId,
         ingredient: this.selectedIngredient.id
+      }), {
+        quantity: value
+      }, {
+        preserveScroll: true
+      }).then(function (res) {
+        console.log("close!");
+
+        _this.close();
       });
-      this.show = true;
     }
   }
 });
@@ -2590,8 +2600,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -2600,46 +2608,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    show: Boolean,
     id: Number,
-    value: Number,
-    url: String,
-    field: String
+    initialValue: Number
+  },
+  data: function data() {
+    return {
+      currentShow: false,
+      newValue: this.initialValue
+    };
   },
   methods: {
+    updateValue: function updateValue(e) {
+      this.newValue = e.target.value;
+    },
     cancel: function cancel() {
       this.$emit("close");
     },
     update: function update() {
-      console.log("url", this.url);
-      console.log("field", this.field);
-      console.log("value", this.value);
-      var payload = {};
-      payload[this.field] = this.value;
-      console.log("payload", payload); // this.$emit("close");
-
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(this.$route('foods.index')).then(function (res) {
-        console.log("got response", res.data);
-      }); // axios.patch(this.$route('food.ingredient.update', {
-      //     food: 503368,
-      //     ingredient: 2
-      // }),{
-      //     quantity: 201
-      // }).then(()=>{
-      //     this.$emit("close");
-      // });
-      // axios.patch(this.url,payload).then(()=>{
-      //     this.$emit("close");
-      // });
+      this.$emit("update", this.newValue);
     }
-  },
-  data: function data() {
-    return {
-      currentShow: false
-    };
   }
 });
 
@@ -4915,13 +4904,10 @@ var render = function() {
         _vm.show
           ? _c("update-number-modal", {
               attrs: {
-                show: _vm.show,
                 id: _vm.selectedIngredient.id,
-                field: "quantity",
-                value: _vm.selectedIngredient.quantity,
-                url: _vm.url
+                initialValue: _vm.selectedIngredient.quantity
               },
-              on: { close: _vm.close }
+              on: { close: _vm.close, update: _vm.update }
             })
           : _vm._e()
       ],
@@ -5001,7 +4987,8 @@ var render = function() {
   return _c("div", [
     _c("input", {
       attrs: { id: _vm.id, type: "number", min: "0" },
-      domProps: { value: _vm.value }
+      domProps: { value: _vm.newValue },
+      on: { input: _vm.updateValue }
     }),
     _vm._v(" "),
     _c("button", { on: { click: _vm.update } }, [_vm._v("Update")]),

@@ -24,17 +24,16 @@
         <update-number-modal
             v-if="show"
             @close="close"
-            :show="show"
             :id="selectedIngredient.id"
-            field="quantity"
-            :value="selectedIngredient.quantity"
-            :url="url"
+            :initialValue="selectedIngredient.quantity"
+            @update="update"
         />
       </table>
   </div>
 </template>
 
 <script>
+
 import UpdateNumberModal from "@/Shared/UpdateNumberModal";
 
 export default {
@@ -49,7 +48,8 @@ export default {
         return{
             show: false,
             selectedIngredient: null,
-            url: null
+            url: null,
+            params: null
         }
     },
     methods:{
@@ -58,12 +58,20 @@ export default {
         },
         open(ingredient){
             this.selectedIngredient = ingredient;
-            console.log("Food id", this.foodId);
-            this.url = this.$route("food.ingredient.update",{
+            this.show = true;
+        },
+        update(value){
+            this.$inertia.patch(this.$route("food.ingredient.update", {
                 food : this.foodId,
                 ingredient: this.selectedIngredient.id
+            }), {
+                quantity: value
+            },{
+                preserveScroll:true,
+            }).then((res)=>{
+                console.log("close!");
+                this.close();
             });
-            this.show = true;
         }
     }
 }
