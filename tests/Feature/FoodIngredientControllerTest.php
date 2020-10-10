@@ -182,6 +182,7 @@ class FoodIngredientControllerTest extends TestCase
 
         $food = factory(Food::class)->create([
             'description' => 'parent food',
+            'user_id' => $user->id,
         ]);
 
         $ingredient = factory(Food::class)->create([
@@ -191,7 +192,7 @@ class FoodIngredientControllerTest extends TestCase
         $food->ingredients()->attach($ingredient->id, ['quantity' => 100]);
 
         $payload = [
-            'quantity' => 200,
+            'quantity' => 999,
         ];
 
         $response = $this->patch(route('food.ingredient.update', [
