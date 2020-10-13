@@ -2262,6 +2262,9 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Shared_IngredientsList__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Shared/IngredientsList */ "./resources/js/Shared/IngredientsList.vue");
+/* harmony import */ var _Shared_FoodList__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Shared/FoodList */ "./resources/js/Shared/FoodList.vue");
+//
+//
 //
 //
 //
@@ -2299,12 +2302,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    IngredientsList: _Shared_IngredientsList__WEBPACK_IMPORTED_MODULE_0__["default"]
+    IngredientsList: _Shared_IngredientsList__WEBPACK_IMPORTED_MODULE_0__["default"],
+    FoodList: _Shared_FoodList__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   props: {
     food: Object,
+    foods: Object,
     ingredients: Object,
     errors: Object
   },
@@ -2324,6 +2330,9 @@ __webpack_require__.r(__webpack_exports__);
       }), this.food.data).then(function () {
         console.log("errors", _this.errors.description);
       });
+    },
+    addIngredient: function addIngredient() {
+      console.log("add ingredient");
     }
   }
 });
@@ -2477,6 +2486,92 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: {
     user: Object
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Shared/FoodList.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Shared/FoodList.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    foods: Array,
+    page: Number
+  },
+  data: function data() {
+    return {
+      selectedFood: null
+    };
+  },
+  methods: {
+    goToPageOne: function goToPageOne() {
+      this.goToPage(1);
+    },
+    previousPage: function previousPage() {
+      if (this.page > 1) this.goToPage(this.page - 1);
+    },
+    nextPage: function nextPage() {
+      if (this.page < this.foods.meta.last_page) this.goToPage(this.page + 1);
+    },
+    lastPage: function lastPage() {
+      this.goToPage(this.foods.meta.last_page);
+    },
+    goToPage: function goToPage(page) {
+      var url = "".concat(this.$route("foods.index")); // url += `?descriptionSearch=${this.descriptionSearchText}`;
+      // url += `&aliasSearch=${this.aliasSearchText}`;
+      // url += `&foodgroupSearch=${this.foodgroupFilter}`;
+
+      this.$inertia.visit(url, {
+        data: {
+          'page': page
+        },
+        preserveState: true,
+        preserveScroll: true
+      });
+    }
   }
 });
 
@@ -4689,7 +4784,13 @@ var render = function() {
       _vm._v(" "),
       _c("button", { on: { click: _vm.update } }, [_vm._v("Update")]),
       _vm._v(" "),
-      _c("button", { on: { click: _vm.cancel } }, [_vm._v("Cancel")])
+      _c("button", { on: { click: _vm.cancel } }, [_vm._v("Cancel")]),
+      _vm._v(" "),
+      _c("button", { on: { click: _vm.addIngredient } }, [
+        _vm._v("Add Ingredient")
+      ]),
+      _vm._v(" "),
+      _c("food-list", { attrs: { foods: _vm.foods, page: "1" } })
     ],
     1
   )
@@ -4844,6 +4945,102 @@ var render = function() {
   ])
 }
 var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Shared/FoodList.vue?vue&type=template&id=5769a510&":
+/*!*******************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Shared/FoodList.vue?vue&type=template&id=5769a510& ***!
+  \*******************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "table",
+      [
+        _vm._m(0),
+        _vm._v(" "),
+        _vm._l(_vm.foods.data, function(food) {
+          return _c("tr", { key: food.id }, [
+            _c("td", [_vm._v(_vm._s(food.alias))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(food.description))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(food.kcal))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(food.protein))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(food.fat))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(food.carbohydrate))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(food.potassium))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(food.base_quantity))])
+          ])
+        })
+      ],
+      2
+    ),
+    _vm._v(" "),
+    _c("div", [
+      _c("button", { on: { click: _vm.goToPageOne } }, [_vm._v("First")]),
+      _vm._v(" "),
+      _c("button", { on: { click: _vm.previousPage } }, [_vm._v("Previous")]),
+      _vm._v(" "),
+      _c("button", { on: { click: _vm.nextPage } }, [_vm._v("Next")]),
+      _vm._v(" "),
+      _c("button", { on: { click: _vm.lastPage } }, [_vm._v("Last")])
+    ]),
+    _vm._v(" "),
+    _c("div", [
+      _c("p", [
+        _vm._v(
+          "Page: " +
+            _vm._s(_vm.foods.meta.current_page) +
+            " of " +
+            _vm._s(_vm.foods.meta.last_page)
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_vm._v("Alias")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Description")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("KCal")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Protein")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Fat")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Carbohydrate")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Potassium")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Quantity")])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -14259,6 +14456,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Testing_vue_vue_type_template_id_3e5bfb12___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Testing_vue_vue_type_template_id_3e5bfb12___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/Shared/FoodList.vue":
+/*!******************************************!*\
+  !*** ./resources/js/Shared/FoodList.vue ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _FoodList_vue_vue_type_template_id_5769a510___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FoodList.vue?vue&type=template&id=5769a510& */ "./resources/js/Shared/FoodList.vue?vue&type=template&id=5769a510&");
+/* harmony import */ var _FoodList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FoodList.vue?vue&type=script&lang=js& */ "./resources/js/Shared/FoodList.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _FoodList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _FoodList_vue_vue_type_template_id_5769a510___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _FoodList_vue_vue_type_template_id_5769a510___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/Shared/FoodList.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/Shared/FoodList.vue?vue&type=script&lang=js&":
+/*!*******************************************************************!*\
+  !*** ./resources/js/Shared/FoodList.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FoodList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./FoodList.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Shared/FoodList.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FoodList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/Shared/FoodList.vue?vue&type=template&id=5769a510&":
+/*!*************************************************************************!*\
+  !*** ./resources/js/Shared/FoodList.vue?vue&type=template&id=5769a510& ***!
+  \*************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FoodList_vue_vue_type_template_id_5769a510___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./FoodList.vue?vue&type=template&id=5769a510& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Shared/FoodList.vue?vue&type=template&id=5769a510&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FoodList_vue_vue_type_template_id_5769a510___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FoodList_vue_vue_type_template_id_5769a510___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

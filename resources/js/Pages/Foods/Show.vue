@@ -31,18 +31,23 @@
         :ingredients="ingredients.data"/>
     <button @click="update">Update</button>
     <button @click="cancel">Cancel</button>
+    <button @click="addIngredient">Add Ingredient</button>
+    <food-list :foods="foods" page="1"></food-list>
   </div>
 </template>
 
 <script>
 import IngredientsList from "@/Shared/IngredientsList";
+import FoodList from "@/Shared/FoodList";
 
 export default {
     components:{
-        IngredientsList
+        IngredientsList,
+        FoodList
     },
     props:{
         food: Object,
+        foods: Object,
         ingredients: Object,
         errors: Object
     },
@@ -62,6 +67,9 @@ export default {
             ).then(()=>{
                 console.log("errors", this.errors.description);
             });
+        },
+        addIngredient () {
+            console.log("add ingredient");
         }
     }
 }
