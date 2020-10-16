@@ -43,10 +43,7 @@ export default {
     },
     data(){
         return{
-            page: {
-                type: Number,
-                default: 1,
-            },
+            page: 1,
             selectedFood: null
         }
     },
@@ -66,7 +63,7 @@ export default {
                 this.page++;
                 this.goToPage();
             }
-            console.log("this.page",this.page);
+            console.log("next page this.page", this.page);
         },
         lastPage(){
             this.page = this.foods.meta.last_page;

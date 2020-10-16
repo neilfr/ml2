@@ -2543,10 +2543,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      page: {
-        type: Number,
-        "default": 1
-      },
+      page: 1,
       selectedFood: null
     };
   },
@@ -2567,7 +2564,7 @@ __webpack_require__.r(__webpack_exports__);
         this.goToPage();
       }
 
-      console.log("this.page", this.page);
+      console.log("next page this.page", this.page);
     },
     lastPage: function lastPage() {
       this.page = this.foods.meta.last_page;
