@@ -27,22 +27,27 @@
         <input class="border rounded" id="base_quantity" type="number" :readonly="!food.data.editable" v-model="food.data.base_quantity" min="0"/>
     </div>
     <ingredients-list
+        :foodId=food.data.id
         :ingredients="ingredients.data"/>
     <button @click="update">Update</button>
     <button @click="cancel">Cancel</button>
+    <button @click="showFoods">Add Ingredient</button>
+    <food-list :foods="foods" :food="food"></food-list>
   </div>
 </template>
 
 <script>
-import axios from "axios";
 import IngredientsList from "@/Shared/IngredientsList";
+import FoodList from "@/Shared/FoodList";
 
 export default {
     components:{
-        IngredientsList
+        IngredientsList,
+        FoodList
     },
     props:{
         food: Object,
+        foods: Object,
         ingredients: Object,
         errors: Object
     },
@@ -50,7 +55,7 @@ export default {
         cancel () {
             let url = `${this.$route("foods.index")}`;
                 this.$inertia.visit(url, {
-                    preserveState: true,
+                    // preserveState: true,
                     preserveScroll: true,
                 });
         },
@@ -62,6 +67,9 @@ export default {
             ).then(()=>{
                 console.log("errors", this.errors.description);
             });
+        },
+        showFoods () {
+            console.log("add new food as ingredient");
         }
     }
 }

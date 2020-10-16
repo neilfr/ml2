@@ -21,42 +21,57 @@
             <td>{{ingredient.potassium}}</td>
             <td @click="open(ingredient)">{{ingredient.quantity}}</td>
         </tr>
-        <update-ingredient-quantity-modal
+        <update-number-modal
             v-if="show"
             @close="close"
-            :show="show"
             :id="selectedIngredient.id"
-            :quantity="selectedIngredient.quantity"
+            :initialValue="selectedIngredient.quantity"
+            @update="update"
         />
       </table>
   </div>
 </template>
 
 <script>
-import UpdateIngredientQuantityModal from "@/Shared/UpdateIngredientQuantityModal";
+
+import UpdateNumberModal from "@/Shared/UpdateNumberModal";
 
 export default {
     components:{
-        UpdateIngredientQuantityModal
+        UpdateNumberModal
     },
     props:{
         ingredients: Array,
+        foodId: Number
     },
     data(){
         return{
             show: false,
             selectedIngredient: null,
+            url: null,
+            params: null
         }
     },
     methods:{
         close(){
             this.show = false;
-            console.log("close method, show is set to:", this.show);
         },
         open(ingredient){
-            console.log("open", ingredient.id);
             this.selectedIngredient = ingredient;
             this.show = true;
+        },
+        update(value){
+            this.$inertia.patch(this.$route("food.ingredient.update", {
+                food : this.foodId,
+                ingredient: this.selectedIngredient.id
+            }), {
+                quantity: value
+            },{
+                preserveScroll:true
+            }).then((res)=>{
+                console.log("close!");
+                this.close();
+            });
         }
     }
 }

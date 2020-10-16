@@ -51,12 +51,15 @@ class FoodController extends Controller
 
     public function show(Food $food)
     {
+        $foods = Food::userFoods()
+            ->sharedFoods()
+            ->paginate(Config::get('ml2.paginator.per_page'));
 
-        // dd(IngredientResource::collection($food->ingredients));
         if (($food->user_id === auth()->user()->id) || ($food->foodsource->sharable === true)){
             return Inertia::render('Foods/Show', [
                 'food' => new FoodResource($food),
                 'ingredients' => IngredientResource::collection($food->ingredients),
+                'foods' => FoodResource::collection($foods),
             ]);
         }
         return redirect()->route('foods.index');
@@ -67,7 +70,9 @@ class FoodController extends Controller
         if ($food->user_id === auth()->user()->id) {
             $food->update($request->validated());
         }
+        // return  redirect()->back();
         return  redirect(route('foods.index'));
+
     }
 
     public function destroy(Food $food)
