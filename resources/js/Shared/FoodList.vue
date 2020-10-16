@@ -1,5 +1,18 @@
 <template>
   <div>
+        <label for="foodgroups">Food Group:</label>
+        <select name="foodgroups" id="foodgroups" v-model="foodgroupFilter" @change="goToPageOne">
+            <option value="">All</option>
+            <option v-for="foodgroup in foodgroups.data" :key="foodgroup.id" :value="foodgroup.id">
+                {{ foodgroup.description }}
+            </option>
+        </select>
+        <br/>
+        <label for="descriptionSearch">Description Search:</label>
+        <input type="text" name="descriptionSearch" id="descriptionSearch" @input="goToPageOne" v-model="descriptionSearchText"/>
+        <br/>
+        <label for="aliasSearch">Alias Search:</label>
+        <input type="text" name="aliasSearch" id="aliasSearch" @input="goToPageOne" v-model="aliasSearchText"/>
       <table>
         <tr>
             <th>Alias</th>
@@ -39,11 +52,15 @@
 export default {
     props:{
         food: Object,
+        foodgroups: Number,
         foods: Object,
     },
     data(){
         return{
             page: 1,
+            descriptionSearchText: '',
+            aliasSearchText: '',
+            foodgroupFilter: '',
             selectedFood: null
         }
     },
@@ -63,7 +80,6 @@ export default {
                 this.page++;
                 this.goToPage();
             }
-            console.log("next page this.page", this.page);
         },
         lastPage(){
             this.page = this.foods.meta.last_page;
@@ -73,9 +89,10 @@ export default {
             console.log("GOTOPAGE", this.page);
             console.log("food is", this.food.data.id);
             let url = `${this.$route("foods.show", this.food.data.id)}`;
-            // url += `?descriptionSearch=${this.descriptionSearchText}`;
-            // url += `&aliasSearch=${this.aliasSearchText}`;
-            // url += `&foodgroupSearch=${this.foodgroupFilter}`;
+            url += `?descriptionSearch=${this.descriptionSearchText}`;
+            url += `&aliasSearch=${this.aliasSearchText}`;
+            url += `&foodgroupSearch=${this.foodgroupFilter}`;
+            console.log("url",url);
             this.$inertia.visit(url, {
                 data:{
                     'page':this.page

@@ -32,7 +32,7 @@
     <button @click="update">Update</button>
     <button @click="cancel">Cancel</button>
     <button @click="showFoods">Add Ingredient</button>
-    <food-list :foods="foods" :food="food"></food-list>
+    <food-list :foods="foods" :food="food" :foodgroups="foodgroups"></food-list>
   </div>
 </template>
 
@@ -48,8 +48,9 @@ export default {
     props:{
         food: Object,
         foods: Object,
+        foodgroups: Object,
         ingredients: Object,
-        errors: Object
+        errors: Object,
     },
     methods:{
         cancel () {
