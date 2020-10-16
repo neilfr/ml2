@@ -31,8 +31,8 @@
         :ingredients="ingredients.data"/>
     <button @click="update">Update</button>
     <button @click="cancel">Cancel</button>
-    <button @click="addIngredient">Add Ingredient</button>
-    <food-list :foods="foods" page="1"></food-list>
+    <button @click="showFoods">Add Ingredient</button>
+    <food-list :foods="foods" :food="food"></food-list>
   </div>
 </template>
 
@@ -55,7 +55,7 @@ export default {
         cancel () {
             let url = `${this.$route("foods.index")}`;
                 this.$inertia.visit(url, {
-                    preserveState: true,
+                    // preserveState: true,
                     preserveScroll: true,
                 });
         },
@@ -68,8 +68,8 @@ export default {
                 console.log("errors", this.errors.description);
             });
         },
-        addIngredient () {
-            console.log("add ingredient");
+        showFoods () {
+            console.log("add new food as ingredient");
         }
     }
 }

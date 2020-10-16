@@ -2318,7 +2318,7 @@ __webpack_require__.r(__webpack_exports__);
     cancel: function cancel() {
       var url = "".concat(this.$route("foods.index"));
       this.$inertia.visit(url, {
-        preserveState: true,
+        // preserveState: true,
         preserveScroll: true
       });
     },
@@ -2331,8 +2331,8 @@ __webpack_require__.r(__webpack_exports__);
         console.log("errors", _this.errors.description);
       });
     },
-    addIngredient: function addIngredient() {
-      console.log("add ingredient");
+    showFoods: function showFoods() {
+      console.log("add new food as ingredient");
     }
   }
 });
@@ -2538,35 +2538,51 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    foods: Array,
-    page: Number
+    food: Object,
+    foods: Object
   },
   data: function data() {
     return {
+      page: {
+        type: Number,
+        "default": 1
+      },
       selectedFood: null
     };
   },
   methods: {
     goToPageOne: function goToPageOne() {
+      this.page = 1;
       this.goToPage(1);
     },
     previousPage: function previousPage() {
-      if (this.page > 1) this.goToPage(this.page - 1);
+      if (this.page > 1) {
+        this.page--;
+        this.goToPage();
+      }
     },
     nextPage: function nextPage() {
-      if (this.page < this.foods.meta.last_page) this.goToPage(this.page + 1);
+      if (this.page < this.foods.meta.last_page) {
+        this.page++;
+        this.goToPage();
+      }
+
+      console.log("this.page", this.page);
     },
     lastPage: function lastPage() {
-      this.goToPage(this.foods.meta.last_page);
+      this.page = this.foods.meta.last_page;
+      this.goToPage();
     },
-    goToPage: function goToPage(page) {
-      var url = "".concat(this.$route("foods.index")); // url += `?descriptionSearch=${this.descriptionSearchText}`;
+    goToPage: function goToPage() {
+      console.log("GOTOPAGE", this.page);
+      console.log("food is", this.food.data.id);
+      var url = "".concat(this.$route("foods.show", this.food.data.id)); // url += `?descriptionSearch=${this.descriptionSearchText}`;
       // url += `&aliasSearch=${this.aliasSearchText}`;
       // url += `&foodgroupSearch=${this.foodgroupFilter}`;
 
       this.$inertia.visit(url, {
         data: {
-          'page': page
+          'page': this.page
         },
         preserveState: true,
         preserveScroll: true
@@ -4786,11 +4802,11 @@ var render = function() {
       _vm._v(" "),
       _c("button", { on: { click: _vm.cancel } }, [_vm._v("Cancel")]),
       _vm._v(" "),
-      _c("button", { on: { click: _vm.addIngredient } }, [
+      _c("button", { on: { click: _vm.showFoods } }, [
         _vm._v("Add Ingredient")
       ]),
       _vm._v(" "),
-      _c("food-list", { attrs: { foods: _vm.foods, page: "1" } })
+      _c("food-list", { attrs: { foods: _vm.foods, food: _vm.food } })
     ],
     1
   )

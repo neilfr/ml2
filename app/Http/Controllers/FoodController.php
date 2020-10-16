@@ -54,7 +54,7 @@ class FoodController extends Controller
         $foods = Food::userFoods()
             ->sharedFoods()
             ->paginate(Config::get('ml2.paginator.per_page'));
-        // dd(IngredientResource::collection($food->ingredients));
+
         if (($food->user_id === auth()->user()->id) || ($food->foodsource->sharable === true)){
             return Inertia::render('Foods/Show', [
                 'food' => new FoodResource($food),

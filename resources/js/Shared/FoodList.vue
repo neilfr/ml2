@@ -38,35 +38,50 @@
 
 export default {
     props:{
-        foods: Array,
-        page: Number
+        food: Object,
+        foods: Object,
     },
     data(){
         return{
-            selectedFood: null,
+            page: {
+                type: Number,
+                default: 1,
+            },
+            selectedFood: null
         }
     },
     methods:{
         goToPageOne(){
+            this.page=1;
             this.goToPage(1);
         },
         previousPage(){
-            if(this.page>1) this.goToPage(this.page-1);
+            if(this.page>1){
+                this.page--;
+                this.goToPage();
+            }
         },
         nextPage(){
-            if(this.page<this.foods.meta.last_page) this.goToPage(this.page+1);
+            if(this.page<this.foods.meta.last_page){
+                this.page++;
+                this.goToPage();
+            }
+            console.log("this.page",this.page);
         },
         lastPage(){
-            this.goToPage(this.foods.meta.last_page);
+            this.page = this.foods.meta.last_page;
+            this.goToPage();
         },
-        goToPage(page){
-            let url = `${this.$route("foods.index")}`;
+        goToPage(){
+            console.log("GOTOPAGE", this.page);
+            console.log("food is", this.food.data.id);
+            let url = `${this.$route("foods.show", this.food.data.id)}`;
             // url += `?descriptionSearch=${this.descriptionSearchText}`;
             // url += `&aliasSearch=${this.aliasSearchText}`;
             // url += `&foodgroupSearch=${this.foodgroupFilter}`;
             this.$inertia.visit(url, {
                 data:{
-                    'page':page
+                    'page':this.page
                 },
                 preserveState: true,
                 preserveScroll: true,
