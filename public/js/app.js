@@ -2577,7 +2577,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       page: 1,
-      selectedFood: null
+      selectedFoodId: null
     };
   },
   methods: {
@@ -2603,6 +2603,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     goToPage: function goToPage() {
       this.$emit('pageUpdated', this.page);
+    },
+    selectFood: function selectFood(e) {
+      this.selectedFoodId = e.target.id;
+      console.log("selected food", this.selectedFoodId);
     }
   }
 });
@@ -5128,7 +5132,11 @@ var render = function() {
           return _c("tr", { key: food.id }, [
             _c("td", [_vm._v(_vm._s(food.alias))]),
             _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(food.description))]),
+            _c(
+              "td",
+              { attrs: { id: food.id }, on: { click: _vm.selectFood } },
+              [_vm._v(_vm._s(food.description))]
+            ),
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(food.kcal))]),
             _vm._v(" "),

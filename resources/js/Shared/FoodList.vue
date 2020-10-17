@@ -13,7 +13,7 @@
         </tr>
         <tr v-for="food in foods.data" :key="food.id">
             <td>{{food.alias}}</td>
-            <td>{{food.description}}</td>
+            <td @click="selectFood" :id="food.id">{{food.description}}</td>
             <td>{{food.kcal}}</td>
             <td>{{food.protein}}</td>
             <td>{{food.fat}}</td>
@@ -43,7 +43,7 @@ export default {
     data(){
         return{
             page: 1,
-            selectedFood: null
+            selectedFoodId: null
         }
     },
     methods:{
@@ -70,6 +70,10 @@ export default {
         goToPage(){
             this.$emit('pageUpdated', this.page);
         },
+        selectFood(e){
+            this.selectedFoodId=e.target.id;
+            console.log("selected food", this.selectedFoodId);
+        }
     }
 }
 </script>
