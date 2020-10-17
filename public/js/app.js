@@ -2301,6 +2301,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2315,15 +2328,22 @@ __webpack_require__.r(__webpack_exports__);
     ingredients: Object,
     errors: Object
   },
+  data: function data() {
+    return {
+      foodgroupFilter: '',
+      aliasSearchText: '',
+      descriptionSearchText: ''
+    };
+  },
   methods: {
-    cancel: function cancel() {
+    cancelFoodUpdate: function cancelFoodUpdate() {
       var url = "".concat(this.$route("foods.index"));
       this.$inertia.visit(url, {
         // preserveState: true,
         preserveScroll: true
       });
     },
-    update: function update() {
+    updateFood: function updateFood() {
       var _this = this;
 
       this.$inertia.patch(this.$route("foods.update", {
@@ -2334,6 +2354,19 @@ __webpack_require__.r(__webpack_exports__);
     },
     showFoods: function showFoods() {
       console.log("add new food as ingredient");
+    },
+    updateFoodList: function updateFoodList(page) {
+      var url = "".concat(this.$route("foods.show", this.food.data.id));
+      url += "?descriptionSearch=".concat(this.descriptionSearchText);
+      url += "&aliasSearch=".concat(this.aliasSearchText);
+      url += "&foodgroupSearch=".concat(this.foodgroupFilter);
+      this.$inertia.visit(url, {
+        data: {
+          'page': page
+        },
+        preserveState: true,
+        preserveScroll: true
+      });
     }
   }
 });
@@ -2537,31 +2570,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    food: Object,
-    foodgroups: Number,
     foods: Object
   },
   data: function data() {
     return {
       page: 1,
-      descriptionSearchText: '',
-      aliasSearchText: '',
-      foodgroupFilter: '',
       selectedFood: null
     };
   },
@@ -2587,20 +2602,7 @@ __webpack_require__.r(__webpack_exports__);
       this.goToPage();
     },
     goToPage: function goToPage() {
-      console.log("GOTOPAGE", this.page);
-      console.log("food is", this.food.data.id);
-      var url = "".concat(this.$route("foods.show", this.food.data.id));
-      url += "?descriptionSearch=".concat(this.descriptionSearchText);
-      url += "&aliasSearch=".concat(this.aliasSearchText);
-      url += "&foodgroupSearch=".concat(this.foodgroupFilter);
-      console.log("url", url);
-      this.$inertia.visit(url, {
-        data: {
-          'page': this.page
-        },
-        preserveState: true,
-        preserveScroll: true
-      });
+      this.$emit('pageUpdated', this.page);
     }
   }
 });
@@ -4808,20 +4810,138 @@ var render = function() {
         })
       ]),
       _vm._v(" "),
+      _c("button", { on: { click: _vm.updateFood } }, [_vm._v("Update Food")]),
+      _vm._v(" "),
+      _c("button", { on: { click: _vm.cancelFoodUpdate } }, [
+        _vm._v("Cancel Food Update")
+      ]),
+      _vm._v(" "),
       _c("ingredients-list", {
         attrs: { foodId: _vm.food.data.id, ingredients: _vm.ingredients.data }
       }),
-      _vm._v(" "),
-      _c("button", { on: { click: _vm.update } }, [_vm._v("Update")]),
-      _vm._v(" "),
-      _c("button", { on: { click: _vm.cancel } }, [_vm._v("Cancel")]),
       _vm._v(" "),
       _c("button", { on: { click: _vm.showFoods } }, [
         _vm._v("Add Ingredient")
       ]),
       _vm._v(" "),
+      _c("label", { attrs: { for: "foodgroups" } }, [_vm._v("Food Group:")]),
+      _vm._v(" "),
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.foodgroupFilter,
+              expression: "foodgroupFilter"
+            }
+          ],
+          attrs: { name: "foodgroups", id: "foodgroups" },
+          on: {
+            change: [
+              function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.foodgroupFilter = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              },
+              _vm.updateFoodList
+            ]
+          }
+        },
+        [
+          _c("option", { attrs: { value: "" } }, [_vm._v("All")]),
+          _vm._v(" "),
+          _vm._l(_vm.foodgroups.data, function(foodgroup) {
+            return _c(
+              "option",
+              { key: foodgroup.id, domProps: { value: foodgroup.id } },
+              [
+                _vm._v(
+                  "\n              " +
+                    _vm._s(foodgroup.description) +
+                    "\n          "
+                )
+              ]
+            )
+          })
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("label", { attrs: { for: "descriptionSearch" } }, [
+        _vm._v("Description Search:")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.descriptionSearchText,
+            expression: "descriptionSearchText"
+          }
+        ],
+        attrs: {
+          type: "text",
+          name: "descriptionSearch",
+          id: "descriptionSearch"
+        },
+        domProps: { value: _vm.descriptionSearchText },
+        on: {
+          input: [
+            function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.descriptionSearchText = $event.target.value
+            },
+            _vm.updateFoodList
+          ]
+        }
+      }),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("label", { attrs: { for: "aliasSearch" } }, [_vm._v("Alias Search:")]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.aliasSearchText,
+            expression: "aliasSearchText"
+          }
+        ],
+        attrs: { type: "text", name: "aliasSearch", id: "aliasSearch" },
+        domProps: { value: _vm.aliasSearchText },
+        on: {
+          input: [
+            function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.aliasSearchText = $event.target.value
+            },
+            _vm.updateFoodList
+          ]
+        }
+      }),
+      _vm._v(" "),
       _c("food-list", {
-        attrs: { foods: _vm.foods, food: _vm.food, foodgroups: _vm.foodgroups }
+        attrs: { foods: _vm.foods },
+        on: { pageUpdated: _vm.updateFoodList }
       })
     ],
     1
@@ -4999,121 +5119,6 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("label", { attrs: { for: "foodgroups" } }, [_vm._v("Food Group:")]),
-    _vm._v(" "),
-    _c(
-      "select",
-      {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.foodgroupFilter,
-            expression: "foodgroupFilter"
-          }
-        ],
-        attrs: { name: "foodgroups", id: "foodgroups" },
-        on: {
-          change: [
-            function($event) {
-              var $$selectedVal = Array.prototype.filter
-                .call($event.target.options, function(o) {
-                  return o.selected
-                })
-                .map(function(o) {
-                  var val = "_value" in o ? o._value : o.value
-                  return val
-                })
-              _vm.foodgroupFilter = $event.target.multiple
-                ? $$selectedVal
-                : $$selectedVal[0]
-            },
-            _vm.goToPageOne
-          ]
-        }
-      },
-      [
-        _c("option", { attrs: { value: "" } }, [_vm._v("All")]),
-        _vm._v(" "),
-        _vm._l(_vm.foodgroups.data, function(foodgroup) {
-          return _c(
-            "option",
-            { key: foodgroup.id, domProps: { value: foodgroup.id } },
-            [
-              _vm._v(
-                "\n              " +
-                  _vm._s(foodgroup.description) +
-                  "\n          "
-              )
-            ]
-          )
-        })
-      ],
-      2
-    ),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c("label", { attrs: { for: "descriptionSearch" } }, [
-      _vm._v("Description Search:")
-    ]),
-    _vm._v(" "),
-    _c("input", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.descriptionSearchText,
-          expression: "descriptionSearchText"
-        }
-      ],
-      attrs: {
-        type: "text",
-        name: "descriptionSearch",
-        id: "descriptionSearch"
-      },
-      domProps: { value: _vm.descriptionSearchText },
-      on: {
-        input: [
-          function($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.descriptionSearchText = $event.target.value
-          },
-          _vm.goToPageOne
-        ]
-      }
-    }),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c("label", { attrs: { for: "aliasSearch" } }, [_vm._v("Alias Search:")]),
-    _vm._v(" "),
-    _c("input", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.aliasSearchText,
-          expression: "aliasSearchText"
-        }
-      ],
-      attrs: { type: "text", name: "aliasSearch", id: "aliasSearch" },
-      domProps: { value: _vm.aliasSearchText },
-      on: {
-        input: [
-          function($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.aliasSearchText = $event.target.value
-          },
-          _vm.goToPageOne
-        ]
-      }
-    }),
-    _vm._v(" "),
     _c(
       "table",
       [
