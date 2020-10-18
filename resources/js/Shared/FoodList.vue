@@ -71,8 +71,9 @@ export default {
             this.$emit('pageUpdated', this.page);
         },
         selectFood(e){
+            this.$emit('selectedFood', e.target.id);
             this.selectedFoodId=e.target.id;
-            console.log("selected food", this.selectedFoodId);
+            // console.log("selected food", this.selectedFoodId);
         }
     }
 }

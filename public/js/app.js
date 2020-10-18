@@ -2367,6 +2367,21 @@ __webpack_require__.r(__webpack_exports__);
         preserveState: true,
         preserveScroll: true
       });
+    },
+    addFoodAsIngredient: function addFoodAsIngredient(newIngredientFoodId) {
+      var _this2 = this;
+
+      console.log("add food as ingredient", newIngredientFoodId);
+      console.log("to food: ", this.food.data.id); // food.ingredient.store
+
+      this.$inertia.post(this.$route("food.ingredient.store", {
+        'food': this.food.data.id
+      }), {
+        'ingredient_id': newIngredientFoodId,
+        'quantity': 50
+      }).then(function () {
+        console.log("errors", _this2.errors.description);
+      });
     }
   }
 });
@@ -2605,8 +2620,8 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit('pageUpdated', this.page);
     },
     selectFood: function selectFood(e) {
-      this.selectedFoodId = e.target.id;
-      console.log("selected food", this.selectedFoodId);
+      this.$emit('selectedFood', e.target.id);
+      this.selectedFoodId = e.target.id; // console.log("selected food", this.selectedFoodId);
     }
   }
 });
@@ -4945,7 +4960,10 @@ var render = function() {
       _vm._v(" "),
       _c("food-list", {
         attrs: { foods: _vm.foods },
-        on: { pageUpdated: _vm.updateFoodList }
+        on: {
+          pageUpdated: _vm.updateFoodList,
+          selectedFood: _vm.addFoodAsIngredient
+        }
       })
     ],
     1

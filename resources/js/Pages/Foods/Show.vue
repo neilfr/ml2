@@ -45,7 +45,7 @@
         <br/>
                 <label for="aliasSearch">Alias Search:</label>
         <input type="text" name="aliasSearch" id="aliasSearch" @input="updateFoodList" v-model="aliasSearchText"/>
-    <food-list @pageUpdated="updateFoodList" :foods="foods"></food-list>
+    <food-list @pageUpdated="updateFoodList" @selectedFood="addFoodAsIngredient" :foods="foods"></food-list>
   </div>
 </template>
 
@@ -105,6 +105,21 @@ export default {
                 },
                 preserveState: true,
                 preserveScroll: true,
+            });
+        },
+        addFoodAsIngredient(newIngredientFoodId) {
+            console.log("add food as ingredient", newIngredientFoodId);
+            console.log("to food: ", this.food.data.id);
+            // food.ingredient.store
+            this.$inertia.post(
+                this.$route("food.ingredient.store", {
+                    'food': this.food.data.id
+                }), {
+                    'ingredient_id':newIngredientFoodId,
+                    'quantity':50
+                }
+            ).then(()=>{
+                console.log("errors", this.errors.description);
             });
         }
     }
