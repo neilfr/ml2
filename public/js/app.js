@@ -2371,14 +2371,10 @@ __webpack_require__.r(__webpack_exports__);
     addFoodAsIngredient: function addFoodAsIngredient(newIngredientFoodId) {
       var _this2 = this;
 
-      console.log("add food as ingredient", newIngredientFoodId);
-      console.log("to food: ", this.food.data.id); // food.ingredient.store
-
       this.$inertia.post(this.$route("food.ingredient.store", {
         'food': this.food.data.id
       }), {
-        'ingredient_id': newIngredientFoodId,
-        'quantity': 50
+        'ingredient_id': newIngredientFoodId
       }).then(function () {
         console.log("errors", _this2.errors.description);
       });
@@ -2592,7 +2588,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       page: 1,
-      selectedFoodId: null
+      selectedFoodId: null,
+      selectedFoodBaseQuantity: null
     };
   },
   methods: {
@@ -2620,8 +2617,12 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit('pageUpdated', this.page);
     },
     selectFood: function selectFood(e) {
-      this.$emit('selectedFood', e.target.id);
-      this.selectedFoodId = e.target.id; // console.log("selected food", this.selectedFoodId);
+      // console.log("food",e.target);
+      // console.log("id",e.target.id);
+      // console.log("foo", this.selectedFoodBaseQuantity);
+      // console.log("test",e.target.getAttribute('data-base_quantity'));
+      this.$emit('selectedFood', e.target.id); // this.selectedFoodId=e.target.id;
+      // console.log("selected food", this.selectedFoodId);
     }
   }
 });
@@ -4885,9 +4886,7 @@ var render = function() {
               { key: foodgroup.id, domProps: { value: foodgroup.id } },
               [
                 _vm._v(
-                  "\n              " +
-                    _vm._s(foodgroup.description) +
-                    "\n          "
+                  "\n          " + _vm._s(foodgroup.description) + "\n      "
                 )
               ]
             )
@@ -5152,7 +5151,14 @@ var render = function() {
             _vm._v(" "),
             _c(
               "td",
-              { attrs: { id: food.id }, on: { click: _vm.selectFood } },
+              {
+                attrs: {
+                  id: food.id,
+                  selectedFoodBaseQuantity: food.quantity,
+                  "data-base_quantity": food.base_quantity
+                },
+                on: { click: _vm.selectFood }
+              },
               [_vm._v(_vm._s(food.description))]
             ),
             _vm._v(" "),

@@ -13,7 +13,7 @@
         </tr>
         <tr v-for="food in foods.data" :key="food.id">
             <td>{{food.alias}}</td>
-            <td @click="selectFood" :id="food.id">{{food.description}}</td>
+            <td @click="selectFood" :id="food.id" :selectedFoodBaseQuantity="food.quantity" :data-base_quantity="food.base_quantity">{{food.description}}</td>
             <td>{{food.kcal}}</td>
             <td>{{food.protein}}</td>
             <td>{{food.fat}}</td>
@@ -43,7 +43,8 @@ export default {
     data(){
         return{
             page: 1,
-            selectedFoodId: null
+            selectedFoodId: null,
+            selectedFoodBaseQuantity: null
         }
     },
     methods:{
@@ -71,8 +72,13 @@ export default {
             this.$emit('pageUpdated', this.page);
         },
         selectFood(e){
+            // console.log("food",e.target);
+            // console.log("id",e.target.id);
+            // console.log("foo", this.selectedFoodBaseQuantity);
+            // console.log("test",e.target.getAttribute('data-base_quantity'));
+
             this.$emit('selectedFood', e.target.id);
-            this.selectedFoodId=e.target.id;
+            // this.selectedFoodId=e.target.id;
             // console.log("selected food", this.selectedFoodId);
         }
     }

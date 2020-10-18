@@ -135,6 +135,29 @@ class FoodIngredientControllerTest extends TestCase
     }
 
 
+    /** @test */
+    public function it_will_have_an_ingredient_with_quantity_of_ingredients_base_quantity_if_not_provided()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $food = factory(Food::class)->create();
+
+        $ingredient = factory(Food::class)->create([
+            'base_quantity' => 999,
+        ]);
+
+        $payload = [
+            'ingredient_id' => $ingredient->id,
+        ];
+        $expectedResult = array_merge($payload, ['quantity' => 999]);
+
+        $response = $this->post(route('food.ingredient.store', $food), $payload);
+
+        $response->assertRedirect(route('foods.show', $food));
+        $this->assertDatabaseHas('ingredients', $expectedResult);
+    }
+
     /**
      * @test
      * @dataProvider ingredientStoreValidationProvider

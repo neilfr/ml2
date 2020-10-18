@@ -32,19 +32,19 @@
         :foodId=food.data.id
         :ingredients="ingredients.data"/>
     <button @click="showFoods">Add Ingredient</button>
-            <label for="foodgroups">Food Group:</label>
-        <select name="foodgroups" id="foodgroups" v-model="foodgroupFilter" @change="updateFoodList">
-            <option value="">All</option>
-            <option v-for="foodgroup in foodgroups.data" :key="foodgroup.id" :value="foodgroup.id">
-                {{ foodgroup.description }}
-            </option>
-        </select>
-        <br/>
-            <label for="descriptionSearch">Description Search:</label>
-        <input type="text" name="descriptionSearch" id="descriptionSearch" @input="updateFoodList" v-model="descriptionSearchText"/>
-        <br/>
-                <label for="aliasSearch">Alias Search:</label>
-        <input type="text" name="aliasSearch" id="aliasSearch" @input="updateFoodList" v-model="aliasSearchText"/>
+    <label for="foodgroups">Food Group:</label>
+    <select name="foodgroups" id="foodgroups" v-model="foodgroupFilter" @change="updateFoodList">
+        <option value="">All</option>
+        <option v-for="foodgroup in foodgroups.data" :key="foodgroup.id" :value="foodgroup.id">
+            {{ foodgroup.description }}
+        </option>
+    </select>
+    <br/>
+    <label for="descriptionSearch">Description Search:</label>
+    <input type="text" name="descriptionSearch" id="descriptionSearch" @input="updateFoodList" v-model="descriptionSearchText"/>
+    <br/>
+    <label for="aliasSearch">Alias Search:</label>
+    <input type="text" name="aliasSearch" id="aliasSearch" @input="updateFoodList" v-model="aliasSearchText"/>
     <food-list @pageUpdated="updateFoodList" @selectedFood="addFoodAsIngredient" :foods="foods"></food-list>
   </div>
 </template>
@@ -108,15 +108,11 @@ export default {
             });
         },
         addFoodAsIngredient(newIngredientFoodId) {
-            console.log("add food as ingredient", newIngredientFoodId);
-            console.log("to food: ", this.food.data.id);
-            // food.ingredient.store
             this.$inertia.post(
                 this.$route("food.ingredient.store", {
                     'food': this.food.data.id
                 }), {
-                    'ingredient_id':newIngredientFoodId,
-                    'quantity':50
+                    'ingredient_id':newIngredientFoodId
                 }
             ).then(()=>{
                 console.log("errors", this.errors.description);
