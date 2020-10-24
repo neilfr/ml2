@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Food;
+use App\Http\Resources\IngredientResource;
 use App\Ingredient;
 use App\User;
 use Tests\TestCase;
@@ -134,6 +135,51 @@ class FoodIngredientControllerTest extends TestCase
         $this->assertDatabaseHas('ingredients', $payload);
     }
 
+    /** @test */
+    public function it_cannot_add_the_same_ingredient_to_a_user_owned_food_more_than_once()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $food = factory(Food::class)->create();
+
+        $ingredient = factory(Food::class)->create();
+
+        $food->ingredients()->attach($ingredient->id, ['quantity' => 100]);
+
+        $payload = [
+            'ingredient_id' => $ingredient->id,
+            'quantity' => 200,
+        ];
+
+        $response = $this->post(route('food.ingredient.store', $food), $payload);
+
+        $response->assertRedirect(route('foods.show', $food));
+        $this->assertDatabaseMissing('ingredients', $payload);
+    }
+
+    /** @test */
+    public function it_will_have_an_ingredient_with_quantity_of_ingredients_base_quantity_if_not_provided()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $food = factory(Food::class)->create();
+
+        $ingredient = factory(Food::class)->create([
+            'base_quantity' => 999,
+        ]);
+
+        $payload = [
+            'ingredient_id' => $ingredient->id,
+        ];
+        $expectedResult = array_merge($payload, ['quantity' => 999]);
+
+        $response = $this->post(route('food.ingredient.store', $food), $payload);
+
+        $response->assertRedirect(route('foods.show', $food));
+        $this->assertDatabaseHas('ingredients', $expectedResult);
+    }
 
     /**
      * @test
@@ -274,20 +320,22 @@ class FoodIngredientControllerTest extends TestCase
         $this->actingAs($user);
 
         $food = factory(Food::class)->create();
+$foods=factory(Food::class,10)->create();
+        $ingredients = factory(Ingredient::class,2)->create();
 
-        $ingredient = factory(Food::class)->create();
-
-        $food->ingredients()->attach($ingredient->id, ['quantity' => 555]);
+        foreach($ingredients as $ingredient) {
+            $food->ingredients()->attach($ingredient->id, ['quantity' => 555]);
+        }
 
         $response = $this->delete(route('food.ingredient.destroy', [
             'food' => $food,
-            'ingredient' => $ingredient,
+            'ingredient' =>$ingredients[0],
         ]));
 
         $response->assertRedirect(route('foods.show', $food));
         $this->assertDatabaseMissing('ingredients', [
             'parent_food_id' => $food->id,
-            'ingredient_id' => $ingredient->id,
+            'ingredient_id' => $ingredients[0]->id,
             'quantity' => 555,
         ]);
     }

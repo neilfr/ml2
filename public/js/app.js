@@ -2301,6 +2301,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2311,18 +2324,25 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     food: Object,
     foods: Object,
-    ingredients: Object,
+    foodgroups: Object,
     errors: Object
   },
+  data: function data() {
+    return {
+      foodgroupFilter: '',
+      aliasSearchText: '',
+      descriptionSearchText: ''
+    };
+  },
   methods: {
-    cancel: function cancel() {
+    cancelFoodUpdate: function cancelFoodUpdate() {
       var url = "".concat(this.$route("foods.index"));
       this.$inertia.visit(url, {
         // preserveState: true,
         preserveScroll: true
       });
     },
-    update: function update() {
+    updateFood: function updateFood() {
       var _this = this;
 
       this.$inertia.patch(this.$route("foods.update", {
@@ -2333,6 +2353,40 @@ __webpack_require__.r(__webpack_exports__);
     },
     showFoods: function showFoods() {
       console.log("add new food as ingredient");
+    },
+    updateFoodList: function updateFoodList(page) {
+      var url = "".concat(this.$route("foods.show", this.food.data.id));
+      url += "?descriptionSearch=".concat(this.descriptionSearchText);
+      url += "&aliasSearch=".concat(this.aliasSearchText);
+      url += "&foodgroupSearch=".concat(this.foodgroupFilter);
+      this.$inertia.visit(url, {
+        data: {
+          'page': page
+        },
+        preserveState: true,
+        preserveScroll: true
+      });
+    },
+    addFoodAsIngredient: function addFoodAsIngredient(newIngredientFoodId) {
+      var _this2 = this;
+
+      this.$inertia.post(this.$route("food.ingredient.store", {
+        'food': this.food.data.id
+      }), {
+        'ingredient_id': newIngredientFoodId
+      }).then(function () {
+        console.log("errors", _this2.errors.description);
+      });
+    },
+    removeIngredient: function removeIngredient(ingredient) {
+      console.log("remove ingredient from show");
+      console.log("food id", this.food.data.id);
+      console.log("ingredient", ingredient);
+      console.log("ingredientid", ingredient.id);
+      this.$inertia["delete"](this.$route("food.ingredient.destroy", {
+        'food': this.food.data.id,
+        'ingredient': ingredient.id
+      }));
     }
   }
 });
@@ -2538,13 +2592,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    food: Object,
     foods: Object
   },
   data: function data() {
     return {
       page: 1,
-      selectedFood: null
+      selectedFoodId: null,
+      selectedFoodBaseQuantity: null
     };
   },
   methods: {
@@ -2563,27 +2617,21 @@ __webpack_require__.r(__webpack_exports__);
         this.page++;
         this.goToPage();
       }
-
-      console.log("next page this.page", this.page);
     },
     lastPage: function lastPage() {
       this.page = this.foods.meta.last_page;
       this.goToPage();
     },
     goToPage: function goToPage() {
-      console.log("GOTOPAGE", this.page);
-      console.log("food is", this.food.data.id);
-      var url = "".concat(this.$route("foods.show", this.food.data.id)); // url += `?descriptionSearch=${this.descriptionSearchText}`;
-      // url += `&aliasSearch=${this.aliasSearchText}`;
-      // url += `&foodgroupSearch=${this.foodgroupFilter}`;
-
-      this.$inertia.visit(url, {
-        data: {
-          'page': this.page
-        },
-        preserveState: true,
-        preserveScroll: true
-      });
+      this.$emit('pageUpdated', this.page);
+    },
+    selectFood: function selectFood(e) {
+      // console.log("food",e.target);
+      // console.log("id",e.target.id);
+      // console.log("foo", this.selectedFoodBaseQuantity);
+      // console.log("test",e.target.getAttribute('data-base_quantity'));
+      this.$emit('selectedFood', e.target.id); // this.selectedFoodId=e.target.id;
+      // console.log("selected food", this.selectedFoodId);
     }
   }
 });
@@ -2634,14 +2682,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     UpdateNumberModal: _Shared_UpdateNumberModal__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   props: {
-    ingredients: Array,
-    foodId: Number
+    food: Object
   },
   data: function data() {
     return {
@@ -2663,7 +2712,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.$inertia.patch(this.$route("food.ingredient.update", {
-        food: this.foodId,
+        food: this.food.id,
         ingredient: this.selectedIngredient.id
       }), {
         quantity: value
@@ -2674,6 +2723,11 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.close();
       });
+    },
+    remove: function remove(ingredient) {
+      console.log("removing ingredient", ingredient);
+      console.log("food_ingredient_id", ingredient.food_ingredient_id);
+      this.$emit('remove', ingredient);
     }
   }
 });
@@ -4791,19 +4845,141 @@ var render = function() {
         })
       ]),
       _vm._v(" "),
+      _c("button", { on: { click: _vm.updateFood } }, [_vm._v("Update Food")]),
+      _vm._v(" "),
+      _c("button", { on: { click: _vm.cancelFoodUpdate } }, [
+        _vm._v("Cancel Food Update")
+      ]),
+      _vm._v(" "),
       _c("ingredients-list", {
-        attrs: { foodId: _vm.food.data.id, ingredients: _vm.ingredients.data }
+        attrs: { food: _vm.food.data },
+        on: { remove: _vm.removeIngredient }
       }),
-      _vm._v(" "),
-      _c("button", { on: { click: _vm.update } }, [_vm._v("Update")]),
-      _vm._v(" "),
-      _c("button", { on: { click: _vm.cancel } }, [_vm._v("Cancel")]),
       _vm._v(" "),
       _c("button", { on: { click: _vm.showFoods } }, [
         _vm._v("Add Ingredient")
       ]),
       _vm._v(" "),
-      _c("food-list", { attrs: { foods: _vm.foods, food: _vm.food } })
+      _c("label", { attrs: { for: "foodgroups" } }, [_vm._v("Food Group:")]),
+      _vm._v(" "),
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.foodgroupFilter,
+              expression: "foodgroupFilter"
+            }
+          ],
+          attrs: { name: "foodgroups", id: "foodgroups" },
+          on: {
+            change: [
+              function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.foodgroupFilter = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              },
+              _vm.updateFoodList
+            ]
+          }
+        },
+        [
+          _c("option", { attrs: { value: "" } }, [_vm._v("All")]),
+          _vm._v(" "),
+          _vm._l(_vm.foodgroups.data, function(foodgroup) {
+            return _c(
+              "option",
+              { key: foodgroup.id, domProps: { value: foodgroup.id } },
+              [
+                _vm._v(
+                  "\n          " + _vm._s(foodgroup.description) + "\n      "
+                )
+              ]
+            )
+          })
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("label", { attrs: { for: "descriptionSearch" } }, [
+        _vm._v("Description Search:")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.descriptionSearchText,
+            expression: "descriptionSearchText"
+          }
+        ],
+        attrs: {
+          type: "text",
+          name: "descriptionSearch",
+          id: "descriptionSearch"
+        },
+        domProps: { value: _vm.descriptionSearchText },
+        on: {
+          input: [
+            function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.descriptionSearchText = $event.target.value
+            },
+            _vm.updateFoodList
+          ]
+        }
+      }),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("label", { attrs: { for: "aliasSearch" } }, [_vm._v("Alias Search:")]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.aliasSearchText,
+            expression: "aliasSearchText"
+          }
+        ],
+        attrs: { type: "text", name: "aliasSearch", id: "aliasSearch" },
+        domProps: { value: _vm.aliasSearchText },
+        on: {
+          input: [
+            function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.aliasSearchText = $event.target.value
+            },
+            _vm.updateFoodList
+          ]
+        }
+      }),
+      _vm._v(" "),
+      _c("food-list", {
+        attrs: { foods: _vm.foods },
+        on: {
+          pageUpdated: _vm.updateFoodList,
+          selectedFood: _vm.addFoodAsIngredient
+        }
+      })
     ],
     1
   )
@@ -4989,7 +5165,18 @@ var render = function() {
           return _c("tr", { key: food.id }, [
             _c("td", [_vm._v(_vm._s(food.alias))]),
             _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(food.description))]),
+            _c(
+              "td",
+              {
+                attrs: {
+                  id: food.id,
+                  selectedFoodBaseQuantity: food.quantity,
+                  "data-base_quantity": food.base_quantity
+                },
+                on: { click: _vm.selectFood }
+              },
+              [_vm._v(_vm._s(food.description))]
+            ),
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(food.kcal))]),
             _vm._v(" "),
@@ -5081,8 +5268,8 @@ var render = function() {
       [
         _vm._m(0),
         _vm._v(" "),
-        _vm._l(_vm.ingredients, function(ingredient) {
-          return _c("tr", { key: ingredient.id }, [
+        _vm._l(_vm.food.ingredients, function(ingredient) {
+          return _c("tr", { key: ingredient.food_ingredient_id }, [
             _c("td", [_vm._v(_vm._s(ingredient.alias))]),
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(ingredient.description))]),
@@ -5097,17 +5284,32 @@ var render = function() {
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(ingredient.potassium))]),
             _vm._v(" "),
-            _c(
-              "td",
-              {
-                on: {
-                  click: function($event) {
-                    return _vm.open(ingredient)
+            _c("td", [_vm._v(_vm._s(ingredient.quantity))]),
+            _vm._v(" "),
+            _c("td", [
+              _c(
+                "button",
+                {
+                  on: {
+                    click: function($event) {
+                      return _vm.open(ingredient)
+                    }
                   }
-                }
-              },
-              [_vm._v(_vm._s(ingredient.quantity))]
-            )
+                },
+                [_vm._v("Edit")]
+              ),
+              _c(
+                "button",
+                {
+                  on: {
+                    click: function($event) {
+                      return _vm.remove(ingredient)
+                    }
+                  }
+                },
+                [_vm._v("Delete")]
+              )
+            ])
           ])
         }),
         _vm._v(" "),
@@ -5145,7 +5347,9 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("Potassium")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Quantity")])
+      _c("th", [_vm._v("Quantity")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Actions")])
     ])
   }
 ]

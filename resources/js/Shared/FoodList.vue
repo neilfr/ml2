@@ -1,6 +1,6 @@
 <template>
   <div>
-      <table>
+    <table>
         <tr>
             <th>Alias</th>
             <th>Description</th>
@@ -13,7 +13,7 @@
         </tr>
         <tr v-for="food in foods.data" :key="food.id">
             <td>{{food.alias}}</td>
-            <td>{{food.description}}</td>
+            <td @click="selectFood" :id="food.id" :selectedFoodBaseQuantity="food.quantity" :data-base_quantity="food.base_quantity">{{food.description}}</td>
             <td>{{food.kcal}}</td>
             <td>{{food.protein}}</td>
             <td>{{food.fat}}</td>
@@ -38,13 +38,13 @@
 
 export default {
     props:{
-        food: Object,
         foods: Object,
     },
     data(){
         return{
             page: 1,
-            selectedFood: null
+            selectedFoodId: null,
+            selectedFoodBaseQuantity: null
         }
     },
     methods:{
@@ -63,27 +63,24 @@ export default {
                 this.page++;
                 this.goToPage();
             }
-            console.log("next page this.page", this.page);
         },
         lastPage(){
             this.page = this.foods.meta.last_page;
             this.goToPage();
         },
         goToPage(){
-            console.log("GOTOPAGE", this.page);
-            console.log("food is", this.food.data.id);
-            let url = `${this.$route("foods.show", this.food.data.id)}`;
-            // url += `?descriptionSearch=${this.descriptionSearchText}`;
-            // url += `&aliasSearch=${this.aliasSearchText}`;
-            // url += `&foodgroupSearch=${this.foodgroupFilter}`;
-            this.$inertia.visit(url, {
-                data:{
-                    'page':this.page
-                },
-                preserveState: true,
-                preserveScroll: true,
-            });
+            this.$emit('pageUpdated', this.page);
         },
+        selectFood(e){
+            // console.log("food",e.target);
+            // console.log("id",e.target.id);
+            // console.log("foo", this.selectedFoodBaseQuantity);
+            // console.log("test",e.target.getAttribute('data-base_quantity'));
+
+            this.$emit('selectedFood', e.target.id);
+            // this.selectedFoodId=e.target.id;
+            // console.log("selected food", this.selectedFoodId);
+        }
     }
 }
 </script>

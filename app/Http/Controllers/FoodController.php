@@ -33,7 +33,7 @@ class FoodController extends Controller
         return Inertia::render('Foods/Index', [
             'page' => $foods->currentPage(),
             'foods' => FoodResource::collection($foods),
-            'foodgroups' => FoodgroupResource::collection($foodgroups)
+            'foodgroups' => FoodgroupResource::collection($foodgroups),
         ]);
     }
 
@@ -49,17 +49,22 @@ class FoodController extends Controller
         return redirect()->route('foods.index');
     }
 
-    public function show(Food $food)
+    public function show(Request $request, Food $food)
     {
+        $foodgroups = Foodgroup::all();
         $foods = Food::userFoods()
             ->sharedFoods()
+            ->foodgroupSearch($request->query('foodgroupSearch'))
+            ->descriptionSearch($request->query('descriptionSearch'))
+            ->aliasSearch($request->query('aliasSearch'))
+            ->with('ingredients')
             ->paginate(Config::get('ml2.paginator.per_page'));
 
         if (($food->user_id === auth()->user()->id) || ($food->foodsource->sharable === true)){
             return Inertia::render('Foods/Show', [
                 'food' => new FoodResource($food),
-                'ingredients' => IngredientResource::collection($food->ingredients),
                 'foods' => FoodResource::collection($foods),
+                'foodgroups' => FoodgroupResource::collection($foodgroups),
             ]);
         }
         return redirect()->route('foods.index');

@@ -26,13 +26,26 @@
         <label class="p-2" for="Quantity">Quantity:</label>
         <input class="border rounded" id="base_quantity" type="number" :readonly="!food.data.editable" v-model="food.data.base_quantity" min="0"/>
     </div>
+    <button @click="updateFood">Update Food</button>
+    <button @click="cancelFoodUpdate">Cancel Food Update</button>
     <ingredients-list
-        :foodId=food.data.id
-        :ingredients="ingredients.data"/>
-    <button @click="update">Update</button>
-    <button @click="cancel">Cancel</button>
+        :food=food.data
+        @remove="removeIngredient"/>
     <button @click="showFoods">Add Ingredient</button>
-    <food-list :foods="foods" :food="food"></food-list>
+    <label for="foodgroups">Food Group:</label>
+    <select name="foodgroups" id="foodgroups" v-model="foodgroupFilter" @change="updateFoodList">
+        <option value="">All</option>
+        <option v-for="foodgroup in foodgroups.data" :key="foodgroup.id" :value="foodgroup.id">
+            {{ foodgroup.description }}
+        </option>
+    </select>
+    <br/>
+    <label for="descriptionSearch">Description Search:</label>
+    <input type="text" name="descriptionSearch" id="descriptionSearch" @input="updateFoodList" v-model="descriptionSearchText"/>
+    <br/>
+    <label for="aliasSearch">Alias Search:</label>
+    <input type="text" name="aliasSearch" id="aliasSearch" @input="updateFoodList" v-model="aliasSearchText"/>
+    <food-list @pageUpdated="updateFoodList" @selectedFood="addFoodAsIngredient" :foods="foods"></food-list>
   </div>
 </template>
 
@@ -48,21 +61,28 @@ export default {
     props:{
         food: Object,
         foods: Object,
-        ingredients: Object,
-        errors: Object
+        foodgroups: Object,
+        errors: Object,
+    },
+    data(){
+        return {
+            foodgroupFilter: '',
+            aliasSearchText: '',
+            descriptionSearchText: ''
+        }
     },
     methods:{
-        cancel () {
+        cancelFoodUpdate () {
             let url = `${this.$route("foods.index")}`;
                 this.$inertia.visit(url, {
                     // preserveState: true,
                     preserveScroll: true,
                 });
         },
-        update () {
+        updateFood () {
             this.$inertia.patch(
                 this.$route("foods.update", {
-                    'food': this.food.data.id
+                    'food': this.food.data.id,
                 }), this.food.data
             ).then(()=>{
                 console.log("errors", this.errors.description);
@@ -70,6 +90,43 @@ export default {
         },
         showFoods () {
             console.log("add new food as ingredient");
+        },
+        updateFoodList (page){
+            let url = `${this.$route("foods.show", this.food.data.id)}`;
+
+            url += `?descriptionSearch=${this.descriptionSearchText}`;
+            url += `&aliasSearch=${this.aliasSearchText}`;
+            url += `&foodgroupSearch=${this.foodgroupFilter}`;
+
+            this.$inertia.visit(url, {
+                data:{
+                    'page':page
+                },
+                preserveState: true,
+                preserveScroll: true,
+            });
+        },
+        addFoodAsIngredient(newIngredientFoodId) {
+            this.$inertia.post(
+                this.$route("food.ingredient.store", {
+                    'food': this.food.data.id
+                }), {
+                    'ingredient_id':newIngredientFoodId
+                }
+            ).then(()=>{
+                console.log("errors", this.errors.description);
+            });
+        },
+        removeIngredient(ingredient){
+            console.log("remove ingredient from show");
+            console.log("food id", this.food.data.id);
+            console.log("ingredient", ingredient);
+            console.log("ingredientid", ingredient.id);
+
+            this.$inertia.delete(this.$route("food.ingredient.destroy", {
+                    'food': this.food.data.id,
+                    'ingredient': ingredient.id
+                }));
         }
     }
 }

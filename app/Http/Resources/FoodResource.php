@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\IngredientResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class FoodResource extends JsonResource
@@ -31,6 +32,7 @@ class FoodResource extends JsonResource
             'updated_at' => $this->updated_at,
             'created_at' => $this->created_at,
             'editable' => $this->user_id === auth()->user()->id,
+            'ingredients' => IngredientResource::collection($this->ingredients),
         ];
     }
 }
