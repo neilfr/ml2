@@ -57,12 +57,12 @@ class FoodController extends Controller
             ->foodgroupSearch($request->query('foodgroupSearch'))
             ->descriptionSearch($request->query('descriptionSearch'))
             ->aliasSearch($request->query('aliasSearch'))
+            ->with('ingredients')
             ->paginate(Config::get('ml2.paginator.per_page'));
 
         if (($food->user_id === auth()->user()->id) || ($food->foodsource->sharable === true)){
             return Inertia::render('Foods/Show', [
                 'food' => new FoodResource($food),
-                'ingredients' => IngredientResource::collection($food->ingredients),
                 'foods' => FoodResource::collection($foods),
                 'foodgroups' => FoodgroupResource::collection($foodgroups),
             ]);

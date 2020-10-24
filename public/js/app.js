@@ -2325,7 +2325,6 @@ __webpack_require__.r(__webpack_exports__);
     food: Object,
     foods: Object,
     foodgroups: Object,
-    ingredients: Object,
     errors: Object
   },
   data: function data() {
@@ -2378,6 +2377,16 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function () {
         console.log("errors", _this2.errors.description);
       });
+    },
+    removeIngredient: function removeIngredient(ingredient) {
+      console.log("remove ingredient from show");
+      console.log("food id", this.food.data.id);
+      console.log("ingredient", ingredient);
+      console.log("ingredientid", ingredient.id);
+      this.$inertia["delete"](this.$route("food.ingredient.destroy", {
+        'food': this.food.data.id,
+        'ingredient': ingredient.id
+      }));
     }
   }
 });
@@ -2673,14 +2682,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     UpdateNumberModal: _Shared_UpdateNumberModal__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   props: {
-    ingredients: Array,
-    foodId: Number
+    food: Object
   },
   data: function data() {
     return {
@@ -2702,7 +2712,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.$inertia.patch(this.$route("food.ingredient.update", {
-        food: this.foodId,
+        food: this.food.id,
         ingredient: this.selectedIngredient.id
       }), {
         quantity: value
@@ -2713,6 +2723,11 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.close();
       });
+    },
+    remove: function remove(ingredient) {
+      console.log("removing ingredient", ingredient);
+      console.log("food_ingredient_id", ingredient.food_ingredient_id);
+      this.$emit('remove', ingredient);
     }
   }
 });
@@ -4837,7 +4852,8 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("ingredients-list", {
-        attrs: { foodId: _vm.food.data.id, ingredients: _vm.ingredients.data }
+        attrs: { food: _vm.food.data },
+        on: { remove: _vm.removeIngredient }
       }),
       _vm._v(" "),
       _c("button", { on: { click: _vm.showFoods } }, [
@@ -5252,8 +5268,8 @@ var render = function() {
       [
         _vm._m(0),
         _vm._v(" "),
-        _vm._l(_vm.ingredients, function(ingredient) {
-          return _c("tr", { key: ingredient.id }, [
+        _vm._l(_vm.food.ingredients, function(ingredient) {
+          return _c("tr", { key: ingredient.food_ingredient_id }, [
             _c("td", [_vm._v(_vm._s(ingredient.alias))]),
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(ingredient.description))]),
@@ -5268,17 +5284,32 @@ var render = function() {
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(ingredient.potassium))]),
             _vm._v(" "),
-            _c(
-              "td",
-              {
-                on: {
-                  click: function($event) {
-                    return _vm.open(ingredient)
+            _c("td", [_vm._v(_vm._s(ingredient.quantity))]),
+            _vm._v(" "),
+            _c("td", [
+              _c(
+                "button",
+                {
+                  on: {
+                    click: function($event) {
+                      return _vm.open(ingredient)
+                    }
                   }
-                }
-              },
-              [_vm._v(_vm._s(ingredient.quantity))]
-            )
+                },
+                [_vm._v("Edit")]
+              ),
+              _c(
+                "button",
+                {
+                  on: {
+                    click: function($event) {
+                      return _vm.remove(ingredient)
+                    }
+                  }
+                },
+                [_vm._v("Delete")]
+              )
+            ])
           ])
         }),
         _vm._v(" "),
@@ -5316,7 +5347,9 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("Potassium")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Quantity")])
+      _c("th", [_vm._v("Quantity")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Actions")])
     ])
   }
 ]

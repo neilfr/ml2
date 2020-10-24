@@ -29,8 +29,8 @@
     <button @click="updateFood">Update Food</button>
     <button @click="cancelFoodUpdate">Cancel Food Update</button>
     <ingredients-list
-        :foodId=food.data.id
-        :ingredients="ingredients.data"/>
+        :food=food.data
+        @remove="removeIngredient"/>
     <button @click="showFoods">Add Ingredient</button>
     <label for="foodgroups">Food Group:</label>
     <select name="foodgroups" id="foodgroups" v-model="foodgroupFilter" @change="updateFoodList">
@@ -62,7 +62,6 @@ export default {
         food: Object,
         foods: Object,
         foodgroups: Object,
-        ingredients: Object,
         errors: Object,
     },
     data(){
@@ -83,7 +82,7 @@ export default {
         updateFood () {
             this.$inertia.patch(
                 this.$route("foods.update", {
-                    'food': this.food.data.id
+                    'food': this.food.data.id,
                 }), this.food.data
             ).then(()=>{
                 console.log("errors", this.errors.description);
@@ -117,6 +116,17 @@ export default {
             ).then(()=>{
                 console.log("errors", this.errors.description);
             });
+        },
+        removeIngredient(ingredient){
+            console.log("remove ingredient from show");
+            console.log("food id", this.food.data.id);
+            console.log("ingredient", ingredient);
+            console.log("ingredientid", ingredient.id);
+
+            this.$inertia.delete(this.$route("food.ingredient.destroy", {
+                    'food': this.food.data.id,
+                    'ingredient': ingredient.id
+                }));
         }
     }
 }

@@ -30,10 +30,12 @@ class FoodIngredientController extends Controller
             $payload = $request->input();
             $food = Food::find($food->id);
             $ingredient = Food::find($payload['ingredient_id']);
-            $food->ingredients()->attach(
-                $payload['ingredient_id'],
-                ['quantity' => isset($payload['quantity'])? $payload['quantity']: $ingredient->base_quantity]
-            );
+            if (! $food->ingredients->contains($ingredient->id)) {
+                $food->ingredients()->attach(
+                    $payload['ingredient_id'],
+                    ['quantity' => isset($payload['quantity'])? $payload['quantity']: $ingredient->base_quantity]
+                );
+            }
             return redirect()->route('foods.show', $food);
         }
         return redirect()->route('foods.index');
@@ -51,6 +53,7 @@ class FoodIngredientController extends Controller
 
     public function destroy(Request $request, Food $food, Ingredient $ingredient)
     {
+        // dd($ingredient->id);
         if ($food->user_id === auth()->user()->id) {
             $food->ingredients()->detach($ingredient);
             return redirect()->route('foods.show', $food);

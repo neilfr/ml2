@@ -10,8 +10,9 @@
             <th>Carbohydrate</th>
             <th>Potassium</th>
             <th>Quantity</th>
+            <th>Actions</th>
         </tr>
-        <tr v-for="ingredient in ingredients" :key="ingredient.id">
+        <tr v-for="ingredient in food.ingredients" :key="ingredient.food_ingredient_id">
             <td>{{ingredient.alias}}</td>
             <td>{{ingredient.description}}</td>
             <td>{{ingredient.kcal}}</td>
@@ -19,7 +20,8 @@
             <td>{{ingredient.fat}}</td>
             <td>{{ingredient.carbohydrate}}</td>
             <td>{{ingredient.potassium}}</td>
-            <td @click="open(ingredient)">{{ingredient.quantity}}</td>
+            <td>{{ingredient.quantity}}</td>
+            <td><button @click="open(ingredient)">Edit</button><button @click="remove(ingredient)">Delete</button></td>
         </tr>
         <update-number-modal
             v-if="show"
@@ -41,8 +43,7 @@ export default {
         UpdateNumberModal
     },
     props:{
-        ingredients: Array,
-        foodId: Number
+        food:Object
     },
     data(){
         return{
@@ -62,7 +63,7 @@ export default {
         },
         update(value){
             this.$inertia.patch(this.$route("food.ingredient.update", {
-                food : this.foodId,
+                food : this.food.id,
                 ingredient: this.selectedIngredient.id
             }), {
                 quantity: value
@@ -72,6 +73,11 @@ export default {
                 console.log("close!");
                 this.close();
             });
+        },
+        remove(ingredient){
+            console.log("removing ingredient", ingredient);
+            console.log("food_ingredient_id", ingredient.food_ingredient_id)
+            this.$emit('remove', ingredient);
         }
     }
 }
