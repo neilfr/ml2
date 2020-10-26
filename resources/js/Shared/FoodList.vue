@@ -10,16 +10,26 @@
             <th>Carbohydrate</th>
             <th>Potassium</th>
             <th>Quantity</th>
+            <th>Actions</th>
         </tr>
         <tr v-for="food in foods.data" :key="food.id">
             <td>{{food.alias}}</td>
-            <td @click="selectFood" :id="food.id" :selectedFoodBaseQuantity="food.quantity" :data-base_quantity="food.base_quantity">{{food.description}}</td>
+            <td >{{food.description}}</td>
             <td>{{food.kcal}}</td>
             <td>{{food.protein}}</td>
             <td>{{food.fat}}</td>
             <td>{{food.carbohydrate}}</td>
             <td>{{food.potassium}}</td>
             <td>{{food.base_quantity}}</td>
+            <td>
+                <button
+                    @click="selectFood"
+                    :id="food.id"
+                    :selectedFoodBaseQuantity="food.quantity"
+                    :data-base_quantity="food.base_quantity"
+                    >Add
+                </button>
+            </td>
         </tr>
       </table>
         <div>

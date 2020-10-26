@@ -2314,6 +2314,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2331,8 +2341,30 @@ __webpack_require__.r(__webpack_exports__);
     return {
       foodgroupFilter: '',
       aliasSearchText: '',
-      descriptionSearchText: ''
+      descriptionSearchText: '',
+      calculatedKCal: 0,
+      calculatedFat: 0,
+      calculatedProtein: 0,
+      calculatedCarbohydrate: 0,
+      calculatedPotassium: 0
     };
+  },
+  mounted: function mounted() {
+    this.calculatedKCal = this.food.data.ingredients.reduce(function (total, ingredient) {
+      return total + ingredient.kcal;
+    }, 0);
+    this.calculatedFat = this.food.data.ingredients.reduce(function (total, ingredient) {
+      return total + ingredient.fat;
+    }, 0);
+    this.calculatedProtein = this.food.data.ingredients.reduce(function (total, ingredient) {
+      return total + ingredient.protein;
+    }, 0);
+    this.calculatedCarbohydrate = this.food.data.ingredients.reduce(function (total, ingredient) {
+      return total + ingredient.carbohydrate;
+    }, 0);
+    this.calculatedPotassium = this.food.data.ingredients.reduce(function (total, ingredient) {
+      return total + ingredient.potassium;
+    }, 0);
   },
   methods: {
     cancelFoodUpdate: function cancelFoodUpdate() {
@@ -2379,10 +2411,6 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     removeIngredient: function removeIngredient(ingredient) {
-      console.log("remove ingredient from show");
-      console.log("food id", this.food.data.id);
-      console.log("ingredient", ingredient);
-      console.log("ingredientid", ingredient.id);
       this.$inertia["delete"](this.$route("food.ingredient.destroy", {
         'food': this.food.data.id,
         'ingredient': ingredient.id
@@ -2554,6 +2582,16 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4551,7 +4589,7 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("div", { staticClass: "grid grid-cols-2 gap-2" }, [
+      _c("div", { staticClass: "grid grid-cols-3 gap-2" }, [
         _vm.errors.description
           ? _c("p", { staticClass: "col-span-2" }, [
               _vm._v(_vm._s(_vm.errors.description))
@@ -4571,7 +4609,7 @@ var render = function() {
               expression: "food.data.description"
             }
           ],
-          staticClass: "border rounded",
+          staticClass: "border rounded col-span-2",
           attrs: {
             id: "description",
             type: "text",
@@ -4607,7 +4645,7 @@ var render = function() {
               expression: "food.data.alias"
             }
           ],
-          staticClass: "border rounded",
+          staticClass: "border rounded col-span-2",
           attrs: {
             id: "alias",
             type: "text",
@@ -4661,6 +4699,28 @@ var render = function() {
           }
         }),
         _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.calculatedKCal,
+              expression: "calculatedKCal"
+            }
+          ],
+          staticClass: "border rounded",
+          attrs: { id: "calc_kcal", type: "number", readonly: "" },
+          domProps: { value: _vm.calculatedKCal },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.calculatedKCal = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
         _vm.errors.protein
           ? _c("p", { staticClass: "col-span-2" }, [
               _vm._v(_vm._s(_vm.errors.protein))
@@ -4694,6 +4754,28 @@ var render = function() {
                 return
               }
               _vm.$set(_vm.food.data, "protein", $event.target.value)
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.calculatedProtein,
+              expression: "calculatedProtein"
+            }
+          ],
+          staticClass: "border rounded",
+          attrs: { id: "calc_protein", type: "number", readonly: "" },
+          domProps: { value: _vm.calculatedProtein },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.calculatedProtein = $event.target.value
             }
           }
         }),
@@ -4735,6 +4817,28 @@ var render = function() {
           }
         }),
         _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.calculatedFat,
+              expression: "calculatedFat"
+            }
+          ],
+          staticClass: "border rounded",
+          attrs: { id: "calc_fat", type: "number", readonly: "" },
+          domProps: { value: _vm.calculatedFat },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.calculatedFat = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
         _vm.errors.carbohydrate
           ? _c("p", { staticClass: "col-span-2" }, [
               _vm._v(_vm._s(_vm.errors.carbohydrate))
@@ -4768,6 +4872,28 @@ var render = function() {
                 return
               }
               _vm.$set(_vm.food.data, "carbohydrate", $event.target.value)
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.calculatedCarbohydrate,
+              expression: "calculatedCarbohydrate"
+            }
+          ],
+          staticClass: "border rounded",
+          attrs: { id: "calc_carbohydrate", type: "number", readonly: "" },
+          domProps: { value: _vm.calculatedCarbohydrate },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.calculatedCarbohydrate = $event.target.value
             }
           }
         }),
@@ -4809,6 +4935,28 @@ var render = function() {
           }
         }),
         _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.calculatedPotassium,
+              expression: "calculatedPotassium"
+            }
+          ],
+          staticClass: "border rounded",
+          attrs: { id: "calc_potassium", type: "number", readonly: "" },
+          domProps: { value: _vm.calculatedPotassium },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.calculatedPotassium = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
         _vm.errors.base_quantity
           ? _c("p", [_vm._v(_vm._s(_vm.errors.base_quantity))])
           : _vm._e(),
@@ -4826,7 +4974,7 @@ var render = function() {
               expression: "food.data.base_quantity"
             }
           ],
-          staticClass: "border rounded",
+          staticClass: "border rounded col-span-2",
           attrs: {
             id: "base_quantity",
             type: "number",
@@ -5165,18 +5313,7 @@ var render = function() {
           return _c("tr", { key: food.id }, [
             _c("td", [_vm._v(_vm._s(food.alias))]),
             _vm._v(" "),
-            _c(
-              "td",
-              {
-                attrs: {
-                  id: food.id,
-                  selectedFoodBaseQuantity: food.quantity,
-                  "data-base_quantity": food.base_quantity
-                },
-                on: { click: _vm.selectFood }
-              },
-              [_vm._v(_vm._s(food.description))]
-            ),
+            _c("td", [_vm._v(_vm._s(food.description))]),
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(food.kcal))]),
             _vm._v(" "),
@@ -5188,7 +5325,22 @@ var render = function() {
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(food.potassium))]),
             _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(food.base_quantity))])
+            _c("td", [_vm._v(_vm._s(food.base_quantity))]),
+            _vm._v(" "),
+            _c("td", [
+              _c(
+                "button",
+                {
+                  attrs: {
+                    id: food.id,
+                    selectedFoodBaseQuantity: food.quantity,
+                    "data-base_quantity": food.base_quantity
+                  },
+                  on: { click: _vm.selectFood }
+                },
+                [_vm._v("Add\n              ")]
+              )
+            ])
           ])
         })
       ],
@@ -5237,7 +5389,9 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("Potassium")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Quantity")])
+      _c("th", [_vm._v("Quantity")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Actions")])
     ])
   }
 ]
