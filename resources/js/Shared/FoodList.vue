@@ -9,7 +9,7 @@
             <th>Fat</th>
             <th>Carbohydrate</th>
             <th>Potassium</th>
-            <th>Quantity</th>
+            <th>Base Quantity</th>
             <th>Actions</th>
         </tr>
         <tr v-for="food in foods.data" :key="food.id">
@@ -26,8 +26,8 @@
                     @click="selectFood"
                     :id="food.id"
                     :selectedFoodBaseQuantity="food.quantity"
-                    :data-base_quantity="food.base_quantity"
-                    >Add
+                >
+                    Add
                 </button>
             </td>
         </tr>
