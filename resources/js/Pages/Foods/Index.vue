@@ -27,6 +27,7 @@
                 <th>Carbohydrate</th>
                 <th>Potassium</th>
                 <th>Quantity</th>
+                <th>Actions</th>
             </tr>
             <tr v-for="food in foods.data" :key="food.id">
                 <td>
@@ -38,14 +39,19 @@
                         @change="setFavourite"
                     />
                 </td>
-                <td @click="show" :id="food.id">{{food.alias}}</td>
-                <td @click="show" :id="food.id">{{food.description}}</td>
+                <td>{{food.alias}}</td>
+                <td>{{food.description}}</td>
                 <td>{{food.kcal}}</td>
                 <td>{{food.protein}}</td>
                 <td>{{food.fat}}</td>
                 <td>{{food.carbohydrate}}</td>
                 <td>{{food.potassium}}</td>
                 <td>{{food.base_quantity}}</td>
+                <td>
+                    <button @click="show" :id="food.id">
+                        Edit
+                    </button>
+                </td>
             </tr>
         </table>
         <div>
