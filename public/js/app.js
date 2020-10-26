@@ -2196,6 +2196,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {// Modal
   },
@@ -4532,11 +4535,21 @@ var render = function() {
             _c("td", [_vm._v(_vm._s(food.base_quantity))]),
             _vm._v(" "),
             _c("td", [
-              _c(
-                "button",
-                { attrs: { id: food.id }, on: { click: _vm.show } },
-                [_vm._v("\n                    Edit\n                ")]
-              )
+              food.editable
+                ? _c(
+                    "button",
+                    { attrs: { id: food.id }, on: { click: _vm.show } },
+                    [_vm._v("\n                    Edit\n                ")]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              !food.editable
+                ? _c(
+                    "button",
+                    { attrs: { id: food.id }, on: { click: _vm.show } },
+                    [_vm._v("\n                    View\n                ")]
+                  )
+                : _vm._e()
             ])
           ])
         })
