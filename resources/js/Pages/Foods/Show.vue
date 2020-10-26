@@ -118,7 +118,7 @@ export default {
                     'food': this.food.data.id,
                 }), this.food.data
             ).then(()=>{
-                console.log("errors", this.errors.description);
+                console.log("updated food");
             });
         },
         showFoods () {
@@ -144,11 +144,14 @@ export default {
                 this.$route("food.ingredient.store", {
                     'food': this.food.data.id
                 }), {
-                    'ingredient_id':newIngredientFoodId
-                }
-            ).then(()=>{
-                console.log("errors", this.errors.description);
-            });
+                    'ingredient_id':newIngredientFoodId,
+                },
+                { preserveScroll: false, preserveState: false }
+            )
+            .then((res)=>{
+                // this.updateFoodList();
+            }
+            );
         },
         removeIngredient(ingredient){
             this.$inertia.delete(this.$route("food.ingredient.destroy", {

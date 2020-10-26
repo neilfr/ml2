@@ -2375,12 +2375,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     updateFood: function updateFood() {
-      var _this = this;
-
       this.$inertia.patch(this.$route("foods.update", {
         'food': this.food.data.id
       }), this.food.data).then(function () {
-        console.log("errors", _this.errors.description);
+        console.log("updated food");
       });
     },
     showFoods: function showFoods() {
@@ -2400,14 +2398,14 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     addFoodAsIngredient: function addFoodAsIngredient(newIngredientFoodId) {
-      var _this2 = this;
-
       this.$inertia.post(this.$route("food.ingredient.store", {
         'food': this.food.data.id
       }), {
         'ingredient_id': newIngredientFoodId
-      }).then(function () {
-        console.log("errors", _this2.errors.description);
+      }, {
+        preserveScroll: false,
+        preserveState: false
+      }).then(function (res) {// this.updateFoodList();
       });
     },
     removeIngredient: function removeIngredient(ingredient) {
@@ -14491,14 +14489,15 @@ __webpack_require__.r(__webpack_exports__);
 /*!*******************************************!*\
   !*** ./resources/js/Pages/Foods/Show.vue ***!
   \*******************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Show_vue_vue_type_template_id_01a46000___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Show.vue?vue&type=template&id=01a46000& */ "./resources/js/Pages/Foods/Show.vue?vue&type=template&id=01a46000&");
 /* harmony import */ var _Show_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Show.vue?vue&type=script&lang=js& */ "./resources/js/Pages/Foods/Show.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Show_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Show_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -14528,7 +14527,7 @@ component.options.__file = "resources/js/Pages/Foods/Show.vue"
 /*!********************************************************************!*\
   !*** ./resources/js/Pages/Foods/Show.vue?vue&type=script&lang=js& ***!
   \********************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
