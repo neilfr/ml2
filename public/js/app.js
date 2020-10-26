@@ -2379,7 +2379,7 @@ __webpack_require__.r(__webpack_exports__);
       return total + ingredient.potassium;
     }, 0);
     this.calculatedBaseQuantity = this.food.data.ingredients.reduce(function (total, ingredient) {
-      return total + ingredient.base_quantity;
+      return total + ingredient.quantity;
     }, 0);
   },
   methods: {
@@ -2777,7 +2777,8 @@ __webpack_require__.r(__webpack_exports__);
       }), {
         quantity: value
       }, {
-        preserveScroll: true
+        preserveScroll: true,
+        preserveState: false
       }).then(function (res) {
         console.log("close!");
 

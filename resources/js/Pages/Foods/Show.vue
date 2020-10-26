@@ -111,7 +111,7 @@ export default {
             return total+ingredient.potassium;
         }, 0);
         this.calculatedBaseQuantity = this.food.data.ingredients.reduce((total,ingredient)=>{
-            return total+ingredient.base_quantity;
+            return total+ingredient.quantity;
         }, 0);
     },
     methods:{
