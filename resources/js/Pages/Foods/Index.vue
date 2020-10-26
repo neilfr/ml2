@@ -48,8 +48,11 @@
                 <td>{{food.potassium}}</td>
                 <td>{{food.base_quantity}}</td>
                 <td>
-                    <button @click="show" :id="food.id">
+                    <button v-if="food.editable" @click="show" :id="food.id">
                         Edit
+                    </button>
+                    <button v-if="!food.editable" @click="show" :id="food.id">
+                        View
                     </button>
                 </td>
             </tr>
