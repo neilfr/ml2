@@ -68,7 +68,8 @@ export default {
             }), {
                 quantity: value
             },{
-                preserveScroll:true
+                preserveScroll:true,
+                preserveState:false
             }).then((res)=>{
                 console.log("close!");
                 this.close();
