@@ -2199,6 +2199,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {// Modal
   },
@@ -2211,7 +2220,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       descriptionSearchText: '',
       aliasSearchText: '',
-      foodgroupFilter: ''
+      foodgroupFilter: '',
+      favouritesFilter: ''
     };
   },
   methods: {
@@ -2221,6 +2231,9 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         preserveScroll: true
       });
+    },
+    test: function test() {
+      console.log("CHANGED");
     },
     goToPageOne: function goToPageOne() {
       this.goToPage(1);
@@ -2239,6 +2252,7 @@ __webpack_require__.r(__webpack_exports__);
       url += "?descriptionSearch=".concat(this.descriptionSearchText);
       url += "&aliasSearch=".concat(this.aliasSearchText);
       url += "&foodgroupSearch=".concat(this.foodgroupFilter);
+      url += "&favouritesFilter=".concat(this.favouritesFilter);
       this.$inertia.visit(url, {
         data: {
           'page': page
@@ -4502,6 +4516,69 @@ var render = function() {
         ]
       }
     }),
+    _vm._v(" "),
+    _c("div", { staticClass: "flex" }, [
+      _c("p", [_vm._v("Favourites:")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "ml-2" }, [
+        _c("label", { attrs: { for: "favouriteYes" } }, [_vm._v("Yes")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.favouritesFilter,
+              expression: "favouritesFilter"
+            }
+          ],
+          attrs: {
+            type: "radio",
+            name: "favourites",
+            id: "favouriteYes",
+            value: "yes"
+          },
+          domProps: { checked: _vm._q(_vm.favouritesFilter, "yes") },
+          on: {
+            change: [
+              function($event) {
+                _vm.favouritesFilter = "yes"
+              },
+              _vm.goToPageOne
+            ]
+          }
+        }),
+        _vm._v(" "),
+        _c("label", { attrs: { for: "favouriteNo" } }, [_vm._v("No")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.favouritesFilter,
+              expression: "favouritesFilter"
+            }
+          ],
+          attrs: {
+            type: "radio",
+            name: "favourites",
+            id: "favouriteNo",
+            value: "no",
+            checked: ""
+          },
+          domProps: { checked: _vm._q(_vm.favouritesFilter, "no") },
+          on: {
+            change: [
+              function($event) {
+                _vm.favouritesFilter = "no"
+              },
+              _vm.goToPageOne
+            ]
+          }
+        })
+      ])
+    ]),
     _vm._v(" "),
     _c(
       "table",

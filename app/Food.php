@@ -74,6 +74,16 @@ class Food extends Model
         $query->where('foodgroup_id', '=', "{$foodgroupSearch}");
     }
 
+    public function scopeFavouritesFilter(Builder $query, $favouritesFilter)
+    {
+        if (is_null($favouritesFilter) || $favouritesFilter==="no") {
+            return $query;
+        }
+        if ($favouritesFilter==="yes") {
+            $query->where('favourite', '=', true);
+        }
+    }
+
     public function foodgroup()
     {
         return $this->belongsTo(Foodgroup::class);
