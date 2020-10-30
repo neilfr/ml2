@@ -58,6 +58,7 @@ class FoodController extends Controller
             ->foodgroupSearch($request->query('foodgroupSearch'))
             ->descriptionSearch($request->query('descriptionSearch'))
             ->aliasSearch($request->query('aliasSearch'))
+            ->favouritesFilter($request->query('favouritesFilter'))
             ->with('ingredients')
             ->paginate(Config::get('ml2.paginator.per_page'));
 

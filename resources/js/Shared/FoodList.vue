@@ -2,6 +2,7 @@
   <div>
     <table>
         <tr>
+            <th>Favourite</th>
             <th>Alias</th>
             <th>Description</th>
             <th>KCal</th>
@@ -13,6 +14,9 @@
             <th>Actions</th>
         </tr>
         <tr v-for="food in foods.data" :key="food.id">
+            <td>
+                <input type="checkbox" :id="food.id" :value="food.favourite" :checked="food.favourite" disabled/>
+            </td>
             <td>{{food.alias}}</td>
             <td >{{food.description}}</td>
             <td>{{food.kcal}}</td>
