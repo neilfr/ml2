@@ -16,6 +16,15 @@
         <br/>
         <label for="aliasSearch">Alias Search:</label>
         <input type="text" name="aliasSearch" id="aliasSearch" @input="goToPageOne" v-model="aliasSearchText"/>
+        <div class="flex">
+            <p>Favourites:</p>
+            <div class="ml-2">
+                <label for="favouriteYes">Yes</label>
+                <input type="radio" name="favourites" id="favouriteYes" value="yes" v-model="favouritesFilter" @change="goToPageOne">
+                <label for="favouriteNo">No</label>
+                <input type="radio" name="favourites" id="favouriteNo" value="no" checked v-model="favouritesFilter" @change="goToPageOne">
+            </div>
+        </div>
         <table>
             <tr>
                 <th>Favourite</th>
@@ -85,6 +94,7 @@
                 descriptionSearchText: '',
                 aliasSearchText: '',
                 foodgroupFilter: '',
+                favouritesFilter: '',
             }
         },
         methods:{
@@ -97,6 +107,9 @@
                     {
                         preserveScroll: true,
                     });
+            },
+            test(){
+                console.log("CHANGED");
             },
             goToPageOne(){
                 this.goToPage(1);
@@ -115,6 +128,7 @@
                 url += `?descriptionSearch=${this.descriptionSearchText}`;
                 url += `&aliasSearch=${this.aliasSearchText}`;
                 url += `&foodgroupSearch=${this.foodgroupFilter}`;
+                url += `&favouritesFilter=${this.favouritesFilter}`;
                 this.$inertia.visit(url, {
                     data:{
                         'page':page

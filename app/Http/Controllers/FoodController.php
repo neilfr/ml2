@@ -26,6 +26,7 @@ class FoodController extends Controller
         ->foodgroupSearch($request->query('foodgroupSearch'))
         ->descriptionSearch($request->query('descriptionSearch'))
         ->aliasSearch($request->query('aliasSearch'))
+        ->favouritesFilter($request->query('favouritesFilter'))
         ->paginate(Config::get('ml2.paginator.per_page'));
 
         $foodgroups = Foodgroup::all();
