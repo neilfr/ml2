@@ -2353,6 +2353,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2371,6 +2380,7 @@ __webpack_require__.r(__webpack_exports__);
       foodgroupFilter: '',
       aliasSearchText: '',
       descriptionSearchText: '',
+      favouritesFilter: '',
       calculatedKCal: 0,
       calculatedFat: 0,
       calculatedProtein: 0,
@@ -2422,6 +2432,7 @@ __webpack_require__.r(__webpack_exports__);
       url += "?descriptionSearch=".concat(this.descriptionSearchText);
       url += "&aliasSearch=".concat(this.aliasSearchText);
       url += "&foodgroupSearch=".concat(this.foodgroupFilter);
+      url += "&favouritesFilter=".concat(this.favouritesFilter);
       this.$inertia.visit(url, {
         data: {
           'page': page
@@ -2621,6 +2632,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
 //
 //
 //
@@ -5279,6 +5294,69 @@ var render = function() {
         }
       }),
       _vm._v(" "),
+      _c("div", { staticClass: "flex" }, [
+        _c("p", [_vm._v("Favourites:")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "ml-2" }, [
+          _c("label", { attrs: { for: "favouriteYes" } }, [_vm._v("Yes")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.favouritesFilter,
+                expression: "favouritesFilter"
+              }
+            ],
+            attrs: {
+              type: "radio",
+              name: "favourites",
+              id: "favouriteYes",
+              value: "yes"
+            },
+            domProps: { checked: _vm._q(_vm.favouritesFilter, "yes") },
+            on: {
+              change: [
+                function($event) {
+                  _vm.favouritesFilter = "yes"
+                },
+                _vm.updateFoodList
+              ]
+            }
+          }),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "favouriteNo" } }, [_vm._v("No")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.favouritesFilter,
+                expression: "favouritesFilter"
+              }
+            ],
+            attrs: {
+              type: "radio",
+              name: "favourites",
+              id: "favouriteNo",
+              value: "no",
+              checked: ""
+            },
+            domProps: { checked: _vm._q(_vm.favouritesFilter, "no") },
+            on: {
+              change: [
+                function($event) {
+                  _vm.favouritesFilter = "no"
+                },
+                _vm.updateFoodList
+              ]
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
       _c("food-list", {
         attrs: { foods: _vm.foods },
         on: {
@@ -5469,6 +5547,13 @@ var render = function() {
         _vm._v(" "),
         _vm._l(_vm.foods.data, function(food) {
           return _c("tr", { key: food.id }, [
+            _c("td", [
+              _c("input", {
+                attrs: { type: "checkbox", id: food.id, disabled: "" },
+                domProps: { value: food.favourite, checked: food.favourite }
+              })
+            ]),
+            _vm._v(" "),
             _c("td", [_vm._v(_vm._s(food.alias))]),
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(food.description))]),
@@ -5532,6 +5617,8 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("tr", [
+      _c("th", [_vm._v("Favourite")]),
+      _vm._v(" "),
       _c("th", [_vm._v("Alias")]),
       _vm._v(" "),
       _c("th", [_vm._v("Description")]),
