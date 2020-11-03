@@ -16,7 +16,6 @@ $factory->define(Ingredient::class, function (Faker $faker) {
         'protein' => $faker->numberBetween(1, 300),
         'carbohydrate' => $faker->numberBetween(1, 300),
         'potassium' => $faker->numberBetween(1, 300),
-        'favourite' => $faker->boolean,
         'base_quantity' => $faker->numberBetween(1, 300),
         'foodgroup_id' => factory(Foodgroup::class)->create()->id,
         'foodsource_id' => factory(Foodsource::class)->create()->id,

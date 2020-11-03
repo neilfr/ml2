@@ -36,10 +36,12 @@ class FoodControllerTest extends TestCase
         $this->actingAs($user);
 
         $food = factory(Food::class)->create([
-            'user_id' => $user->id,
+            'description' => 'my food',
         ]);
 
-        $this->assertEquals($user->id, $food->user->id);
+        $user->foods()->attach($food->id);
+
+        $this->assertEquals($food->description, $user->foods()->first()->pluck('description')[0]);
     }
 
     /** @test */
@@ -99,9 +101,11 @@ class FoodControllerTest extends TestCase
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
-        $foods = factory(Food::class, 2)->create([
-            'user_id' => $user->id,
-        ]);
+        $foods = factory(Food::class, 2)->create();
+
+        foreach($foods as $food) {
+            $user->foods()->attach($food->id);
+        }
 
         $response = $this->get(route('foods.index'))
             ->assertStatus(Response::HTTP_OK);
@@ -113,6 +117,7 @@ class FoodControllerTest extends TestCase
         });
     }
 
+    //GOT HERE
     /** @test */
     public function it_can_return_other_users_shared_foods()
     {
@@ -168,9 +173,7 @@ class FoodControllerTest extends TestCase
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
-        $foods = factory(Food::class, 2)->create([
-            'favourite' => true,
-        ]);
+        $foods = factory(Food::class, 2)->create();
 
         $response = $this->get(route('foods.show', $foods[0]));
 
@@ -189,7 +192,6 @@ class FoodControllerTest extends TestCase
 
         $foods = factory(Food::class, 2)->create([
             'user_id' => $user->id,
-            'favourite' => true,
         ]);
 
         $ingredients = factory(Ingredient::class,2)->create([
@@ -317,7 +319,6 @@ class FoodControllerTest extends TestCase
             'protein' => 246,
             'carbohydrate' => 135,
             'potassium' => 456,
-            'favourite' => true,
             'base_quantity' => 200,
             'foodgroup_id' => factory(Foodgroup::class)->create()->id,
             'foodsource_id' => factory(Foodsource::class)->create()->id,
@@ -351,7 +352,6 @@ class FoodControllerTest extends TestCase
             'protein' => 246,
             'carbohydrate' => 135,
             'potassium' => 456,
-            'favourite' => true,
             'base_quantity' => 200,
             'foodgroup_id' => factory(Foodgroup::class)->create()->id,
             'foodsource_id' => factory(Foodsource::class)->create()->id,
@@ -390,7 +390,6 @@ class FoodControllerTest extends TestCase
             'protein' => 246,
             'carbohydrate' => 135,
             'potassium' => 456,
-            'favourite' => true,
             'base_quantity' => 200,
             'foodgroup_id' => factory(Foodgroup::class)->create()->id,
             'foodsource_id' => factory(Foodsource::class)->create()->id,
@@ -429,7 +428,6 @@ class FoodControllerTest extends TestCase
             'protein' => 246,
             'carbohydrate' => 135,
             'potassium' => 456,
-            'favourite' => true,
             'base_quantity' => 200,
             'foodgroup_id' => factory(Foodgroup::class)->create()->id,
             'foodsource_id' => factory(Foodsource::class)->create()->id,
@@ -460,7 +458,6 @@ class FoodControllerTest extends TestCase
             'protein' => 246,
             'carbohydrate' => 135,
             'potassium' => 456,
-            'favourite' => true,
             'base_quantity' => 200,
             'foodgroup_id' => factory(Foodgroup::class)->create()->id,
             'foodsource_id' => factory(Foodsource::class)->create()->id,
@@ -775,14 +772,6 @@ class FoodControllerTest extends TestCase
                     ];
                 }
             ],
-            'it fails if favourite is not a boolean' => [
-                function () {
-                    return [
-                        'favourite',
-                        array_merge($this->getValidFoodData(), ['favourite' => 'not a boolean']),
-                    ];
-                }
-            ],
             'it fails if foodgroup_id is not a valid foodgroup id' => [
                 function () {
                     return [
@@ -920,13 +909,6 @@ class FoodControllerTest extends TestCase
                     ];
                 }
             ],
-            'it fails if favourite is not a boolean' => [
-                function () {
-                    return [
-                        'favourite', ['favourite' => 'not a boolean'],
-                    ];
-                }
-            ],
             'it fails if foodgroup_id is not a valid foodgroup id' => [
                 function () {
                     return [
@@ -954,7 +936,6 @@ class FoodControllerTest extends TestCase
             'protein' => 246,
             'carbohydrate' => 135,
             'potassium' => 456,
-            'favourite' => true,
             'base_quantity' => 200,
             'foodgroup_id' => factory(Foodgroup::class)->create()->id,
             'foodsource_id' => factory(Foodsource::class)->create()->id,

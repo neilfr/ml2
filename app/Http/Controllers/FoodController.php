@@ -21,7 +21,8 @@ class FoodController extends Controller
 {
     public function index(Request $request)
     {
-        $foods = Food::userFoods()
+        $foods = Food::query()
+        ->userFoods()
         ->sharedFoods()
         ->foodgroupSearch($request->query('foodgroupSearch'))
         ->descriptionSearch($request->query('descriptionSearch'))

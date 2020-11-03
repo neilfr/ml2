@@ -24,7 +24,6 @@ class FoodResource extends JsonResource
             'protein' => $this->protein,
             'carbohydrate' => $this->carbohydrate,
             'potassium' => $this->potassium,
-            'favourite' => $this->favourite,
             'base_quantity' => $this->base_quantity,
             'foodgroup_id' => $this->foodgroup_id,
             'foodsource_id' => $this->foodsource_id,
