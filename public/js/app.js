@@ -2128,6 +2128,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Shared_MainFoodList__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Shared/MainFoodList */ "./resources/js/Shared/MainFoodList.vue");
 //
 //
 //
@@ -2208,8 +2209,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  components: {// Modal
+  components: {
+    MainFoodList: _Shared_MainFoodList__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   props: {
     foods: Object,
@@ -2232,7 +2236,18 @@ __webpack_require__.r(__webpack_exports__);
         preserveScroll: true
       });
     },
+    foo: function foo(e) {
+      console.log("foo", e.target);
+      this.$inertia.patch(this.$route("foods.update", e.target.id), {
+        favourite: e.target.checked
+      }, {
+        preserveScroll: true
+      });
+    },
     test: function test() {
+      console.log("SHOW");
+    },
+    test2: function test2() {
       console.log("CHANGED");
     },
     goToPageOne: function goToPageOne() {
@@ -2718,12 +2733,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit('pageUpdated', this.page);
     },
     selectFood: function selectFood(e) {
-      // console.log("food",e.target);
-      // console.log("id",e.target.id);
-      // console.log("foo", this.selectedFoodBaseQuantity);
-      // console.log("test",e.target.getAttribute('data-base_quantity'));
-      this.$emit('selectedFood', e.target.id); // this.selectedFoodId=e.target.id;
-      // console.log("selected food", this.selectedFoodId);
+      this.$emit('selectedFood', e.target.id);
     }
   }
 });
@@ -2821,6 +2831,80 @@ __webpack_require__.r(__webpack_exports__);
       console.log("removing ingredient", ingredient);
       console.log("food_ingredient_id", ingredient.food_ingredient_id);
       this.$emit('remove', ingredient);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Shared/MainFoodList.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Shared/MainFoodList.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    foods: Array
+  },
+  methods: {
+    favourite: function favourite(e) {
+      this.$emit('favourite', e);
+    },
+    view: function view() {
+      this.$emit('view');
+    },
+    edit: function edit() {
+      this.$emit('edit');
     }
   }
 });
@@ -4412,264 +4496,276 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("h1", [_vm._v("Foods")]),
-    _vm._v(" "),
-    _c("button", { on: { click: _vm.add } }, [_vm._v("Add")]),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c("label", { attrs: { for: "foodgroups" } }, [_vm._v("Food Group:")]),
-    _vm._v(" "),
-    _c(
-      "select",
-      {
+  return _c(
+    "div",
+    { staticClass: "container" },
+    [
+      _c("h1", [_vm._v("Foods")]),
+      _vm._v(" "),
+      _c("button", { on: { click: _vm.add } }, [_vm._v("Add")]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("label", { attrs: { for: "foodgroups" } }, [_vm._v("Food Group:")]),
+      _vm._v(" "),
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.foodgroupFilter,
+              expression: "foodgroupFilter"
+            }
+          ],
+          attrs: { name: "foodgroups", id: "foodgroups" },
+          on: {
+            change: [
+              function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.foodgroupFilter = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              },
+              _vm.goToPageOne
+            ]
+          }
+        },
+        [
+          _c("option", { attrs: { value: "" } }, [_vm._v("All")]),
+          _vm._v(" "),
+          _vm._l(_vm.foodgroups.data, function(foodgroup) {
+            return _c(
+              "option",
+              { key: foodgroup.id, domProps: { value: foodgroup.id } },
+              [
+                _vm._v(
+                  "\n            " +
+                    _vm._s(foodgroup.description) +
+                    "\n        "
+                )
+              ]
+            )
+          })
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("label", { attrs: { for: "descriptionSearch" } }, [
+        _vm._v("Description Search:")
+      ]),
+      _vm._v(" "),
+      _c("input", {
         directives: [
           {
             name: "model",
             rawName: "v-model",
-            value: _vm.foodgroupFilter,
-            expression: "foodgroupFilter"
+            value: _vm.descriptionSearchText,
+            expression: "descriptionSearchText"
           }
         ],
-        attrs: { name: "foodgroups", id: "foodgroups" },
+        attrs: {
+          type: "text",
+          name: "descriptionSearch",
+          id: "descriptionSearch"
+        },
+        domProps: { value: _vm.descriptionSearchText },
         on: {
-          change: [
+          input: [
             function($event) {
-              var $$selectedVal = Array.prototype.filter
-                .call($event.target.options, function(o) {
-                  return o.selected
-                })
-                .map(function(o) {
-                  var val = "_value" in o ? o._value : o.value
-                  return val
-                })
-              _vm.foodgroupFilter = $event.target.multiple
-                ? $$selectedVal
-                : $$selectedVal[0]
+              if ($event.target.composing) {
+                return
+              }
+              _vm.descriptionSearchText = $event.target.value
             },
             _vm.goToPageOne
           ]
         }
-      },
-      [
-        _c("option", { attrs: { value: "" } }, [_vm._v("All")]),
-        _vm._v(" "),
-        _vm._l(_vm.foodgroups.data, function(foodgroup) {
-          return _c(
-            "option",
-            { key: foodgroup.id, domProps: { value: foodgroup.id } },
-            [
-              _vm._v(
-                "\n            " + _vm._s(foodgroup.description) + "\n        "
-              )
-            ]
-          )
-        })
-      ],
-      2
-    ),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c("label", { attrs: { for: "descriptionSearch" } }, [
-      _vm._v("Description Search:")
-    ]),
-    _vm._v(" "),
-    _c("input", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.descriptionSearchText,
-          expression: "descriptionSearchText"
-        }
-      ],
-      attrs: {
-        type: "text",
-        name: "descriptionSearch",
-        id: "descriptionSearch"
-      },
-      domProps: { value: _vm.descriptionSearchText },
-      on: {
-        input: [
-          function($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.descriptionSearchText = $event.target.value
-          },
-          _vm.goToPageOne
-        ]
-      }
-    }),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c("label", { attrs: { for: "aliasSearch" } }, [_vm._v("Alias Search:")]),
-    _vm._v(" "),
-    _c("input", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.aliasSearchText,
-          expression: "aliasSearchText"
-        }
-      ],
-      attrs: { type: "text", name: "aliasSearch", id: "aliasSearch" },
-      domProps: { value: _vm.aliasSearchText },
-      on: {
-        input: [
-          function($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.aliasSearchText = $event.target.value
-          },
-          _vm.goToPageOne
-        ]
-      }
-    }),
-    _vm._v(" "),
-    _c("div", { staticClass: "flex" }, [
-      _c("p", [_vm._v("Favourites:")]),
+      }),
       _vm._v(" "),
-      _c("div", { staticClass: "ml-2" }, [
-        _c("label", { attrs: { for: "favouriteYes" } }, [_vm._v("Yes")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.favouritesFilter,
-              expression: "favouritesFilter"
-            }
-          ],
-          attrs: {
-            type: "radio",
-            name: "favourites",
-            id: "favouriteYes",
-            value: "yes"
-          },
-          domProps: { checked: _vm._q(_vm.favouritesFilter, "yes") },
-          on: {
-            change: [
-              function($event) {
-                _vm.favouritesFilter = "yes"
-              },
-              _vm.goToPageOne
-            ]
+      _c("br"),
+      _vm._v(" "),
+      _c("label", { attrs: { for: "aliasSearch" } }, [_vm._v("Alias Search:")]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.aliasSearchText,
+            expression: "aliasSearchText"
           }
-        }),
+        ],
+        attrs: { type: "text", name: "aliasSearch", id: "aliasSearch" },
+        domProps: { value: _vm.aliasSearchText },
+        on: {
+          input: [
+            function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.aliasSearchText = $event.target.value
+            },
+            _vm.goToPageOne
+          ]
+        }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "flex" }, [
+        _c("p", [_vm._v("Favourites:")]),
         _vm._v(" "),
-        _c("label", { attrs: { for: "favouriteNo" } }, [_vm._v("No")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.favouritesFilter,
-              expression: "favouritesFilter"
+        _c("div", { staticClass: "ml-2" }, [
+          _c("label", { attrs: { for: "favouriteYes" } }, [_vm._v("Yes")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.favouritesFilter,
+                expression: "favouritesFilter"
+              }
+            ],
+            attrs: {
+              type: "radio",
+              name: "favourites",
+              id: "favouriteYes",
+              value: "yes"
+            },
+            domProps: { checked: _vm._q(_vm.favouritesFilter, "yes") },
+            on: {
+              change: [
+                function($event) {
+                  _vm.favouritesFilter = "yes"
+                },
+                _vm.goToPageOne
+              ]
             }
-          ],
-          attrs: {
-            type: "radio",
-            name: "favourites",
-            id: "favouriteNo",
-            value: "no",
-            checked: ""
-          },
-          domProps: { checked: _vm._q(_vm.favouritesFilter, "no") },
-          on: {
-            change: [
-              function($event) {
-                _vm.favouritesFilter = "no"
-              },
-              _vm.goToPageOne
-            ]
-          }
-        })
-      ])
-    ]),
-    _vm._v(" "),
-    _c(
-      "table",
-      [
-        _vm._m(0),
-        _vm._v(" "),
-        _vm._l(_vm.foods.data, function(food) {
-          return _c("tr", { key: food.id }, [
-            _c("td", [
-              _c("input", {
-                attrs: { type: "checkbox", id: food.id },
-                domProps: { value: food.favourite, checked: food.favourite },
-                on: { change: _vm.setFavourite }
-              })
-            ]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(food.alias))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(food.description))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(food.kcal))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(food.protein))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(food.fat))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(food.carbohydrate))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(food.potassium))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(food.base_quantity))]),
-            _vm._v(" "),
-            _c("td", [
-              food.editable
-                ? _c(
-                    "button",
-                    { attrs: { id: food.id }, on: { click: _vm.show } },
-                    [_vm._v("\n                    Edit\n                ")]
-                  )
-                : _vm._e(),
+          }),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "favouriteNo" } }, [_vm._v("No")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.favouritesFilter,
+                expression: "favouritesFilter"
+              }
+            ],
+            attrs: {
+              type: "radio",
+              name: "favourites",
+              id: "favouriteNo",
+              value: "no",
+              checked: ""
+            },
+            domProps: { checked: _vm._q(_vm.favouritesFilter, "no") },
+            on: {
+              change: [
+                function($event) {
+                  _vm.favouritesFilter = "no"
+                },
+                _vm.goToPageOne
+              ]
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("main-food-list", {
+        attrs: { foods: _vm.foods.data },
+        on: { view: _vm.test, edit: _vm.test, favourite: _vm.foo }
+      }),
+      _vm._v(" "),
+      _c(
+        "table",
+        [
+          _vm._m(0),
+          _vm._v(" "),
+          _vm._l(_vm.foods.data, function(food) {
+            return _c("tr", { key: food.id }, [
+              _c("td", [
+                _c("input", {
+                  attrs: { type: "checkbox", id: food.id },
+                  domProps: { value: food.favourite, checked: food.favourite },
+                  on: { change: _vm.setFavourite }
+                })
+              ]),
               _vm._v(" "),
-              !food.editable
-                ? _c(
-                    "button",
-                    { attrs: { id: food.id }, on: { click: _vm.show } },
-                    [_vm._v("\n                    View\n                ")]
-                  )
-                : _vm._e()
+              _c("td", [_vm._v(_vm._s(food.alias))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(food.description))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(food.kcal))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(food.protein))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(food.fat))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(food.carbohydrate))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(food.potassium))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(food.base_quantity))]),
+              _vm._v(" "),
+              _c("td", [
+                food.editable
+                  ? _c(
+                      "button",
+                      { attrs: { id: food.id }, on: { click: _vm.show } },
+                      [_vm._v("\n                    Edit\n                ")]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                !food.editable
+                  ? _c(
+                      "button",
+                      { attrs: { id: food.id }, on: { click: _vm.show } },
+                      [_vm._v("\n                    View\n                ")]
+                    )
+                  : _vm._e()
+              ])
             ])
-          ])
-        })
-      ],
-      2
-    ),
-    _vm._v(" "),
-    _c("div", [
-      _c("button", { on: { click: _vm.goToPageOne } }, [_vm._v("First")]),
+          })
+        ],
+        2
+      ),
       _vm._v(" "),
-      _c("button", { on: { click: _vm.previousPage } }, [_vm._v("Previous")]),
+      _c("div", [
+        _c("button", { on: { click: _vm.goToPageOne } }, [_vm._v("First")]),
+        _vm._v(" "),
+        _c("button", { on: { click: _vm.previousPage } }, [_vm._v("Previous")]),
+        _vm._v(" "),
+        _c("button", { on: { click: _vm.nextPage } }, [_vm._v("Next")]),
+        _vm._v(" "),
+        _c("button", { on: { click: _vm.lastPage } }, [_vm._v("Last")])
+      ]),
       _vm._v(" "),
-      _c("button", { on: { click: _vm.nextPage } }, [_vm._v("Next")]),
-      _vm._v(" "),
-      _c("button", { on: { click: _vm.lastPage } }, [_vm._v("Last")])
-    ]),
-    _vm._v(" "),
-    _c("div", [
-      _c("p", [
-        _vm._v(
-          "Page: " +
-            _vm._s(_vm.foods.meta.current_page) +
-            " of " +
-            _vm._s(_vm.foods.meta.last_page)
-        )
+      _c("div", [
+        _c("p", [
+          _vm._v(
+            "Page: " +
+              _vm._s(_vm.foods.meta.current_page) +
+              " of " +
+              _vm._s(_vm.foods.meta.last_page)
+          )
+        ])
       ])
-    ])
-  ])
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
@@ -5731,6 +5827,111 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("tr", [
+      _c("th", [_vm._v("Alias")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Description")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("KCal")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Protein")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Fat")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Carbohydrate")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Potassium")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Quantity")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Actions")])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Shared/MainFoodList.vue?vue&type=template&id=3268b7d1&":
+/*!***********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Shared/MainFoodList.vue?vue&type=template&id=3268b7d1& ***!
+  \***********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "table",
+      [
+        _vm._m(0),
+        _vm._v(" "),
+        _vm._l(_vm.foods, function(food) {
+          return _c("tr", { key: food.id }, [
+            _c("td", [
+              _c("input", {
+                attrs: { type: "checkbox", id: food.id },
+                domProps: { value: food.favourite, checked: food.favourite },
+                on: { change: _vm.favourite }
+              })
+            ]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(food.alias))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(food.description))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(food.kcal))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(food.protein))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(food.fat))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(food.carbohydrate))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(food.potassium))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(food.base_quantity))]),
+            _vm._v(" "),
+            _c("td", [
+              food.editable
+                ? _c(
+                    "button",
+                    { attrs: { id: food.id }, on: { click: _vm.edit } },
+                    [_vm._v("\n                      Edit\n                  ")]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              !food.editable
+                ? _c(
+                    "button",
+                    { attrs: { id: food.id }, on: { click: _vm.view } },
+                    [_vm._v("\n                      View\n                  ")]
+                  )
+                : _vm._e()
+            ])
+          ])
+        })
+      ],
+      2
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_vm._v("Favourite")]),
+      _vm._v(" "),
       _c("th", [_vm._v("Alias")]),
       _vm._v(" "),
       _c("th", [_vm._v("Description")]),
@@ -15209,6 +15410,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_IngredientsList_vue_vue_type_template_id_b4b09858___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_IngredientsList_vue_vue_type_template_id_b4b09858___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/Shared/MainFoodList.vue":
+/*!**********************************************!*\
+  !*** ./resources/js/Shared/MainFoodList.vue ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _MainFoodList_vue_vue_type_template_id_3268b7d1___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MainFoodList.vue?vue&type=template&id=3268b7d1& */ "./resources/js/Shared/MainFoodList.vue?vue&type=template&id=3268b7d1&");
+/* harmony import */ var _MainFoodList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MainFoodList.vue?vue&type=script&lang=js& */ "./resources/js/Shared/MainFoodList.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _MainFoodList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _MainFoodList_vue_vue_type_template_id_3268b7d1___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _MainFoodList_vue_vue_type_template_id_3268b7d1___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/Shared/MainFoodList.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/Shared/MainFoodList.vue?vue&type=script&lang=js&":
+/*!***********************************************************************!*\
+  !*** ./resources/js/Shared/MainFoodList.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MainFoodList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./MainFoodList.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Shared/MainFoodList.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MainFoodList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/Shared/MainFoodList.vue?vue&type=template&id=3268b7d1&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/Shared/MainFoodList.vue?vue&type=template&id=3268b7d1& ***!
+  \*****************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MainFoodList_vue_vue_type_template_id_3268b7d1___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./MainFoodList.vue?vue&type=template&id=3268b7d1& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Shared/MainFoodList.vue?vue&type=template&id=3268b7d1&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MainFoodList_vue_vue_type_template_id_3268b7d1___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MainFoodList_vue_vue_type_template_id_3268b7d1___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

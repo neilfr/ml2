@@ -25,6 +25,7 @@
                 <input type="radio" name="favourites" id="favouriteNo" value="no" checked v-model="favouritesFilter" @change="goToPageOne">
             </div>
         </div>
+        <main-food-list :foods="foods.data" @view="test" @edit="test" @favourite="foo"></main-food-list>
         <table>
             <tr>
                 <th>Favourite</th>
@@ -79,10 +80,10 @@
 </template>
 
 <script>
-
+    import MainFoodList from "@/Shared/MainFoodList";
     export default {
         components:{
-            // Modal
+            MainFoodList,
         },
         props:{
             foods: Object,
@@ -108,7 +109,21 @@
                         preserveScroll: true,
                     });
             },
+            foo(e){
+                console.log("foo", e.target);
+                this.$inertia.patch(
+                    this.$route("foods.update", e.target.id),
+                    {
+                        favourite: e.target.checked
+                    },
+                    {
+                        preserveScroll: true,
+                    });
+            },
             test(){
+                console.log("SHOW");
+            },
+            test2(){
                 console.log("CHANGED");
             },
             goToPageOne(){

@@ -36,6 +36,11 @@ class Food extends Model
         'base_quantity' => 'integer',
     ];
 
+    public function scopeWithFavourites(Builder $query)
+    {
+        //
+    }
+
     public function scopeUserFoods(Builder $query)
     {
         $query->where('user_id', auth()->user()->id);
