@@ -95,6 +95,7 @@ class FoodControllerTest extends TestCase
         }
     }
 
+
     /** @test */
     public function it_can_return_user_owned_foods()
     {
@@ -107,7 +108,8 @@ class FoodControllerTest extends TestCase
             $user->foods()->attach($food->id);
         }
 
-        $response = $this->get(route('foods.index'))
+//GOT HERE - SHOULD BE DOING THIS IN A NEW TEST!!!
+        $response = $this->get(route('users.foods.index', $user))
             ->assertStatus(Response::HTTP_OK);
 
         $response->assertPropValue('foods', function ($returnedFoods) use ($foods) {
@@ -117,7 +119,6 @@ class FoodControllerTest extends TestCase
         });
     }
 
-    //GOT HERE
     /** @test */
     public function it_can_return_other_users_shared_foods()
     {

@@ -27,6 +27,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/', 'HomeController@index');
 
     Route::get('/foods', 'FoodController@index')->name('foods.index');
+
+
     Route::post('/foods', 'FoodController@store')->name('foods.store');
     Route::get('/foods/new', 'FoodController@create')->name('foods.create');
     Route::get('/foods/{food}', 'FoodController@show')->name('foods.show');
@@ -47,6 +49,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::namespace('Foods')->prefix('foods/{food}')->group(function () {
             Route::patch('ingredients/{ingredient}', 'IngredientController@update')->name('api.foods.ingredients.update');
         });
+    });
+//working here
+    Route::namespace('Users')->prefix('users/{user}')->group(function () {
+        Route::get('/foods', 'FoodController@index')->name('users.foods.index');
+        Route::post('/foods', 'FoodController@store')->name('users.foods.store');
+
     });
 });
 

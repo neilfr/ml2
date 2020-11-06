@@ -19,25 +19,25 @@ use phpDocumentor\Reflection\Types\Integer;
 
 class FoodController extends Controller
 {
-    public function index(Request $request)
-    {
-        $foods = Food::query()
-        ->userFoods()
-        ->sharedFoods()
-        ->foodgroupSearch($request->query('foodgroupSearch'))
-        ->descriptionSearch($request->query('descriptionSearch'))
-        ->aliasSearch($request->query('aliasSearch'))
-        ->favouritesFilter($request->query('favouritesFilter'))
-        ->paginate(Config::get('ml2.paginator.per_page'));
+    // public function index(Request $request)
+    // {
+    //     $foods = Food::query()
+    //     ->userFoods()
+    //     ->sharedFoods()
+    //     ->foodgroupSearch($request->query('foodgroupSearch'))
+    //     ->descriptionSearch($request->query('descriptionSearch'))
+    //     ->aliasSearch($request->query('aliasSearch'))
+    //     ->favouritesFilter($request->query('favouritesFilter'))
+    //     ->paginate(Config::get('ml2.paginator.per_page'));
 
-        $foodgroups = Foodgroup::all();
+    //     $foodgroups = Foodgroup::all();
 
-        return Inertia::render('Foods/Index', [
-            'page' => $foods->currentPage(),
-            'foods' => FoodResource::collection($foods),
-            'foodgroups' => FoodgroupResource::collection($foodgroups),
-        ]);
-    }
+    //     return Inertia::render('Foods/Index', [
+    //         'page' => $foods->currentPage(),
+    //         'foods' => FoodResource::collection($foods),
+    //         'foodgroups' => FoodgroupResource::collection($foodgroups),
+    //     ]);
+    // }
 
     public function create()
     {
