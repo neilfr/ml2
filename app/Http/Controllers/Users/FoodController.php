@@ -33,4 +33,14 @@ class FoodController extends Controller
 
         return redirect(route('users.foods.index', $user));
     }
+
+    public function destroy(Request $request, User $user)
+    {
+        if ($user->id !== auth()->user()->id) {
+            return redirect(route('users.foods.index', auth()->user()));
+        }
+
+        $user->foods()->detach($request->input('id'));
+        return redirect(route('users.foods.index', $user));
+    }
 }

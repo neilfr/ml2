@@ -141,5 +141,54 @@ class FoodControllerTest extends TestCase
         ]);
     }
 
+    /** @test */
+    public function it_can_remove_a_food_from_the_users_food_list()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $food = factory(Food::class)->create();
+
+        $user->foods()->attach($food->id);
+
+        $this->assertDatabaseHas('food_user', [
+            'food_id' => $food->id,
+            'user_id' => $user->id,
+        ]);
+
+        $response = $this->delete(route('users.foods.destroy', $user), $food->toArray())
+            ->assertRedirect(route('users.foods.index', $user));
+
+        $this->assertDatabaseMissing('food_user', [
+            'food_id' => $food->id,
+            'user_id' => $user->id,
+        ]);
+    }
+
+    /** @test */
+    public function it_cannot_remove_a_food_from_another_users_food_list()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $anotherUser = factory(User::class)->create();
+
+        $food = factory(Food::class)->create();
+
+        $anotherUser->foods()->attach($food->id);
+
+        $this->assertDatabaseHas('food_user', [
+            'food_id' => $food->id,
+            'user_id' => $anotherUser->id,
+        ]);
+
+        $response = $this->delete(route('users.foods.destroy', $anotherUser), $food->toArray())
+            ->assertRedirect(route('users.foods.index', $user));
+
+        $this->assertDatabaseHas('food_user', [
+            'food_id' => $food->id,
+            'user_id' => $anotherUser->id,
+        ]);
+    }
 
 }
