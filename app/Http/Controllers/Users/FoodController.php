@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Users;
 
 use App\Food;
 use App\User;
+use App\Foodgroup;
+use FoodgroupSeeder;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,8 +18,11 @@ class FoodController extends Controller
 
     public function index(Request $request, User $user)
     {
+        $foods = $user->foods()->paginate(Config::get('ml2.paginator.per_page'));
         return Inertia::render('Users/Foods/Index',[
-            'foods' => $user->foods()->paginate(Config::get('ml2.paginator.per_page')),
+            'page' => $foods->currentPage(),
+            'foods' => $foods,
+            'foodgroups' => Foodgroup::all(),
         ]);
     }
 

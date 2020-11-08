@@ -51,7 +51,7 @@ class FoodControllerTest extends TestCase
     }
 
     /** @test */
-    public function it_can_return_a_users_list_of_foods_as_a_paginated_list()
+    public function it_can_return_a_users_list_of_foods_as_a_paginated_list_with_foodgroups()
     {
         $user = factory(User::class)->create();
         $this->actingAs($user);
@@ -63,14 +63,14 @@ class FoodControllerTest extends TestCase
         }
 
         $response = $this->get(route('users.foods.index', $user))
-            ->assertOk();
-
-        $response->assertPropValue('foods', function ($returnedFoods) use ($foods) {
-            $this->assertArrayHasKey('per_page', $returnedFoods);
-            foreach ($returnedFoods['data'] as $index => $food) {
-                $this->assertEquals($food['description'], $foods->toArray()[$index]['description']);
-            }
-        });
+            ->assertOk()
+            ->assertHasProp('foodgroups')
+            ->assertPropValue('foods', function ($returnedFoods) use ($foods) {
+                $this->assertArrayHasKey('per_page', $returnedFoods);
+                foreach ($returnedFoods['data'] as $index => $food) {
+                    $this->assertEquals($food['description'], $foods->toArray()[$index]['description']);
+                }
+            });
 
     }
 

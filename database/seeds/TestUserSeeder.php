@@ -23,9 +23,9 @@ class TestUserSeeder extends Seeder
         ]);
 
         DB::insert("
-            INSERT INTO `foods` (`alias`, `description`, `potassium`, `kcal`, `protein`, `carbohydrate`, `fat`, `foodgroup_id`, `foodsource_id`, `user_id`, `favourite`, `base_quantity`)
+            INSERT INTO `foods` (`alias`, `description`, `potassium`, `kcal`, `protein`, `carbohydrate`, `fat`, `foodgroup_id`, `foodsource_id`, `user_id`, `base_quantity`)
             VALUES
-                ('tf1','Test food one',119,204,'9.54','5.91','15.7',22,1,1,0,100)");
+                ('tf1','Test food one',119,204,'9.54','5.91','15.7',22,1,1,100)");
 
         $food = Food::where('alias','tf1')->first();
 
