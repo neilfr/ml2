@@ -23,14 +23,14 @@
                 <td>{{food.carbohydrate}}</td>
                 <td>{{food.potassium}}</td>
                 <td>{{food.base_quantity}}</td>
-                <!-- <td>
+                <td>
                     <button v-if="food.editable" @click="show" :id="food.id">
                         Edit
                     </button>
                     <button v-if="!food.editable" @click="show" :id="food.id">
                         View
                     </button>
-                </td> -->
+                </td>
             </tr>
         </table>
     </div>
@@ -42,8 +42,9 @@
 
         },
         props:{
+            user: Object,
             foods: Object,
-            foodgroups: Array,
+            foodgroups: Object,
             page: Number
         },
         mounted(){
@@ -59,6 +60,13 @@
             }
         },
         methods:{
+            show(e){
+                let url = this.$route("users.foods.show", {
+                    user: this.user.id,
+                    food:e.target.id
+                });
+                this.$inertia.visit(url);
+            },
         }
     };
 </script>
