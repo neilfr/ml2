@@ -44,18 +44,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/foodgroups/{foodgroup}', 'FoodgroupController@show')->name('foodgroups.show');
 
     Route::get('/foodsApi', 'Foods\FoodApiController@index');
-
-    Route::namespace('Api')->prefix('api')->group(function () {
-        Route::namespace('Foods')->prefix('foods/{food}')->group(function () {
-            Route::patch('ingredients/{ingredient}', 'IngredientController@update')->name('api.foods.ingredients.update');
-        });
-    });
-//working here
-    Route::namespace('Users')->prefix('users/{user}')->group(function () {
-        Route::get('/foods', 'FoodController@index')->name('users.foods.index');
-        Route::post('/foods', 'FoodController@store')->name('users.foods.store');
-        Route::delete('/foods', 'FoodController@destroy')->name('users.foods.destroy');
-    });
 });
 
 
