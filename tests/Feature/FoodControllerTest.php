@@ -95,7 +95,6 @@ class FoodControllerTest extends TestCase
         }
     }
 
-
     /** @test */
     public function it_can_return_user_owned_foods()
     {
@@ -109,7 +108,7 @@ class FoodControllerTest extends TestCase
         }
 
 //GOT HERE - SHOULD BE DOING THIS IN A NEW TEST!!!
-        $response = $this->get(route('users.foods.index', $user))
+        $response = $this->get(route('foods.index'))
             ->assertStatus(Response::HTTP_OK);
 
         $response->assertPropValue('foods', function ($returnedFoods) use ($foods) {
