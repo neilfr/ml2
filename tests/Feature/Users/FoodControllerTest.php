@@ -56,7 +56,7 @@ class FoodControllerTest extends TestCase
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
-        $foods = factory(Food::class,2)->create();
+        $foods = factory(Food::class,10)->create();
 
         foreach($foods as $food){
             $user->foods()->attach($food);

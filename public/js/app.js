@@ -2653,58 +2653,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({
-  components: {},
-  props: {
-    foods: Object,
-    foodgroups: Array,
-    page: Number
-  },
-  mounted: function mounted() {
-    console.log("mounted");
-    console.log(this.foods);
-  },
-  data: function data() {
-    return {// descriptionSearchText: '',
-      // aliasSearchText: '',
-      // foodgroupFilter: '',
-      // favouritesFilter: '',
-    };
-  },
-  methods: {}
-});
+/* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
 
@@ -5705,64 +5654,9 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("h1", [_vm._v("Foods")]),
-    _vm._v(" "),
-    _c(
-      "table",
-      [
-        _vm._m(0),
-        _vm._v(" "),
-        _vm._l(_vm.foods.data, function(food) {
-          return _c("tr", { key: food.id }, [
-            _c("td", [_vm._v(_vm._s(food.alias))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(food.description))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(food.kcal))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(food.protein))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(food.fat))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(food.carbohydrate))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(food.potassium))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(food.base_quantity))])
-          ])
-        })
-      ],
-      2
-    )
-  ])
+  return _c("div", { staticClass: "container" }, [_vm._v("\n    Hello\n")])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("th", [_vm._v("Alias")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Description")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("KCal")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Protein")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Fat")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Carbohydrate")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Potassium")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Quantity")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Actions")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

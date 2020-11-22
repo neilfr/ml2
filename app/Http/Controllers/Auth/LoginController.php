@@ -53,7 +53,7 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         // flash("Welcome back {$user->name}!");
-        dd("hello",auth()->user()->id);
+
         return redirect()->route('home');
     }
 
@@ -63,7 +63,7 @@ class LoginController extends Controller
         if(!$request->remember) $request->remember=false;
         $user = User::firstWhere('email', $credentials['email']);
         if (Auth::attempt($credentials, $request->remember)) {
-            return redirect(route('users.foods.index', auth()->user()->id));
+            return redirect(route('foods.index'));
         } else {
             dd("NOT AUTHENTICATED!");
         }
