@@ -128,15 +128,16 @@ export default {
     methods:{
         cancelFoodUpdate () {
             let url = `${this.$route("users.foods.index", this.user.id)}`;
-                this.$inertia.visit(url, {
-                    // preserveState: true,
-                    preserveScroll: true,
-                });
+            this.$inertia.visit(url, {
+                // preserveState: true,
+                preserveScroll: true,
+            });
         },
         //STOPPED HERE
         updateFood () {
             this.$inertia.patch(
-                this.$route("foods.update", {
+                this.$route("users.foods.update", {
+                    'user': this.user.id,
                     'food': this.food.data.id,
                 }), this.food.data
             ).then(()=>{

@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Config;
+use App\Http\Requests\UpdateFoodRequest;
 use App\Http\Resources\FoodgroupResource;
 use App\Http\Resources\User\FoodResource;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -63,6 +64,17 @@ class FoodController extends Controller
             }
 
         return redirect(route('users.foods.index', $user));
+    }
+
+    public function update(Request $request, User $user, Food $food)
+    {
+        dd($request->input());
+        if ($food->user_id === auth()->user()->id) {
+            $food->update($request->validated());
+        }
+        // return  redirect()->back();
+        return  redirect(route('users.foods.index'), $user);
+
     }
 
     public function destroy(Request $request, User $user)
