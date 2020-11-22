@@ -2862,8 +2862,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     //STOPPED HERE
     updateFood: function updateFood() {
-      this.$inertia.patch(this.$route("users.foods.update", {
-        'user': this.user.id,
+      this.$inertia.patch(this.$route("foods.update", {
         'food': this.food.data.id
       }), this.food.data).then(function () {
         console.log("updated food");

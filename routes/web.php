@@ -55,8 +55,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/foods', 'FoodController@index')->name('users.foods.index');
         Route::get('/foods/{food}', 'FoodController@show')->name('users.foods.show');
         Route::post('/foods', 'FoodController@store')->name('users.foods.store');
-        Route::patch('/foods/{food}', 'FoodController@update')->name('users.foods.update');
-
         Route::delete('/foods', 'FoodController@destroy')->name('users.foods.destroy');
     });
 });
