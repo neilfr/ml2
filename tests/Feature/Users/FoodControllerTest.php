@@ -66,7 +66,7 @@ class FoodControllerTest extends TestCase
             ->assertOk()
             ->assertHasProp('foodgroups')
             ->assertPropValue('foods', function ($returnedFoods) use ($foods) {
-                $this->assertArrayHasKey('per_page', $returnedFoods['meta']);
+                $this->assertArrayHasKey('per_page', $returnedFoods);
                 foreach ($returnedFoods['data'] as $index => $food) {
                     $this->assertEquals($food['description'], $foods->toArray()[$index]['description']);
                 }

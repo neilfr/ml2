@@ -11,8 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Config;
-use App\Http\Resources\FoodgroupResource;
-use App\Http\Resources\User\FoodResource;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class FoodController extends Controller
@@ -22,34 +20,10 @@ class FoodController extends Controller
     {
         $foods = $user->foods()->paginate(Config::get('ml2.paginator.per_page'));
         return Inertia::render('Users/Foods/Index',[
-            'user' => $user,
             'page' => $foods->currentPage(),
-            'foods' => FoodResource::collection($foods),
-            'foodgroups' => FoodgroupResource::collection(Foodgroup::all()),
+            'foods' => $foods,
+            'foodgroups' => Foodgroup::all(),
         ]);
-    }
-
-    public function show(Request $request, User $user, Food $food)
-    {
-        // $foods = Food::userFoods()
-        //     ->sharedFoods()
-        //     ->foodgroupSearch($request->query('foodgroupSearch'))
-        //     ->descriptionSearch($request->query('descriptionSearch'))
-        //     ->aliasSearch($request->query('aliasSearch'))
-        //     ->favouritesFilter($request->query('favouritesFilter'))
-        //     ->with('ingredients')
-        //     ->paginate(Config::get('ml
-        $foods = $user->foods()->with('ingredients')->paginate(Config::get('ml2.paginator.per_page'));
-
-        if (($food->user_id === auth()->user()->id) || ($food->foodsource->sharable === true)){
-            return Inertia::render('Users/Foods/Show', [
-                'user' => $user,
-                'food' => new FoodResource($food),
-                'foods' => FoodResource::collection($foods),
-                'foodgroups' => FoodgroupResource::collection(Foodgroup::all()),
-            ]);
-        }
-        return redirect()->route('foods.index');
     }
 
     public function store(Request $request, User $user)

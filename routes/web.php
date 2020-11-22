@@ -53,7 +53,6 @@ Route::group(['middleware' => 'auth'], function () {
 //working here
     Route::namespace('Users')->prefix('users/{user}')->group(function () {
         Route::get('/foods', 'FoodController@index')->name('users.foods.index');
-        Route::get('/foods/{food}', 'FoodController@show')->name('users.foods.show');
         Route::post('/foods', 'FoodController@store')->name('users.foods.store');
         Route::delete('/foods', 'FoodController@destroy')->name('users.foods.destroy');
     });
