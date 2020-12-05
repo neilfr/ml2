@@ -209,10 +209,7 @@ class FoodControllerTest extends TestCase
                 $this->assertEquals($foods[0]['description'], $returnedFood['data']['description']);
                 $items = $foods[0]->ingredients()->get();
                 foreach($items as $item) {
-                    // dd($item->toArray());
                     $this->assertEquals($item->toArray()['pivot']['quantity'], 555);
-                    // dd($item->ingredients);
-
                 }
             });
     }
