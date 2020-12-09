@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Food;
+use App\User;
 use App\Foodgroup;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Resources\FoodResource;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Schema;
 use App\Http\Requests\CreateFoodRequest;
 use App\Http\Requests\UpdateFoodRequest;
 use App\Http\Resources\FoodgroupResource;
@@ -73,9 +75,7 @@ class FoodController extends Controller
         if ($food->user_id === auth()->user()->id) {
             $food->update($request->validated());
         }
-
         return  redirect(route('foods.index'));
-
     }
 
     public function destroy(Food $food)
@@ -83,6 +83,22 @@ class FoodController extends Controller
         if ($food->user_id === auth()->user()->id) {
             Food::destroy($food->id);
         }
+
+        return redirect()->route('foods.index');
+    }
+
+    public function favourite(Food $food)
+    {
+        $user = User::find(auth()->user()->id);
+        $user->favourites()->attach($food);
+
+        return redirect()->route('foods.index');
+    }
+
+    public function unfavourite(Food $food)
+    {
+        $user = User::find(auth()->user()->id);
+        $user->favourites()->detach($food);
 
         return redirect()->route('foods.index');
     }

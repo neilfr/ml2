@@ -19,6 +19,7 @@ class Food extends Model
         'potassium',
         'favourite',
         'base_quantity',
+        'editable',
         'foodgroup_id',
         'foodsource_id',
         'user_id',
@@ -34,6 +35,7 @@ class Food extends Model
         'carbohydrate' => 'integer',
         'potassium' => 'integer',
         'base_quantity' => 'integer',
+        'editable' => 'boolean',
     ];
 
     public function scopeWithFavourites(Builder $query)

@@ -32,7 +32,7 @@ class TestUserSeeder extends Seeder
         $food->ingredients()->attach(2,['quantity' => 200]);
         $food->ingredients()->attach(4, ['quantity' => 250]);
 
-        $testUser->foods()->sync([2,4,$food->id]);
+        $testUser->favourites()->sync([2,4,$food->id]);
 
     }
 }

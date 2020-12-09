@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFoodUserTable extends Migration
+class CreateFavouritesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateFoodUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('food_user', function (Blueprint $table) {
+        Schema::create('favourites', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('food_id');
             $table->unsignedBigInteger('user_id');
@@ -28,6 +28,6 @@ class CreateFoodUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('food_user');
+        Schema::dropIfExists('favourites');
     }
 }
