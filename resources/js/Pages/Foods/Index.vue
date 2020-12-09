@@ -46,7 +46,7 @@
                         :id="food.id"
                         :value="food.favourite"
                         :checked="food.favourite"
-                        @change="setFavourite"
+                        @change="toggleFavourite"
                     />
                 </td>
                 <td>{{food.alias}}</td>
@@ -99,15 +99,26 @@
             }
         },
         methods:{
-            setFavourite(e){
-                this.$inertia.patch(
-                    this.$route("foods.update", e.target.id),
-                    {
-                        favourite: e.target.checked
-                    },
-                    {
-                        preserveScroll: true,
-                    });
+            toggleFavourite(e){
+                console.log(e.target.value);
+                // if(!e.target.value)
+                //     this.$inertia.post(
+                //         this.$route("foods.favourite", e.target.id),
+                //         {
+                //             // favourite: e.target.checked
+                //         },
+                //         {
+                //             preserveScroll: true,
+                //         });
+                // if(e.target.value)
+                //     this.$inertia.delete(
+                //         this.$route("foods.unfavourite", e.target.id),
+                //         {
+                //             // favourite: e.target.checked
+                //         },
+                //         {
+                //             preserveScroll: true,
+                //         });
             },
             foo(e){
                 console.log("foo", e.target);

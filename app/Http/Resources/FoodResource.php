@@ -35,7 +35,7 @@ class FoodResource extends JsonResource
             'ingredients' => IngredientResource::collection($this->ingredients),
             'favourite' => User::find(auth()
                 ->user()->id)
-                ->foods()
+                ->favourites()
                 ->where('food_id', $this->id)
                 ->exists(),
         ];

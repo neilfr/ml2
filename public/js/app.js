@@ -2229,12 +2229,25 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    setFavourite: function setFavourite(e) {
-      this.$inertia.patch(this.$route("foods.update", e.target.id), {
-        favourite: e.target.checked
-      }, {
-        preserveScroll: true
-      });
+    toggleFavourite: function toggleFavourite(e) {
+      console.log(e.target.value); // if(!e.target.value)
+      //     this.$inertia.post(
+      //         this.$route("foods.favourite", e.target.id),
+      //         {
+      //             // favourite: e.target.checked
+      //         },
+      //         {
+      //             preserveScroll: true,
+      //         });
+      // if(e.target.value)
+      //     this.$inertia.delete(
+      //         this.$route("foods.unfavourite", e.target.id),
+      //         {
+      //             // favourite: e.target.checked
+      //         },
+      //         {
+      //             preserveScroll: true,
+      //         });
     },
     foo: function foo(e) {
       console.log("foo", e.target);
@@ -4700,7 +4713,7 @@ var render = function() {
                 _c("input", {
                   attrs: { type: "checkbox", id: food.id },
                   domProps: { value: food.favourite, checked: food.favourite },
-                  on: { change: _vm.setFavourite }
+                  on: { change: _vm.toggleFavourite }
                 })
               ]),
               _vm._v(" "),
