@@ -86,14 +86,7 @@ export default {
             this.$emit('pageUpdated', this.page);
         },
         selectFood(e){
-            // console.log("food",e.target);
-            // console.log("id",e.target.id);
-            // console.log("foo", this.selectedFoodBaseQuantity);
-            // console.log("test",e.target.getAttribute('data-base_quantity'));
-
             this.$emit('selectedFood', e.target.id);
-            // this.selectedFoodId=e.target.id;
-            // console.log("selected food", this.selectedFoodId);
         }
     }
 }

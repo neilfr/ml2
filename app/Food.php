@@ -19,6 +19,7 @@ class Food extends Model
         'potassium',
         'favourite',
         'base_quantity',
+        'editable',
         'foodgroup_id',
         'foodsource_id',
         'user_id',
@@ -34,6 +35,7 @@ class Food extends Model
         'carbohydrate' => 'integer',
         'potassium' => 'integer',
         'base_quantity' => 'integer',
+        'editable' => 'boolean',
     ];
 
     public function scopeUserFoods(Builder $query)
@@ -80,7 +82,10 @@ class Food extends Model
             return $query;
         }
         if ($favouritesFilter==="yes") {
-            $query->where('favourite', '=', true);
+            $favouriteIds = User::find(auth()
+                ->user()->id)
+                ->favourites()->pluck('food_id');
+            $query->whereIn('id', $favouriteIds);
         }
     }
 
@@ -92,6 +97,11 @@ class Food extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
     }
 
     public function foodsource()

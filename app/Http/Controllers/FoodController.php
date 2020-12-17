@@ -3,25 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Food;
+use App\User;
 use App\Foodgroup;
-use App\Foodsource;
 use Inertia\Inertia;
+use App\Favourite;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 use App\Http\Resources\FoodResource;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Schema;
 use App\Http\Requests\CreateFoodRequest;
 use App\Http\Requests\UpdateFoodRequest;
 use App\Http\Resources\FoodgroupResource;
-use App\Http\Resources\IngredientResource;
-use phpDocumentor\Reflection\Types\Integer;
 
 class FoodController extends Controller
 {
     public function index(Request $request)
     {
-        $foods = Food::userFoods()
+        // dd($request->query('favouritesFilter'));
+                $favIds = User::find(auth()
+                ->user()->id)
+                ->favourites()->pluck('food_id');
+        // dd($favIds);
+        $foods = Food::query()
+        ->userFoods()
         ->sharedFoods()
         ->foodgroupSearch($request->query('foodgroupSearch'))
         ->descriptionSearch($request->query('descriptionSearch'))
@@ -77,9 +81,7 @@ class FoodController extends Controller
         if ($food->user_id === auth()->user()->id) {
             $food->update($request->validated());
         }
-        // return  redirect()->back();
         return  redirect(route('foods.index'));
-
     }
 
     public function destroy(Food $food)
@@ -89,5 +91,19 @@ class FoodController extends Controller
         }
 
         return redirect()->route('foods.index');
+    }
+
+    public function toggleFavourite(Request $request, Food $food)
+    {
+        $user = User::find(auth()->user()->id);
+
+        if ($user->favourites->contains($food)) {
+            $user->favourites()->detach($food);
+        } else {
+            $user->favourites()->attach($food);
+        };
+
+        return redirect()->back();
+
     }
 }

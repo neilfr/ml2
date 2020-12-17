@@ -37,13 +37,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function favouritefoods()
-    {
-        return $this->hasMany(Favouritefood::class);
-    }
-
     public function meals()
     {
         return $this->hasMany(Meal::class);
+    }
+
+    public function foods()
+    {
+        return $this->hasMany(Food::class);
+    }
+
+    public function favourites()
+    {
+        return $this->belongsToMany(Food::class, 'favourites');
     }
 }

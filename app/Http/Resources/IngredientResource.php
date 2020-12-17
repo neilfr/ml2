@@ -25,7 +25,6 @@ class IngredientResource extends JsonResource
             'protein' => $this-> protein * $scaleFactor,
             'carbohydrate' => $this-> carbohydrate * $scaleFactor,
             'potassium' => $this-> potassium * $scaleFactor,
-            'favourite' => $this-> favourite * $scaleFactor,
             'base_quantity' => $this->base_quantity,
             'quantity' => $this->pivot->quantity,
             'foodgroup_id' => $this->foodgroup_id,

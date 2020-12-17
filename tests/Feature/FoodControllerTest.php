@@ -36,10 +36,12 @@ class FoodControllerTest extends TestCase
         $this->actingAs($user);
 
         $food = factory(Food::class)->create([
-            'user_id' => $user->id,
+            'description' => 'my food',
         ]);
 
-        $this->assertEquals($user->id, $food->user->id);
+        $user->foods()->save($food);
+
+        $this->assertEquals($food->description, $user->foods()->first()->pluck('description')[0]);
     }
 
     /** @test */
@@ -99,9 +101,11 @@ class FoodControllerTest extends TestCase
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
-        $foods = factory(Food::class, 2)->create([
-            'user_id' => $user->id,
-        ]);
+        $foods = factory(Food::class, 2)->create();
+
+        foreach($foods as $food) {
+            $user->foods()->save($food);
+        }
 
         $response = $this->get(route('foods.index'))
             ->assertStatus(Response::HTTP_OK);
@@ -168,9 +172,7 @@ class FoodControllerTest extends TestCase
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
-        $foods = factory(Food::class, 2)->create([
-            'favourite' => true,
-        ]);
+        $foods = factory(Food::class, 2)->create();
 
         $response = $this->get(route('foods.show', $foods[0]));
 
@@ -189,7 +191,6 @@ class FoodControllerTest extends TestCase
 
         $foods = factory(Food::class, 2)->create([
             'user_id' => $user->id,
-            'favourite' => true,
         ]);
 
         $ingredients = factory(Ingredient::class,2)->create([
@@ -207,10 +208,7 @@ class FoodControllerTest extends TestCase
                 $this->assertEquals($foods[0]['description'], $returnedFood['data']['description']);
                 $items = $foods[0]->ingredients()->get();
                 foreach($items as $item) {
-                    // dd($item->toArray());
                     $this->assertEquals($item->toArray()['pivot']['quantity'], 555);
-                    // dd($item->ingredients);
-
                 }
             });
     }
@@ -317,7 +315,6 @@ class FoodControllerTest extends TestCase
             'protein' => 246,
             'carbohydrate' => 135,
             'potassium' => 456,
-            'favourite' => true,
             'base_quantity' => 200,
             'foodgroup_id' => factory(Foodgroup::class)->create()->id,
             'foodsource_id' => factory(Foodsource::class)->create()->id,
@@ -351,7 +348,6 @@ class FoodControllerTest extends TestCase
             'protein' => 246,
             'carbohydrate' => 135,
             'potassium' => 456,
-            'favourite' => true,
             'base_quantity' => 200,
             'foodgroup_id' => factory(Foodgroup::class)->create()->id,
             'foodsource_id' => factory(Foodsource::class)->create()->id,
@@ -390,7 +386,6 @@ class FoodControllerTest extends TestCase
             'protein' => 246,
             'carbohydrate' => 135,
             'potassium' => 456,
-            'favourite' => true,
             'base_quantity' => 200,
             'foodgroup_id' => factory(Foodgroup::class)->create()->id,
             'foodsource_id' => factory(Foodsource::class)->create()->id,
@@ -429,7 +424,6 @@ class FoodControllerTest extends TestCase
             'protein' => 246,
             'carbohydrate' => 135,
             'potassium' => 456,
-            'favourite' => true,
             'base_quantity' => 200,
             'foodgroup_id' => factory(Foodgroup::class)->create()->id,
             'foodsource_id' => factory(Foodsource::class)->create()->id,
@@ -460,7 +454,6 @@ class FoodControllerTest extends TestCase
             'protein' => 246,
             'carbohydrate' => 135,
             'potassium' => 456,
-            'favourite' => true,
             'base_quantity' => 200,
             'foodgroup_id' => factory(Foodgroup::class)->create()->id,
             'foodsource_id' => factory(Foodsource::class)->create()->id,
@@ -531,15 +524,40 @@ class FoodControllerTest extends TestCase
     /** @test */
     public function it_can_update_a_users_food()
     {
+        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
+        $initialFoodsource = factory(Foodsource::class)->create();
+        $updatedFoodsource = factory(Foodsource::class)->create();
+        $initialFoodgroup = factory(Foodgroup::class)->create();
+        $updatedFoodgroup = factory(Foodgroup::class)->create();
+
         $food = factory(Food::class)->create([
             'user_id' => $user->id,
+            'description' => 'initial description',
+            'alias' => 'initial alias',
+            'kcal' => 111,
+            'fat' => 111,
+            'protein' => 111,
+            'carbohydrate' => 111,
+            'potassium' => 111,
+            'base_quantity' => 111,
+            'foodgroup_id' => $initialFoodgroup->id,
+            'foodsource_id' => $initialFoodsource->id,
         ]);
 
         $payload = [
             'description' => 'new description',
+            'alias' => 'new alias',
+            'kcal' => 222,
+            'fat' => 222,
+            'protein' => 222,
+            'carbohydrate' => 222,
+            'potassium' => 222,
+            'base_quantity' => 222,
+            'foodgroup_id' => $updatedFoodgroup->id,
+            'foodsource_id' => $updatedFoodsource->id,
         ];
 
         $response = $this->patch(route('foods.update', $food->id), $payload);
@@ -604,6 +622,12 @@ class FoodControllerTest extends TestCase
 
         $food = factory(Food::class)->create([
             'user_id' => $anotherUser->id,
+            'description' => 'initial description',
+        ]);
+
+        $this->assertDatabaseHas('foods', [
+            'user_id' => $anotherUser->id,
+            'description' => 'initial description',
         ]);
 
         $payload = [
@@ -611,8 +635,16 @@ class FoodControllerTest extends TestCase
         ];
 
         $response = $this->patch(route('foods.update', $food->id), $payload);
+        $this->assertDatabaseMissing('foods', [
+            'user_id' => $anotherUser->id,
+            'description' => 'new description',
+        ]);
 
-        $this->assertDatabaseMissing('foods', $payload);
+        $this->assertDatabaseHas('foods', [
+            'user_id' => $anotherUser->id,
+            'description' => 'initial description',
+        ]);
+
         $response->assertRedirect(route('foods.index'));
     }
 
@@ -648,6 +680,43 @@ class FoodControllerTest extends TestCase
             ->assertRedirect(route('foods.index'));
 
         $response = $this->assertDatabaseHas('foods', ['id' => $food->id]);
+    }
+
+    /** @test */
+    public function it_can_toggle_food_as_favourite()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $food = factory(Food::class)->create([
+            'user_id' => $user->id,
+            'description' => 'test food one',
+        ]);
+
+        $user->favourites()->attach($food);
+
+        $this->assertDatabaseHas('favourites', [
+            'user_id' => $user->id,
+            'food_id' => $food->id,
+        ]);
+
+        $response = $this->from(route('foods.index'))
+            ->post(route('foods.toggle-favourite', $food->id));
+
+        $response->assertRedirect(route('foods.index'));
+        $this->assertDatabaseMissing('favourites', [
+            'food_id' => $food->id,
+            'user_id' => $user->id,
+        ]);
+
+        $response = $this->from(route('foods.index'))
+                        ->post(route('foods.toggle-favourite', $food->id));
+
+        $response->assertRedirect(route('foods.index'));
+        $this->assertDatabaseHas('favourites', [
+            'food_id' => $food->id,
+            'user_id' => $user->id,
+        ]);
     }
 
     public function foodStoreValidationProvider()
@@ -772,14 +841,6 @@ class FoodControllerTest extends TestCase
                 function () {
                     return [
                         'base_quantity', ['base_quantity' => -1],
-                    ];
-                }
-            ],
-            'it fails if favourite is not a boolean' => [
-                function () {
-                    return [
-                        'favourite',
-                        array_merge($this->getValidFoodData(), ['favourite' => 'not a boolean']),
                     ];
                 }
             ],
@@ -920,13 +981,6 @@ class FoodControllerTest extends TestCase
                     ];
                 }
             ],
-            'it fails if favourite is not a boolean' => [
-                function () {
-                    return [
-                        'favourite', ['favourite' => 'not a boolean'],
-                    ];
-                }
-            ],
             'it fails if foodgroup_id is not a valid foodgroup id' => [
                 function () {
                     return [
@@ -954,7 +1008,6 @@ class FoodControllerTest extends TestCase
             'protein' => 246,
             'carbohydrate' => 135,
             'potassium' => 456,
-            'favourite' => true,
             'base_quantity' => 200,
             'foodgroup_id' => factory(Foodgroup::class)->create()->id,
             'foodsource_id' => factory(Foodsource::class)->create()->id,

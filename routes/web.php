@@ -29,9 +29,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/foods', 'FoodController@index')->name('foods.index');
     Route::post('/foods', 'FoodController@store')->name('foods.store');
     Route::get('/foods/new', 'FoodController@create')->name('foods.create');
+
     Route::get('/foods/{food}', 'FoodController@show')->name('foods.show');
     Route::patch('/foods/{food}', 'FoodController@update')->name('foods.update');
     Route::delete('/foods/{food}', 'FoodController@destroy')->name('foods.destroy');
+
+    Route::post('/foods/{food}/toggle-favourite', 'FoodController@toggleFavourite')->name('foods.toggle-favourite');
 
     Route::get('/food/{food}/ingredient', 'FoodIngredientController@index')->name('food.ingredient.index');
     Route::post('/food/{food}/ingredient', 'FoodIngredientController@store')->name('food.ingredient.store');
@@ -40,14 +43,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/foodgroups', 'FoodgroupController@index')->name('foodgroups.index');
     Route::get('/foodgroups/{foodgroup}', 'FoodgroupController@show')->name('foodgroups.show');
-
-    Route::get('/foodsApi', 'Foods\FoodApiController@index');
-
-    Route::namespace('Api')->prefix('api')->group(function () {
-        Route::namespace('Foods')->prefix('foods/{food}')->group(function () {
-            Route::patch('ingredients/{ingredient}', 'IngredientController@update')->name('api.foods.ingredients.update');
-        });
-    });
 });
 
 

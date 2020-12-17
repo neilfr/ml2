@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\User;
 use App\Http\Resources\IngredientResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -24,7 +25,6 @@ class FoodResource extends JsonResource
             'protein' => $this->protein,
             'carbohydrate' => $this->carbohydrate,
             'potassium' => $this->potassium,
-            'favourite' => $this->favourite,
             'base_quantity' => $this->base_quantity,
             'foodgroup_id' => $this->foodgroup_id,
             'foodsource_id' => $this->foodsource_id,
@@ -33,6 +33,11 @@ class FoodResource extends JsonResource
             'created_at' => $this->created_at,
             'editable' => $this->user_id === auth()->user()->id,
             'ingredients' => IngredientResource::collection($this->ingredients),
+            'favourite' => User::find(auth()
+                ->user()->id)
+                ->favourites()
+                ->where('food_id', $this->id)
+                ->exists(),
         ];
     }
 }
