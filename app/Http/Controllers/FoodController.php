@@ -6,6 +6,7 @@ use App\Food;
 use App\User;
 use App\Foodgroup;
 use Inertia\Inertia;
+use App\Favourite;
 use Illuminate\Http\Request;
 use App\Http\Resources\FoodResource;
 use Illuminate\Support\Facades\Config;
@@ -87,19 +88,17 @@ class FoodController extends Controller
         return redirect()->route('foods.index');
     }
 
-    public function favourite(Food $food)
+    public function toggleFavourite(Food $food)
     {
         $user = User::find(auth()->user()->id);
-        $user->favourites()->attach($food);
+
+        if ($user->favourites->contains($food)) {
+            $user->favourites()->detach($food);
+        } else {
+            $user->favourites()->attach($food);
+        };
 
         return redirect()->route('foods.index');
-    }
 
-    public function unfavourite(Food $food)
-    {
-        $user = User::find(auth()->user()->id);
-        $user->favourites()->detach($food);
-
-        return redirect()->route('foods.index');
     }
 }

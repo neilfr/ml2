@@ -35,6 +35,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::patch('/foods/{food}', 'FoodController@update')->name('foods.update');
     Route::delete('/foods/{food}', 'FoodController@destroy')->name('foods.destroy');
     Route::post('/foods/{food}/favourite', 'FoodController@favourite')->name('foods.favourite');
+    Route::post('/foods/{food}/toggle-favourite', 'FoodController@toggleFavourite')->name('foods.toggle-favourite');
     Route::delete('/foods/{food}/unfavourite', 'FoodController@unfavourite')->name('foods.unfavourite');
 
     Route::get('/food/{food}/ingredient', 'FoodIngredientController@index')->name('food.ingredient.index');

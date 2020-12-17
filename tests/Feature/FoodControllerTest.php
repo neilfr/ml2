@@ -683,33 +683,14 @@ class FoodControllerTest extends TestCase
     }
 
     /** @test */
-    public function it_can_make_a_food_a_favourite_food()
+    public function it_can_toggle_food_as_favourite()
     {
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
         $food = factory(Food::class)->create([
             'user_id' => $user->id,
-        ]);
-
-        $response = $this->post(route('foods.favourite', $food->id));
-
-        $response->assertRedirect(route('foods.index'));
-        $this->assertDatabaseHas('favourites', [
-            'food_id' => $food->id,
-            'user_id' => $user->id,
-        ]);
-    }
-
-    /** @test */
-    public function it_can_unfavourite_a_food()
-    {
-        $this->withoutExceptionHandling();
-        $user = factory(User::class)->create();
-        $this->actingAs($user);
-
-        $food = factory(Food::class)->create([
-            'user_id' => $user->id,
+            'description' => 'test food one',
         ]);
 
         $user->favourites()->attach($food);
@@ -719,10 +700,17 @@ class FoodControllerTest extends TestCase
             'food_id' => $food->id,
         ]);
 
-        $response = $this->delete(route('foods.unfavourite', $food->id));
+        $response = $this->post(route('foods.toggle-favourite', $food->id));
 
         $response->assertRedirect(route('foods.index'));
         $this->assertDatabaseMissing('favourites', [
+            'food_id' => $food->id,
+            'user_id' => $user->id,
+        ]);
+
+        $response = $this->post(route('foods.toggle-favourite', $food->id));
+        $response->assertRedirect(route('foods.index'));
+        $this->assertDatabaseHas('favourites', [
             'food_id' => $food->id,
             'user_id' => $user->id,
         ]);
