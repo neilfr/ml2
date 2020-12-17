@@ -53,11 +53,11 @@ export default {
         favourite (e) {
             this.$emit('favourite', e);
         },
-        view () {
-            this.$emit('view');
+        view (e) {
+            this.$emit('view', e);
         },
-        edit () {
-            this.$emit('edit');
+        edit (e) {
+            this.$emit('edit', e);
         }
     }
 }

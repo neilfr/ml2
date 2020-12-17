@@ -38,11 +38,6 @@ class Food extends Model
         'editable' => 'boolean',
     ];
 
-    public function scopeWithFavourites(Builder $query)
-    {
-        //
-    }
-
     public function scopeUserFoods(Builder $query)
     {
         $query->where('user_id', auth()->user()->id);
@@ -87,7 +82,10 @@ class Food extends Model
             return $query;
         }
         if ($favouritesFilter==="yes") {
-            $query->where('favourite', '=', true);
+            $favouriteIds = User::find(auth()
+                ->user()->id)
+                ->favourites()->pluck('food_id');
+            $query->whereIn('id', $favouriteIds);
         }
     }
 

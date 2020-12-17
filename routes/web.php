@@ -27,13 +27,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/', 'HomeController@index');
 
     Route::get('/foods', 'FoodController@index')->name('foods.index');
-
-
     Route::post('/foods', 'FoodController@store')->name('foods.store');
     Route::get('/foods/new', 'FoodController@create')->name('foods.create');
+
     Route::get('/foods/{food}', 'FoodController@show')->name('foods.show');
     Route::patch('/foods/{food}', 'FoodController@update')->name('foods.update');
     Route::delete('/foods/{food}', 'FoodController@destroy')->name('foods.destroy');
+
     Route::post('/foods/{food}/toggle-favourite', 'FoodController@toggleFavourite')->name('foods.toggle-favourite');
 
     Route::get('/food/{food}/ingredient', 'FoodIngredientController@index')->name('food.ingredient.index');
@@ -43,8 +43,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/foodgroups', 'FoodgroupController@index')->name('foodgroups.index');
     Route::get('/foodgroups/{foodgroup}', 'FoodgroupController@show')->name('foodgroups.show');
-
-    Route::get('/foodsApi', 'Foods\FoodApiController@index');
 });
 
 

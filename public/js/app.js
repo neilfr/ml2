@@ -2169,47 +2169,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2230,16 +2189,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     toggleFavourite: function toggleFavourite(e) {
-      this.$inertia.post(this.$route("foods.toggle-favourite", e.target.id), {// page: this.page,
-      }, {
+      var url = this.$route("foods.toggle-favourite", e.target.id);
+      this.$inertia.post(url, {}, {
         preserveScroll: true
       });
-    },
-    test: function test() {
-      console.log("SHOW");
-    },
-    test2: function test2() {
-      console.log("CHANGED");
     },
     goToPageOne: function goToPageOne() {
       this.goToPage(1);
@@ -2272,7 +2225,6 @@ __webpack_require__.r(__webpack_exports__);
       this.$inertia.visit(url);
     },
     add: function add() {
-      console.log("create!");
       var url = "".concat(this.$route("foods.create"));
       this.$inertia.visit(url);
     }
@@ -2891,11 +2843,11 @@ __webpack_require__.r(__webpack_exports__);
     favourite: function favourite(e) {
       this.$emit('favourite', e);
     },
-    view: function view() {
-      this.$emit('view');
+    view: function view(e) {
+      this.$emit('view', e);
     },
-    edit: function edit() {
-      this.$emit('edit');
+    edit: function edit(e) {
+      this.$emit('edit', e);
     }
   }
 });
@@ -4677,62 +4629,8 @@ var render = function() {
       _vm._v(" "),
       _c("main-food-list", {
         attrs: { foods: _vm.foods.data },
-        on: { view: _vm.test, edit: _vm.test, favourite: _vm.toggleFavourite }
+        on: { view: _vm.show, edit: _vm.show, favourite: _vm.toggleFavourite }
       }),
-      _vm._v(" "),
-      _c(
-        "table",
-        [
-          _vm._m(0),
-          _vm._v(" "),
-          _vm._l(_vm.foods.data, function(food) {
-            return _c("tr", { key: food.id }, [
-              _c("td", [
-                _c("input", {
-                  attrs: { type: "checkbox", id: food.id },
-                  domProps: { value: food.favourite, checked: food.favourite },
-                  on: { change: _vm.toggleFavourite }
-                })
-              ]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(food.alias))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(food.description))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(food.kcal))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(food.protein))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(food.fat))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(food.carbohydrate))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(food.potassium))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(food.base_quantity))]),
-              _vm._v(" "),
-              _c("td", [
-                food.editable
-                  ? _c(
-                      "button",
-                      { attrs: { id: food.id }, on: { click: _vm.show } },
-                      [_vm._v("\n                    Edit\n                ")]
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                !food.editable
-                  ? _c(
-                      "button",
-                      { attrs: { id: food.id }, on: { click: _vm.show } },
-                      [_vm._v("\n                    View\n                ")]
-                    )
-                  : _vm._e()
-              ])
-            ])
-          })
-        ],
-        2
-      ),
       _vm._v(" "),
       _c("div", [
         _c("button", { on: { click: _vm.goToPageOne } }, [_vm._v("First")]),
@@ -4758,34 +4656,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("th", [_vm._v("Favourite")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Alias")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Description")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("KCal")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Protein")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Fat")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Carbohydrate")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Potassium")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Quantity")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Actions")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

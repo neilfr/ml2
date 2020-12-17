@@ -25,48 +25,7 @@
                 <input type="radio" name="favourites" id="favouriteNo" value="no" checked v-model="favouritesFilter" @change="goToPageOne">
             </div>
         </div>
-        <main-food-list :foods="foods.data" @view="test" @edit="test" @favourite="toggleFavourite"></main-food-list>
-        <table>
-            <tr>
-                <th>Favourite</th>
-                <th>Alias</th>
-                <th>Description</th>
-                <th>KCal</th>
-                <th>Protein</th>
-                <th>Fat</th>
-                <th>Carbohydrate</th>
-                <th>Potassium</th>
-                <th>Quantity</th>
-                <th>Actions</th>
-            </tr>
-            <tr v-for="food in foods.data" :key="food.id">
-                <td>
-                    <input
-                        type="checkbox"
-                        :id="food.id"
-                        :value="food.favourite"
-                        :checked="food.favourite"
-                        @change="toggleFavourite"
-                    />
-                </td>
-                <td>{{food.alias}}</td>
-                <td>{{food.description}}</td>
-                <td>{{food.kcal}}</td>
-                <td>{{food.protein}}</td>
-                <td>{{food.fat}}</td>
-                <td>{{food.carbohydrate}}</td>
-                <td>{{food.potassium}}</td>
-                <td>{{food.base_quantity}}</td>
-                <td>
-                    <button v-if="food.editable" @click="show" :id="food.id">
-                        Edit
-                    </button>
-                    <button v-if="!food.editable" @click="show" :id="food.id">
-                        View
-                    </button>
-                </td>
-            </tr>
-        </table>
+        <main-food-list :foods="foods.data" @view="show" @edit="show" @favourite="toggleFavourite"></main-food-list>
         <div>
             <button @click="goToPageOne">First</button>
             <button @click="previousPage">Previous</button>
@@ -100,20 +59,8 @@
         },
         methods:{
             toggleFavourite(e){
-                this.$inertia.post(
-                    this.$route("foods.toggle-favourite", e.target.id),
-                    {
-                        // page: this.page,
-                    },
-                    {
-                        preserveScroll: true,
-                    });
-            },
-            test(){
-                console.log("SHOW");
-            },
-            test2(){
-                console.log("CHANGED");
+                let url =this.$route("foods.toggle-favourite", e.target.id);
+                this.$inertia.post(url,{},{preserveScroll: true});
             },
             goToPageOne(){
                 this.goToPage(1);
@@ -146,7 +93,6 @@
                 this.$inertia.visit(url);
             },
             add(){
-                console.log("create!");
                 let url = `${this.$route("foods.create")}`;
                 this.$inertia.visit(url);
             }
