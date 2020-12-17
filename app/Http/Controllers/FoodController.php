@@ -88,7 +88,7 @@ class FoodController extends Controller
         return redirect()->route('foods.index');
     }
 
-    public function toggleFavourite(Food $food)
+    public function toggleFavourite(Request $request, Food $food)
     {
         $user = User::find(auth()->user()->id);
 
@@ -98,7 +98,7 @@ class FoodController extends Controller
             $user->favourites()->attach($food);
         };
 
-        return redirect()->route('foods.index');
+        return redirect()->back();
 
     }
 }

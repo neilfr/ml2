@@ -700,7 +700,8 @@ class FoodControllerTest extends TestCase
             'food_id' => $food->id,
         ]);
 
-        $response = $this->post(route('foods.toggle-favourite', $food->id));
+        $response = $this->from(route('foods.index'))
+            ->post(route('foods.toggle-favourite', $food->id));
 
         $response->assertRedirect(route('foods.index'));
         $this->assertDatabaseMissing('favourites', [
@@ -708,7 +709,9 @@ class FoodControllerTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $response = $this->post(route('foods.toggle-favourite', $food->id));
+        $response = $this->from(route('foods.index'))
+                        ->post(route('foods.toggle-favourite', $food->id));
+
         $response->assertRedirect(route('foods.index'));
         $this->assertDatabaseHas('favourites', [
             'food_id' => $food->id,

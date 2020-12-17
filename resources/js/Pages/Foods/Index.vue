@@ -25,7 +25,7 @@
                 <input type="radio" name="favourites" id="favouriteNo" value="no" checked v-model="favouritesFilter" @change="goToPageOne">
             </div>
         </div>
-        <main-food-list :foods="foods.data" @view="test" @edit="test" @favourite="foo"></main-food-list>
+        <main-food-list :foods="foods.data" @view="test" @edit="test" @favourite="toggleFavourite"></main-food-list>
         <table>
             <tr>
                 <th>Favourite</th>
@@ -100,32 +100,10 @@
         },
         methods:{
             toggleFavourite(e){
-                console.log(e.target.value);
-                // if(!e.target.value)
-                //     this.$inertia.post(
-                //         this.$route("foods.favourite", e.target.id),
-                //         {
-                //             // favourite: e.target.checked
-                //         },
-                //         {
-                //             preserveScroll: true,
-                //         });
-                // if(e.target.value)
-                //     this.$inertia.delete(
-                //         this.$route("foods.unfavourite", e.target.id),
-                //         {
-                //             // favourite: e.target.checked
-                //         },
-                //         {
-                //             preserveScroll: true,
-                //         });
-            },
-            foo(e){
-                console.log("foo", e.target);
-                this.$inertia.patch(
-                    this.$route("foods.update", e.target.id),
+                this.$inertia.post(
+                    this.$route("foods.toggle-favourite", e.target.id),
                     {
-                        favourite: e.target.checked
+                        // page: this.page,
                     },
                     {
                         preserveScroll: true,

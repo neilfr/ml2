@@ -2230,29 +2230,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     toggleFavourite: function toggleFavourite(e) {
-      console.log(e.target.value); // if(!e.target.value)
-      //     this.$inertia.post(
-      //         this.$route("foods.favourite", e.target.id),
-      //         {
-      //             // favourite: e.target.checked
-      //         },
-      //         {
-      //             preserveScroll: true,
-      //         });
-      // if(e.target.value)
-      //     this.$inertia.delete(
-      //         this.$route("foods.unfavourite", e.target.id),
-      //         {
-      //             // favourite: e.target.checked
-      //         },
-      //         {
-      //             preserveScroll: true,
-      //         });
-    },
-    foo: function foo(e) {
-      console.log("foo", e.target);
-      this.$inertia.patch(this.$route("foods.update", e.target.id), {
-        favourite: e.target.checked
+      this.$inertia.post(this.$route("foods.toggle-favourite", e.target.id), {// page: this.page,
       }, {
         preserveScroll: true
       });
@@ -4699,7 +4677,7 @@ var render = function() {
       _vm._v(" "),
       _c("main-food-list", {
         attrs: { foods: _vm.foods.data },
-        on: { view: _vm.test, edit: _vm.test, favourite: _vm.foo }
+        on: { view: _vm.test, edit: _vm.test, favourite: _vm.toggleFavourite }
       }),
       _vm._v(" "),
       _c(
