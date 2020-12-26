@@ -52,7 +52,7 @@ class UpdateFoodRequest extends FormRequest
             'carbohydrate' => 'integer|min:0',
             'potassium' => 'integer|min:0',
             'base_quantity' => 'integer|min:0',
-            'editable' => 'boolean',
+            // 'editable' => 'boolean',
             'foodgroup_id' => 'exists:App\Foodgroup,id',
             'foodsource_id' => 'exists:App\Foodsource,id',
             'user_id' => 'exists:App\User,id',

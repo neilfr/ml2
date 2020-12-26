@@ -191,7 +191,7 @@ class FoodIngredientControllerTest extends TestCase
         $this->actingAs($user);
 
         [$ruleName, $payload] = $getData();
-        // dd($payload);
+
         $response = $this->post(route('food.ingredient.store', $payload['parent_food_id']), $payload);
 
         $response->assertSessionHasErrors($ruleName);

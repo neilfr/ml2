@@ -13,7 +13,6 @@ class UserController extends Controller
     {
         $user = $request->validated();
         $user['password'] = Hash::make($request->validated()['password']);
-        // dd(Hash::make($request->validated()['password']));
 
         User::create($user);
 

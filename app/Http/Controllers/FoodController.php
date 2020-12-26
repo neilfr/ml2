@@ -19,11 +19,6 @@ class FoodController extends Controller
 {
     public function index(Request $request)
     {
-        // dd($request->query('favouritesFilter'));
-                $favIds = User::find(auth()
-                ->user()->id)
-                ->favourites()->pluck('food_id');
-        // dd($favIds);
         $foods = Food::query()
         ->userFoods()
         ->sharedFoods()

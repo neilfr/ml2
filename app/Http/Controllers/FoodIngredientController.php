@@ -53,7 +53,6 @@ class FoodIngredientController extends Controller
 
     public function destroy(Request $request, Food $food, Ingredient $ingredient)
     {
-        // dd($ingredient->id);
         if ($food->user_id === auth()->user()->id) {
             $food->ingredients()->detach($ingredient);
             return redirect()->route('foods.show', $food);

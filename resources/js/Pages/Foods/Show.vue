@@ -48,40 +48,20 @@
         @remove="removeIngredient"
     />
     <button @click="showFoods">Add Ingredient</button>
-    <label for="foodgroups">Food Group:</label>
-    <select name="foodgroups" id="foodgroups" v-model="foodgroupFilter" @change="updateFoodList">
-        <option value="">All</option>
-        <option v-for="foodgroup in foodgroups.data" :key="foodgroup.id" :value="foodgroup.id">
-            {{ foodgroup.description }}
-        </option>
-    </select>
-    <br/>
-    <label for="descriptionSearch">Description Search:</label>
-    <input type="text" name="descriptionSearch" id="descriptionSearch" @input="updateFoodList" v-model="descriptionSearchText"/>
-    <br/>
-    <label for="aliasSearch">Alias Search:</label>
-    <input type="text" name="aliasSearch" id="aliasSearch" @input="updateFoodList" v-model="aliasSearchText"/>
-    <div class="flex">
-        <p>Favourites:</p>
-        <div class="ml-2">
-            <label for="favouriteYes">Yes</label>
-            <input type="radio" name="favourites" id="favouriteYes" value="yes" v-model="favouritesFilter" @change="updateFoodList">
-            <label for="favouriteNo">No</label>
-            <input type="radio" name="favourites" id="favouriteNo" value="no" checked v-model="favouritesFilter" @change="updateFoodList">
-        </div>
-    </div>
-    <food-list @pageUpdated="updateFoodList" @selectedFood="addFoodAsIngredient" :foods="foods"></food-list>
+    <ingredient-add v-if="showIngredientAdd" :foodgroups="foodgroups" :foods="foods" :food="food"></ingredient-add>
   </div>
 </template>
 
 <script>
 import IngredientsList from "@/Shared/IngredientsList";
-import FoodList from "@/Shared/FoodList";
+import IngredientAdd from "@/Shared/IngredientAdd";
+// import FoodList from "@/Shared/FoodList";
 
 export default {
     components:{
         IngredientsList,
-        FoodList
+        IngredientAdd,
+        // FoodList
     },
     props:{
         food: Object,
@@ -91,6 +71,7 @@ export default {
     },
     data(){
         return {
+            showIngredientAdd: false,
             foodgroupFilter: '',
             aliasSearchText: '',
             descriptionSearchText: '',
@@ -133,6 +114,7 @@ export default {
                 });
         },
         updateFood () {
+            console.log("this.food.data.id", this.food.data.id, "this.food.data", this.food.data);
             this.$inertia.patch(
                 this.$route("foods.update", {
                     'food': this.food.data.id,
@@ -142,23 +124,23 @@ export default {
             });
         },
         showFoods () {
-            console.log("add new food as ingredient");
+            this.showIngredientAdd=true;
         },
-        updateFoodList (page){
-            let url = `${this.$route("foods.show", this.food.data.id)}`;
-            url += `?descriptionSearch=${this.descriptionSearchText}`;
-            url += `&aliasSearch=${this.aliasSearchText}`;
-            url += `&foodgroupSearch=${this.foodgroupFilter}`;
-            url += `&favouritesFilter=${this.favouritesFilter}`;
+        // updateFoodList (page){
+        //     let url = `${this.$route("foods.show", this.food.data.id)}`;
+        //     url += `?descriptionSearch=${this.descriptionSearchText}`;
+        //     url += `&aliasSearch=${this.aliasSearchText}`;
+        //     url += `&foodgroupSearch=${this.foodgroupFilter}`;
+        //     url += `&favouritesFilter=${this.favouritesFilter}`;
 
-            this.$inertia.visit(url, {
-                data:{
-                    'page':page
-                },
-                preserveState: true,
-                preserveScroll: true,
-            });
-        },
+        //     this.$inertia.visit(url, {
+        //         data:{
+        //             'page':page
+        //         },
+        //         preserveState: true,
+        //         preserveScroll: true,
+        //     });
+        // },
         addFoodAsIngredient(newIngredientFoodId) {
             this.$inertia.post(
                 this.$route("food.ingredient.store", {
