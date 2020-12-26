@@ -31,7 +31,7 @@
             @update="update"
         />
       </table>
-    <button @click="showFoods">Add Ingredient</button>
+    <button @click="showIngredients">Add Ingredient</button>
     <ingredient-add v-if="showIngredientAdd" :foodgroups="foodgroups" :foods="foods" :food="food"></ingredient-add>
   </div>
 </template>
@@ -87,7 +87,7 @@ export default {
                     'ingredient': ingredient.id
                 }));
         },
-        showFoods () {
+        showIngredients () {
             this.showIngredientAdd=true;
         },
     }

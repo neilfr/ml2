@@ -48,8 +48,6 @@
         :foodgroups="foodgroups"
         :foods="foods"
     />
-    <!-- <button @click="showFoods">Add Ingredient</button>
-    <ingredient-add v-if="showIngredientAdd" :foodgroups="foodgroups" :foods="foods" :food="food"></ingredient-add> -->
   </div>
 </template>
 
@@ -68,10 +66,6 @@ export default {
     },
     data(){
         return {
-            foodgroupFilter: '',
-            aliasSearchText: '',
-            descriptionSearchText: '',
-            favouritesFilter: '',
             calculatedKCal: 0,
             calculatedFat: 0,
             calculatedProtein: 0,
@@ -115,9 +109,6 @@ export default {
                     'food': this.food.data.id,
                 }), this.food.data
             );
-        },
-        showFoods () {
-            this.showIngredientAdd=true;
         },
         setToRecommendedValues(){
             this.food.data.kcal=this.calculatedKCal;

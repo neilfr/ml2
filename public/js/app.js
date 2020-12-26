@@ -2296,8 +2296,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2311,10 +2309,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      foodgroupFilter: '',
-      aliasSearchText: '',
-      descriptionSearchText: '',
-      favouritesFilter: '',
       calculatedKCal: 0,
       calculatedFat: 0,
       calculatedProtein: 0,
@@ -2355,9 +2349,6 @@ __webpack_require__.r(__webpack_exports__);
       this.$inertia.patch(this.$route("foods.update", {
         'food': this.food.data.id
       }), this.food.data);
-    },
-    showFoods: function showFoods() {
-      this.showIngredientAdd = true;
     },
     setToRecommendedValues: function setToRecommendedValues() {
       this.food.data.kcal = this.calculatedKCal;
@@ -2773,7 +2764,7 @@ __webpack_require__.r(__webpack_exports__);
         'ingredient': ingredient.id
       }));
     },
-    showFoods: function showFoods() {
+    showIngredients: function showIngredients() {
       this.showIngredientAdd = true;
     }
   }
@@ -5674,7 +5665,7 @@ var render = function() {
         2
       ),
       _vm._v(" "),
-      _c("button", { on: { click: _vm.showFoods } }, [
+      _c("button", { on: { click: _vm.showIngredients } }, [
         _vm._v("Add Ingredient")
       ]),
       _vm._v(" "),
