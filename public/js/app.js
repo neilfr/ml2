@@ -2243,7 +2243,6 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Shared_IngredientsList__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Shared/IngredientsList */ "./resources/js/Shared/IngredientsList.vue");
-/* harmony import */ var _Shared_IngredientAdd__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Shared/IngredientAdd */ "./resources/js/Shared/IngredientAdd.vue");
 //
 //
 //
@@ -2298,14 +2297,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
- // import FoodList from "@/Shared/FoodList";
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    IngredientsList: _Shared_IngredientsList__WEBPACK_IMPORTED_MODULE_0__["default"],
-    IngredientAdd: _Shared_IngredientAdd__WEBPACK_IMPORTED_MODULE_1__["default"] // FoodList
-
+    IngredientsList: _Shared_IngredientsList__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   props: {
     food: Object,
@@ -2315,7 +2311,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      showIngredientAdd: false,
       foodgroupFilter: '',
       aliasSearchText: '',
       descriptionSearchText: '',
@@ -2357,46 +2352,12 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     updateFood: function updateFood() {
-      console.log("this.food.data.id", this.food.data.id, "this.food.data", this.food.data);
       this.$inertia.patch(this.$route("foods.update", {
         'food': this.food.data.id
-      }), this.food.data).then(function () {
-        console.log("updated food");
-      });
+      }), this.food.data);
     },
     showFoods: function showFoods() {
       this.showIngredientAdd = true;
-    },
-    // updateFoodList (page){
-    //     let url = `${this.$route("foods.show", this.food.data.id)}`;
-    //     url += `?descriptionSearch=${this.descriptionSearchText}`;
-    //     url += `&aliasSearch=${this.aliasSearchText}`;
-    //     url += `&foodgroupSearch=${this.foodgroupFilter}`;
-    //     url += `&favouritesFilter=${this.favouritesFilter}`;
-    //     this.$inertia.visit(url, {
-    //         data:{
-    //             'page':page
-    //         },
-    //         preserveState: true,
-    //         preserveScroll: true,
-    //     });
-    // },
-    addFoodAsIngredient: function addFoodAsIngredient(newIngredientFoodId) {
-      this.$inertia.post(this.$route("food.ingredient.store", {
-        'food': this.food.data.id
-      }), {
-        'ingredient_id': newIngredientFoodId
-      }, {
-        preserveScroll: false,
-        preserveState: false
-      }).then(function (res) {// this.updateFoodList();
-      });
-    },
-    removeIngredient: function removeIngredient(ingredient) {
-      this.$inertia["delete"](this.$route("food.ingredient.destroy", {
-        'food': this.food.data.id,
-        'ingredient': ingredient.id
-      }));
     },
     setToRecommendedValues: function setToRecommendedValues() {
       this.food.data.kcal = this.calculatedKCal;
@@ -2686,13 +2647,12 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     addFoodAsIngredient: function addFoodAsIngredient(newIngredientFoodId) {
       this.$inertia.post(this.$route("food.ingredient.store", {
-        'food': this.food.data.id
+        'food': this.food.id
       }), {
         'ingredient_id': newIngredientFoodId
       }, {
         preserveScroll: false,
         preserveState: false
-      }).then(function (res) {// this.updateFoodList();
       });
     },
     updateFoodList: function updateFoodList(page) {
@@ -2724,6 +2684,9 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Shared_UpdateNumberModal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Shared/UpdateNumberModal */ "./resources/js/Shared/UpdateNumberModal.vue");
+/* harmony import */ var _Shared_IngredientAdd__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Shared/IngredientAdd */ "./resources/js/Shared/IngredientAdd.vue");
+//
+//
 //
 //
 //
@@ -2761,15 +2724,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    UpdateNumberModal: _Shared_UpdateNumberModal__WEBPACK_IMPORTED_MODULE_0__["default"]
+    UpdateNumberModal: _Shared_UpdateNumberModal__WEBPACK_IMPORTED_MODULE_0__["default"],
+    IngredientAdd: _Shared_IngredientAdd__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   props: {
-    food: Object
+    food: Object,
+    foodgroups: Object,
+    foods: Object
   },
   data: function data() {
     return {
+      showIngredientAdd: false,
       show: false,
       selectedIngredient: null,
       url: null,
@@ -2796,15 +2764,17 @@ __webpack_require__.r(__webpack_exports__);
         preserveScroll: true,
         preserveState: false
       }).then(function (res) {
-        console.log("close!");
-
         _this.close();
       });
     },
-    remove: function remove(ingredient) {
-      console.log("removing ingredient", ingredient);
-      console.log("food_ingredient_id", ingredient.food_ingredient_id);
-      this.$emit('remove', ingredient);
+    removeIngredient: function removeIngredient(ingredient) {
+      this.$inertia["delete"](this.$route("food.ingredient.destroy", {
+        'food': this.food.id,
+        'ingredient': ingredient.id
+      }));
+    },
+    showFoods: function showFoods() {
+      this.showIngredientAdd = true;
     }
   }
 });
@@ -5162,23 +5132,12 @@ var render = function() {
       ),
       _vm._v(" "),
       _c("ingredients-list", {
-        attrs: { food: _vm.food.data },
-        on: { remove: _vm.removeIngredient }
-      }),
-      _vm._v(" "),
-      _c("button", { on: { click: _vm.showFoods } }, [
-        _vm._v("Add Ingredient")
-      ]),
-      _vm._v(" "),
-      _vm.showIngredientAdd
-        ? _c("ingredient-add", {
-            attrs: {
-              foodgroups: _vm.foodgroups,
-              foods: _vm.foods,
-              food: _vm.food
-            }
-          })
-        : _vm._e()
+        attrs: {
+          food: _vm.food.data,
+          foodgroups: _vm.foodgroups,
+          foods: _vm.foods
+        }
+      })
     ],
     1
   )
@@ -5649,70 +5608,88 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "table",
-      [
-        _vm._m(0),
-        _vm._v(" "),
-        _vm._l(_vm.food.ingredients, function(ingredient) {
-          return _c("tr", { key: ingredient.food_ingredient_id }, [
-            _c("td", [_vm._v(_vm._s(ingredient.alias))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(ingredient.description))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(ingredient.kcal))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(ingredient.protein))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(ingredient.fat))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(ingredient.carbohydrate))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(ingredient.potassium))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(ingredient.quantity))]),
-            _vm._v(" "),
-            _c("td", [
-              _c(
-                "button",
-                {
-                  on: {
-                    click: function($event) {
-                      return _vm.open(ingredient)
+  return _c(
+    "div",
+    [
+      _c(
+        "table",
+        [
+          _vm._m(0),
+          _vm._v(" "),
+          _vm._l(_vm.food.ingredients, function(ingredient) {
+            return _c("tr", { key: ingredient.food_ingredient_id }, [
+              _c("td", [_vm._v(_vm._s(ingredient.alias))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(ingredient.description))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(ingredient.kcal))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(ingredient.protein))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(ingredient.fat))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(ingredient.carbohydrate))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(ingredient.potassium))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(ingredient.quantity))]),
+              _vm._v(" "),
+              _c("td", [
+                _c(
+                  "button",
+                  {
+                    on: {
+                      click: function($event) {
+                        return _vm.open(ingredient)
+                      }
                     }
-                  }
-                },
-                [_vm._v("Edit")]
-              ),
-              _c(
-                "button",
-                {
-                  on: {
-                    click: function($event) {
-                      return _vm.remove(ingredient)
+                  },
+                  [_vm._v("Edit")]
+                ),
+                _c(
+                  "button",
+                  {
+                    on: {
+                      click: function($event) {
+                        return _vm.removeIngredient(ingredient)
+                      }
                     }
-                  }
-                },
-                [_vm._v("Delete")]
-              )
+                  },
+                  [_vm._v("Delete")]
+                )
+              ])
             ])
-          ])
-        }),
-        _vm._v(" "),
-        _vm.show
-          ? _c("update-number-modal", {
-              attrs: {
-                id: _vm.selectedIngredient.id,
-                initialValue: _vm.selectedIngredient.quantity
-              },
-              on: { close: _vm.close, update: _vm.update }
-            })
-          : _vm._e()
-      ],
-      2
-    )
-  ])
+          }),
+          _vm._v(" "),
+          _vm.show
+            ? _c("update-number-modal", {
+                attrs: {
+                  id: _vm.selectedIngredient.id,
+                  initialValue: _vm.selectedIngredient.quantity
+                },
+                on: { close: _vm.close, update: _vm.update }
+              })
+            : _vm._e()
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _c("button", { on: { click: _vm.showFoods } }, [
+        _vm._v("Add Ingredient")
+      ]),
+      _vm._v(" "),
+      _vm.showIngredientAdd
+        ? _c("ingredient-add", {
+            attrs: {
+              foodgroups: _vm.foodgroups,
+              foods: _vm.foods,
+              food: _vm.food
+            }
+          })
+        : _vm._e()
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {

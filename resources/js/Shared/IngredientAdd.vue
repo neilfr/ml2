@@ -51,15 +51,11 @@ export default {
         addFoodAsIngredient(newIngredientFoodId) {
             this.$inertia.post(
                 this.$route("food.ingredient.store", {
-                    'food': this.food.data.id
+                    'food': this.food.id
                 }), {
                     'ingredient_id':newIngredientFoodId,
                 },
                 { preserveScroll: false, preserveState: false }
-            )
-            .then((res)=>{
-                // this.updateFoodList();
-            }
             );
         },
 

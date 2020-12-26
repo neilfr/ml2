@@ -21,7 +21,7 @@
             <td>{{ingredient.carbohydrate}}</td>
             <td>{{ingredient.potassium}}</td>
             <td>{{ingredient.quantity}}</td>
-            <td><button @click="open(ingredient)">Edit</button><button @click="remove(ingredient)">Delete</button></td>
+            <td><button @click="open(ingredient)">Edit</button><button @click="removeIngredient(ingredient)">Delete</button></td>
         </tr>
         <update-number-modal
             v-if="show"
@@ -31,22 +31,29 @@
             @update="update"
         />
       </table>
+    <button @click="showFoods">Add Ingredient</button>
+    <ingredient-add v-if="showIngredientAdd" :foodgroups="foodgroups" :foods="foods" :food="food"></ingredient-add>
   </div>
 </template>
 
 <script>
 
 import UpdateNumberModal from "@/Shared/UpdateNumberModal";
+import IngredientAdd from "@/Shared/IngredientAdd";
 
 export default {
     components:{
-        UpdateNumberModal
+        UpdateNumberModal,
+        IngredientAdd
     },
     props:{
-        food:Object
+        food:Object,
+        foodgroups:Object,
+        foods:Object
     },
     data(){
         return{
+            showIngredientAdd: false,
             show: false,
             selectedIngredient: null,
             url: null,
@@ -71,15 +78,18 @@ export default {
                 preserveScroll:true,
                 preserveState:false
             }).then((res)=>{
-                console.log("close!");
                 this.close();
             });
         },
-        remove(ingredient){
-            console.log("removing ingredient", ingredient);
-            console.log("food_ingredient_id", ingredient.food_ingredient_id)
-            this.$emit('remove', ingredient);
-        }
+        removeIngredient(ingredient){
+            this.$inertia.delete(this.$route("food.ingredient.destroy", {
+                    'food': this.food.id,
+                    'ingredient': ingredient.id
+                }));
+        },
+        showFoods () {
+            this.showIngredientAdd=true;
+        },
     }
 }
 </script>

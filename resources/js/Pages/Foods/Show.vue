@@ -45,23 +45,20 @@
     <button class="border rounded" @click="setToRecommendedValues">Set to Recommended Values</button>
     <ingredients-list
         :food=food.data
-        @remove="removeIngredient"
+        :foodgroups="foodgroups"
+        :foods="foods"
     />
-    <button @click="showFoods">Add Ingredient</button>
-    <ingredient-add v-if="showIngredientAdd" :foodgroups="foodgroups" :foods="foods" :food="food"></ingredient-add>
+    <!-- <button @click="showFoods">Add Ingredient</button>
+    <ingredient-add v-if="showIngredientAdd" :foodgroups="foodgroups" :foods="foods" :food="food"></ingredient-add> -->
   </div>
 </template>
 
 <script>
 import IngredientsList from "@/Shared/IngredientsList";
-import IngredientAdd from "@/Shared/IngredientAdd";
-// import FoodList from "@/Shared/FoodList";
 
 export default {
     components:{
         IngredientsList,
-        IngredientAdd,
-        // FoodList
     },
     props:{
         food: Object,
@@ -71,7 +68,6 @@ export default {
     },
     data(){
         return {
-            showIngredientAdd: false,
             foodgroupFilter: '',
             aliasSearchText: '',
             descriptionSearchText: '',
@@ -114,52 +110,14 @@ export default {
                 });
         },
         updateFood () {
-            console.log("this.food.data.id", this.food.data.id, "this.food.data", this.food.data);
             this.$inertia.patch(
                 this.$route("foods.update", {
                     'food': this.food.data.id,
                 }), this.food.data
-            ).then(()=>{
-                console.log("updated food");
-            });
+            );
         },
         showFoods () {
             this.showIngredientAdd=true;
-        },
-        // updateFoodList (page){
-        //     let url = `${this.$route("foods.show", this.food.data.id)}`;
-        //     url += `?descriptionSearch=${this.descriptionSearchText}`;
-        //     url += `&aliasSearch=${this.aliasSearchText}`;
-        //     url += `&foodgroupSearch=${this.foodgroupFilter}`;
-        //     url += `&favouritesFilter=${this.favouritesFilter}`;
-
-        //     this.$inertia.visit(url, {
-        //         data:{
-        //             'page':page
-        //         },
-        //         preserveState: true,
-        //         preserveScroll: true,
-        //     });
-        // },
-        addFoodAsIngredient(newIngredientFoodId) {
-            this.$inertia.post(
-                this.$route("food.ingredient.store", {
-                    'food': this.food.data.id
-                }), {
-                    'ingredient_id':newIngredientFoodId,
-                },
-                { preserveScroll: false, preserveState: false }
-            )
-            .then((res)=>{
-                // this.updateFoodList();
-            }
-            );
-        },
-        removeIngredient(ingredient){
-            this.$inertia.delete(this.$route("food.ingredient.destroy", {
-                    'food': this.food.data.id,
-                    'ingredient': ingredient.id
-                }));
         },
         setToRecommendedValues(){
             this.food.data.kcal=this.calculatedKCal;
