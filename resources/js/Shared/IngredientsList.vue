@@ -2,8 +2,8 @@
   <div>
       <h2>Ingredients</h2>
     <!-- <button @click="showIngredients">Add Ingredient</button> -->
-    <button @click="toggleModal">Add Ingredient</button>
-    <modal :showing="this.showModal" @close="closeModal">
+    <button @click="showAddIngredientModal">Add Ingredient</button>
+    <modal :showing="this.showAddIngredientModalProp" @close="closeAddIngredientModal">
         <template v-slot:title>
             Add Ingredient
         </template>
@@ -31,7 +31,7 @@
             <td>{{Math.round(ingredient.carbohydrate)}}</td>
             <td>{{Math.round(ingredient.potassium)}}</td>
             <td>{{ingredient.quantity}}</td>
-            <td><button @click="open(ingredient)">Edit</button><button @click="removeIngredient(ingredient)">Delete</button></td>
+            <td><button @click="showIngredientQuantityModal(ingredient)">Edit</button><button @click="removeIngredient(ingredient)">Delete</button></td>
         </tr>
         <update-number-modal
             v-if="show"
@@ -41,6 +41,18 @@
             @update="update"
         />
       </table>
+    <modal :showing="this.showIngredientQuantityModalProp" @close="closeIngredientQuantityModal">
+        <template v-slot:title>
+            Change ingredient quantity
+        </template>
+        <p>Stuff goes here</p>
+        <update-quantity
+            :id="selectedIngredient.id"
+            :initialValue="selectedIngredient.quantity"
+            @update="update"
+        />
+
+    </modal>
     <ingredient-add v-if="showIngredientAdd" :foodgroups="foodgroups" :foods="foods" :food="food"></ingredient-add>
 
   </div>
@@ -51,12 +63,14 @@
 import UpdateNumberModal from "@/Shared/UpdateNumberModal";
 import IngredientAdd from "@/Shared/IngredientAdd";
 import Modal from "@/Shared/Modal";
+import UpdateQuantity from '@/Shared/UpdateQuantity.vue';
 
 export default {
     components:{
         UpdateNumberModal,
         IngredientAdd,
-        Modal
+        Modal,
+        UpdateQuantity
     },
     props:{
         food:Object,
@@ -65,20 +79,28 @@ export default {
     },
     data(){
         return{
-            showModal: false,
+            showAddIngredientModalProp: false,
+            showIngredientQuantityModalProp: false,
             showIngredientAdd: false,
             show: false,
-            selectedIngredient: null,
+            selectedIngredient: 1,
             url: null,
             params: null
         }
     },
     methods:{
-        toggleModal(){
-            this.showModal = !this.showModal;
+        showAddIngredientModal(){
+            this.showAddIngredientModalProp = true;
         },
-        closeModal(){
-            this.showModal = false;
+        closeAddIngredientModal(){
+            this.showAddIngredientModalProp = false;
+        },
+        showIngredientQuantityModal(ingredient){
+            this.selectedIngredient = ingredient;
+            this.showIngredientQuantityModalProp = true;
+        },
+        closeIngredientQuantityModal(){
+            this.showIngredientQuantityModalProp = false;
         },
         close(){
             this.show = false;
