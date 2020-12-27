@@ -3,12 +3,10 @@
 namespace Tests\Feature;
 
 use App\Food;
-use App\Http\Resources\IngredientResource;
 use App\Ingredient;
 use App\User;
 use Tests\TestCase;
 use Illuminate\Http\Response;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class FoodIngredientControllerTest extends TestCase
@@ -78,7 +76,7 @@ class FoodIngredientControllerTest extends TestCase
             $food->ingredients()->attach($ingredient->id, ['quantity' => 555]);
         }
 
-        $response = $this->get(route('food.ingredient.index', $food));
+        $response = $this->get(route('foods.ingredients.index', $food));
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertPropValue('ingredients', function ($returnedIngredients) use ($ingredients) {
@@ -109,7 +107,7 @@ class FoodIngredientControllerTest extends TestCase
             $food->ingredients()->attach($ingredient->id, ['quantity' => 100]);
         }
 
-        $response = $this->get(route('food.ingredient.index', $food));
+        $response = $this->get(route('foods.ingredients.index', $food));
 
         $response->assertRedirect(route('foods.index'));
     }
@@ -129,7 +127,7 @@ class FoodIngredientControllerTest extends TestCase
             'quantity' => 200,
         ];
 
-        $response = $this->post(route('food.ingredient.store', $food), $payload);
+        $response = $this->post(route('foods.ingredients.store', $food), $payload);
 
         $response->assertRedirect(route('foods.show', $food));
         $this->assertDatabaseHas('ingredients', $payload);
@@ -152,7 +150,7 @@ class FoodIngredientControllerTest extends TestCase
             'quantity' => 200,
         ];
 
-        $response = $this->post(route('food.ingredient.store', $food), $payload);
+        $response = $this->post(route('foods.ingredients.store', $food), $payload);
 
         $response->assertRedirect(route('foods.show', $food));
         $this->assertDatabaseMissing('ingredients', $payload);
@@ -175,7 +173,7 @@ class FoodIngredientControllerTest extends TestCase
         ];
         $expectedResult = array_merge($payload, ['quantity' => 999]);
 
-        $response = $this->post(route('food.ingredient.store', $food), $payload);
+        $response = $this->post(route('foods.ingredients.store', $food), $payload);
 
         $response->assertRedirect(route('foods.show', $food));
         $this->assertDatabaseHas('ingredients', $expectedResult);
@@ -192,7 +190,7 @@ class FoodIngredientControllerTest extends TestCase
 
         [$ruleName, $payload] = $getData();
 
-        $response = $this->post(route('food.ingredient.store', $payload['parent_food_id']), $payload);
+        $response = $this->post(route('foods.ingredients.store', $payload['parent_food_id']), $payload);
 
         $response->assertSessionHasErrors($ruleName);
     }
@@ -212,7 +210,7 @@ class FoodIngredientControllerTest extends TestCase
             'quantity' => 'not an integer',
         ];
 
-        $response = $this->patch(route('food.ingredient.update', [
+        $response = $this->patch(route('foods.ingredients.update', [
             'food' => $food,
             'ingredient' => $ingredient,
         ]), $payload);
@@ -241,7 +239,7 @@ class FoodIngredientControllerTest extends TestCase
             'quantity' => 999,
         ];
 
-        $response = $this->patch(route('food.ingredient.update', [
+        $response = $this->patch(route('foods.ingredients.update', [
             'food' => $food,
             'ingredient' => $ingredient,
         ]), $payload);
@@ -274,7 +272,7 @@ class FoodIngredientControllerTest extends TestCase
             'quantity' => 200,
         ];
 
-        $response = $this->patch(route('food.ingredient.update', [
+        $response = $this->patch(route('foods.ingredients.update', [
             'food' => $food,
             'ingredient' => $ingredient,
         ]), $payload);
@@ -307,7 +305,7 @@ class FoodIngredientControllerTest extends TestCase
             'quantity' => 200,
         ];
 
-        $response = $this->post(route('food.ingredient.store', $food), $payload);
+        $response = $this->post(route('foods.ingredients.store', $food), $payload);
 
         $response->assertRedirect(route('foods.index'));
         $this->assertDatabaseMissing('ingredients', $payload);
@@ -320,14 +318,14 @@ class FoodIngredientControllerTest extends TestCase
         $this->actingAs($user);
 
         $food = factory(Food::class)->create();
-$foods=factory(Food::class,10)->create();
+
         $ingredients = factory(Ingredient::class,2)->create();
 
         foreach($ingredients as $ingredient) {
             $food->ingredients()->attach($ingredient->id, ['quantity' => 555]);
         }
 
-        $response = $this->delete(route('food.ingredient.destroy', [
+        $response = $this->delete(route('foods.ingredients.destroy', [
             'food' => $food,
             'ingredient' =>$ingredients[0],
         ]));
@@ -356,7 +354,7 @@ $foods=factory(Food::class,10)->create();
 
         $food->ingredients()->attach($ingredient->id, ['quantity' => 555]);
 
-        $response = $this->delete(route('food.ingredient.destroy', [
+        $response = $this->delete(route('foods.ingredients.destroy', [
             'food' => $food,
             'ingredient' => $ingredient,
         ]));

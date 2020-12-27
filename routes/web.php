@@ -36,10 +36,12 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/foods/{food}/toggle-favourite', 'FoodController@toggleFavourite')->name('foods.toggle-favourite');
 
-    Route::get('/food/{food}/ingredient', 'FoodIngredientController@index')->name('food.ingredient.index');
-    Route::post('/food/{food}/ingredient', 'FoodIngredientController@store')->name('food.ingredient.store');
-    Route::patch('/food/{food}/ingredient/{ingredient}', 'FoodIngredientController@update')->name('food.ingredient.update');
-    Route::delete('/food/{food}/ingredient/{ingredient}', 'FoodIngredientController@destroy')->name('food.ingredient.destroy');
+    Route::get('/foods/{food}/ingredients', 'FoodIngredientController@index')->name('foods.ingredients.index');
+    Route::post('/foods/{food}/ingredients', 'FoodIngredientController@store')->name('foods.ingredients.store');
+    Route::patch('/foods/{food}/ingredients/{ingredient}', 'FoodIngredientController@update')->name('foods.ingredients.update');
+    Route::delete('/foods/{food}/ingredients/{ingredient}', 'FoodIngredientController@destroy')->name('foods.ingredients.destroy');
+
+    Route::get('/ingredients', 'IngredientController@index')->name('ingredients.index');
 
     Route::get('/foodgroups', 'FoodgroupController@index')->name('foodgroups.index');
     Route::get('/foodgroups/{foodgroup}', 'FoodgroupController@show')->name('foodgroups.show');

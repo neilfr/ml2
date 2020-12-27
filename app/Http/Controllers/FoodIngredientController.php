@@ -17,10 +17,11 @@ class FoodIngredientController extends Controller
     {
         if ($food->user_id === auth()->user()->id) {
             $ingredients = $food->ingredients;
-            return Inertia::render('Ingredients/Index', [
+            return Inertia::render('Foods/Ingredients/Index', [
                 'ingredients' => IngredientResource::collection($ingredients),
             ]);
         }
+
         return redirect()->route('foods.index');
     }
 

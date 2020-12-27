@@ -1,5 +1,15 @@
 <template>
   <div>
+      <h2>Ingredients</h2>
+    <!-- <button @click="showIngredients">Add Ingredient</button> -->
+    <button @click="toggleModal">Add Ingredient</button>
+    <modal :showing="this.showModal" @close="closeModal">
+        <template v-slot:title>
+            Add Ingredient
+        </template>
+        <ingredient-add :foodgroups="foodgroups" :foods="foods" :food="food"></ingredient-add>
+    </modal>
+
       <table>
         <tr>
             <th>Alias</th>
@@ -15,11 +25,11 @@
         <tr v-for="ingredient in food.ingredients" :key="ingredient.food_ingredient_id">
             <td>{{ingredient.alias}}</td>
             <td>{{ingredient.description}}</td>
-            <td>{{ingredient.kcal}}</td>
-            <td>{{ingredient.protein}}</td>
-            <td>{{ingredient.fat}}</td>
-            <td>{{ingredient.carbohydrate}}</td>
-            <td>{{ingredient.potassium}}</td>
+            <td>{{Math.round(ingredient.kcal)}}</td>
+            <td>{{Math.round(ingredient.protein)}}</td>
+            <td>{{Math.round(ingredient.fat)}}</td>
+            <td>{{Math.round(ingredient.carbohydrate)}}</td>
+            <td>{{Math.round(ingredient.potassium)}}</td>
             <td>{{ingredient.quantity}}</td>
             <td><button @click="open(ingredient)">Edit</button><button @click="removeIngredient(ingredient)">Delete</button></td>
         </tr>
@@ -31,8 +41,8 @@
             @update="update"
         />
       </table>
-    <button @click="showIngredients">Add Ingredient</button>
     <ingredient-add v-if="showIngredientAdd" :foodgroups="foodgroups" :foods="foods" :food="food"></ingredient-add>
+
   </div>
 </template>
 
@@ -40,11 +50,13 @@
 
 import UpdateNumberModal from "@/Shared/UpdateNumberModal";
 import IngredientAdd from "@/Shared/IngredientAdd";
+import Modal from "@/Shared/Modal";
 
 export default {
     components:{
         UpdateNumberModal,
-        IngredientAdd
+        IngredientAdd,
+        Modal
     },
     props:{
         food:Object,
@@ -53,6 +65,7 @@ export default {
     },
     data(){
         return{
+            showModal: false,
             showIngredientAdd: false,
             show: false,
             selectedIngredient: null,
@@ -61,6 +74,12 @@ export default {
         }
     },
     methods:{
+        toggleModal(){
+            this.showModal = !this.showModal;
+        },
+        closeModal(){
+            this.showModal = false;
+        },
         close(){
             this.show = false;
         },
@@ -69,7 +88,7 @@ export default {
             this.show = true;
         },
         update(value){
-            this.$inertia.patch(this.$route("food.ingredient.update", {
+            this.$inertia.patch(this.$route("foods.ingredients.update", {
                 food : this.food.id,
                 ingredient: this.selectedIngredient.id
             }), {
@@ -82,13 +101,14 @@ export default {
             });
         },
         removeIngredient(ingredient){
-            this.$inertia.delete(this.$route("food.ingredient.destroy", {
+            this.$inertia.delete(this.$route("foods.ingredients.destroy", {
                     'food': this.food.id,
                     'ingredient': ingredient.id
                 }));
         },
         showIngredients () {
-            this.showIngredientAdd=true;
+            console.log("testing");
+            this.showIngredientAdd=!this.showIngredientAdd;
         },
     }
 }

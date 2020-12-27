@@ -1,6 +1,5 @@
 <template>
-  <div>
-      Testing
+  <div class="container">
     <label for="foodgroups">Food Group:</label>
     <select name="foodgroups" id="foodgroups" v-model="foodgroupFilter" @change="updateFoodList">
         <option value="">All</option>
@@ -50,7 +49,7 @@ export default {
     methods:{
         addFoodAsIngredient(newIngredientFoodId) {
             this.$inertia.post(
-                this.$route("food.ingredient.store", {
+                this.$route("foods.ingredients.store", {
                     'food': this.food.id
                 }), {
                     'ingredient_id':newIngredientFoodId,
@@ -60,7 +59,8 @@ export default {
         },
 
         updateFoodList (page){
-            let url = `${this.$route("foods.show", this.food.data.id)}`;
+            console.log("food", this.food);
+            let url = `${this.$route("foods.show", this.food.id)}`;
             url += `?descriptionSearch=${this.descriptionSearchText}`;
             url += `&aliasSearch=${this.aliasSearchText}`;
             url += `&foodgroupSearch=${this.foodgroupFilter}`;
